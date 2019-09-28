@@ -61,7 +61,7 @@ class BaseDataAsset:
         return os.path.join(
             P_DATA_STAGING_PICKEDUP,
             self.name,
-            str(airflow_context["task_instance"].dag_exec_date),
+            str(airflow_context["task_instance"].execution_date),
         )
 
     @property

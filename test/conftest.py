@@ -14,6 +14,18 @@ assert AF_HOME in os.environ and os.path.exists(
     os.environ[AF_HOME]
 ), f"env-variable {AF_HOME} needs to be set properly"
 
+NECESSARY_DATA_STORE_PATHS = (
+    "archive",
+    "ingest",
+    "ready",
+    "staging",
+    "staging/intermediate",
+    "staging/ready",
+    "staging/pickedup",
+    "ingest/archive",
+    "ingest/landing",
+)
+
 
 @pytest.fixture(scope="session")
 def test_db_path() -> str:
@@ -40,6 +52,15 @@ def provide_airflow_cfg(test_db_path: str) -> None:
     decls_folder_path = os.path.join(test_folder_path, "test_airtunnel/declarations")
 
     data_store_folder_path = os.path.join(test_folder_path, "data_store")
+
+    # pre-caution: ensure data store folders all exist (i.e. for docker container)
+    os.makedirs(data_store_folder_path, exist_ok=True)
+
+    for data_store_subfolder_path in NECESSARY_DATA_STORE_PATHS:
+        os.makedirs(
+            os.path.join(data_store_folder_path, data_store_subfolder_path),
+            exist_ok=True,
+        )
 
     scripts_folder_path = os.path.join(test_folder_path, "scripts")
 

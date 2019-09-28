@@ -1,5 +1,7 @@
 .git/
-
+venv
+test/airflow_home/logs
+test/data_store
 build
 dist
 *.egg-info
