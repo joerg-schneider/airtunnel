@@ -25,7 +25,7 @@ Python library *to tame your airflow*!
 - [Tutorial: loading the university data model](#tutorial-loading-the-university-data-model)
 - [Known limitations](#known-limitations)
 - [Design Principles](#design-principles)
-- [Architecture: modules & classes](#architecture-modules-classes)
+- [Architecture: modules & classes](#architecture-modules--classes)
 - [Contributing to Airtunnel](#contributing-to-airtunnel)
 
 ### Installation requirements
