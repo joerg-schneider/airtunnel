@@ -60,7 +60,7 @@ class AwaitLoadStatusSensor(BaseSensorOperator):
     def poke(self, context):
         current_load_status = self._meta_adapter.read_load_status(for_asset=self._asset)
 
-        if current_load_status.load_time > self._refreshed_after:
+        if current_load_status is not None and current_load_status.load_time > self._refreshed_after:
             return True
 
         self.log.info(
