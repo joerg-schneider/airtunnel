@@ -19,6 +19,15 @@ Python library *to tame your airflow*!
 ## Getting started
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
 
+## Table of Contents
+- [Installation requirements](#installation-requirements)
+- [Installation and setup](#installation-and-setup)
+- [Tutorial: loading the university data model](#tutorial-loading-the-university-data-model)
+- [Known limitations](#known-limitations)
+- [Design Principles](#design-principles)
+- [Architecture: modules & classes](architecture-modules-classes)
+- [Contributing to airtunnel](#contributing-to-airtunnel)
+
 ### Installation requirements
 - **Python >= 3.6 and Airflow >=1.10**: we assume Airtunnel is implemented best early on in a project, which is why going
 with a recent Python and Airflow version makes the most sense. In the future we might do more tests and include coverage
@@ -378,5 +387,5 @@ will call the `rebuild_for_store` function, with the current Airflow context as 
   Additionally there is `SQLOperator`, which allows you to run generic SQL scripts from the scripts store using an Airflow
 `DbApiHook` – good for maintenance scripts that are not Data Asset centered.
 
-## Contributing to airtunnel
+## Contributing to Airtunnel
 We love any contributions, be it feedback, issues or PRs on GitHub!
