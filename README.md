@@ -172,7 +172,7 @@ the PandasDataAsset implementation. Don't worry - in case you need special prope
 `write_data_asset()` optionally except additional keyword arguments that will be passed to the Pandas function. Or, just
 do not use `PandasDataAssetIO` at all - `rebuild_for_store` can be implemented as you wish.
 
-Very similar, the script to rebuild the `programme` asset looks like this:
+Mostly similar, the script `programme.py` looks like this:
 
 ````python
 from airtunnel import PandasDataAsset, PandasDataAssetIO
@@ -190,7 +190,7 @@ def rebuild_for_store(asset: PandasDataAsset, airflow_context):
 
 Here we can see, that the script makes use of the declared key-columns to de-duplicate the inputs.
 
-The Python script for `enrollment` looks like this:
+The Python script `enrollment.py` looks like this:
 
 ```python
 from airtunnel import PandasDataAsset, PandasDataAssetIO
@@ -206,7 +206,7 @@ def rebuild_for_store(asset: PandasDataAsset, airflow_context):
 
 This is as straight forward as it gets, just reading in input data and writing it with the output format.
 
-More interesting is the script to build the `enrollment_summary` aggregation:
+More interesting is the script `enrollment_summary.py` that performs the aggregation:
 
 ````python
 import pandas as pd
