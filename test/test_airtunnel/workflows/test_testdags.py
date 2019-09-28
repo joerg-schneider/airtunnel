@@ -42,6 +42,7 @@ def test_testdag1():
         )
 
     run_sequential_airflow_dag(dag_id="university")
+    run_sequential_airflow_dag(dag_id="metadata_sensors")
 
     # the landing file should be gone
     # assert not os.path.exists(landing_file_path)
