@@ -1,7 +1,7 @@
 import logging
 import re
 from os import path
-from typing import *
+from typing import Union, List, Iterable, Dict
 
 import airtunnel.paths
 

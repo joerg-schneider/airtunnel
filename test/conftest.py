@@ -87,7 +87,7 @@ def provide_airflow_cfg(test_db_path: str) -> None:
 
 
 @pytest.fixture(scope="session")
-def test_db_hook(test_db_path, provide_airflow_cfg) -> "DbApiHook":
+def test_db_hook(test_db_path, provide_airflow_cfg):
     from airflow.hooks.sqlite_hook import SqliteHook
 
     os.environ[
