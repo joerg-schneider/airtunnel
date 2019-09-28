@@ -95,7 +95,7 @@ load:
   archive_ready: yes
 ```
 
-Great! :+1: This is a very readable description of important parameters, that influence how we process this data asset.
+:+1:Great! This is a very readable description of important parameters, that influence how we process this data asset.
 Actually, we can leverage some of the defaults and can be less explicit when we describe `programme` (in its own
 `programme.yaml`):
 ````yaml
