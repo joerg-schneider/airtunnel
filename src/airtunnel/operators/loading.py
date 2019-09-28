@@ -14,7 +14,9 @@ from airtunnel.metadata.entities import LoadStatus
 class StagingToReadyOperator(BaseOperator):
     """ moves staged files to ready for a data asset, write load status metadata.
        if exists, moves prepared archive to final location. """
+
     ui_color = airtunnel.operators.Colours.loading
+
     @apply_defaults
     def __init__(self, asset: BaseDataAsset, *args, **kwargs):
         self._asset = asset

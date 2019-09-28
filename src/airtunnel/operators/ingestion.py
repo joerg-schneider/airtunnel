@@ -42,7 +42,9 @@ class IngestOperator(BaseOperator):
         ti: TaskInstance = context["task_instance"]
         self.picked_up_dir = self._asset.staging_pickedup_path(context)
 
-        discovered_files = ti.xcom_pull(dag_id=self.dag_id, key=self._asset.discovered_files_xcom_key)
+        discovered_files = ti.xcom_pull(
+            dag_id=self.dag_id, key=self._asset.discovered_files_xcom_key
+        )
 
         if len(discovered_files) == 0:
             raise FileNotFoundError("No files to ingest!")

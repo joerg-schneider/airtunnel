@@ -30,5 +30,5 @@ __all__ = [
     SQLDataAsset,
     PandasDataAsset,
     BaseDataAssetIO,
-    PandasDataAssetIO
+    PandasDataAssetIO,
 ]

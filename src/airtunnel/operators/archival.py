@@ -11,7 +11,9 @@ from airtunnel.data_asset import BaseDataAsset
 @apply_defaults
 class IngestArchiveOperator(BaseOperator):
     """ Simply move from ingest/landing to ingest/archive """
+
     ui_color = airtunnel.operators.Colours.archival
+
     @apply_defaults
     def __init__(self, asset: BaseDataAsset, *args, **kwargs):
         self._asset = asset
@@ -35,7 +37,9 @@ class IngestArchiveOperator(BaseOperator):
 @apply_defaults
 class DataAssetArchiveOperator(BaseOperator):
     """ Prepares a new archive for a data asset and returns the name of the folder."""
+
     ui_color = airtunnel.operators.Colours.archival
+
     @apply_defaults
     def __init__(self, asset: BaseDataAsset, *args, **kwargs):
         self._asset = asset
