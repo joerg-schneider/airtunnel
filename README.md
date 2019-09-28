@@ -7,9 +7,13 @@ Python library *to tame your airflow*!
 
 ## Why choose airtunnel? Because you will...
 :heart: stop worrying and love the uncompromised consistency
+
 :rocket: need a clean codebase with separated concerns to be scalable
+
 :memo: get metadata for ingested files, load status and lineage out-of-the-box
+
 :running: have it up and running in minutes
+
 :beer: spend less time debugging Airflow DAGs doing worthwhile things instead
 
 ## Getting started
