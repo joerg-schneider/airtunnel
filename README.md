@@ -324,7 +324,7 @@ The ingested raw-data has been archived under the DAG execution date:
 (*note:* we did not include an archival operator for `enrollment_summary` in the university DAG)
 
 #### Collected metadata
-One of Airtunnel's additional benefits is, that is extends Airflow's metadata model with data on load status, ingested
+One of Airtunnel's additional benefits is, that it extends Airflow's metadata model with data on load status, ingested
 raw files and lineage.
 
 To retrieve load status, simply do this:
