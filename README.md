@@ -335,15 +335,31 @@ from airtunnel.metadata.adapter import SQLMetaAdapter
 
 student = PandasDataAsset("student")
 adapter = SQLMetaAdapter()
-print(adapter.read_load_status(student))
+load_status = adapter.read_load_status(student)
+print(load_status)
 ````
 
-> student was loaded at 2019-09-28 18:11:59.013612, from DAG university (2019-09-28 16:06:56.728278) and task student_staging_to_ready
+> student was loaded at 2019-09-28 18:43:29.306133, from DAG university (2019-09-28 16:38:26.880186) and task student_staging_to_ready
+
 
 To retrieve ingested files metadata, simply do this:
-
+````python
+print(
+    adapter.read_inspected_files(
+        for_asset=student,
+        dag_id=load_status.dag_id,
+        dag_exec_date=load_status.dag_exec_date,
+    )
+)
+````
+> student has source file: student.csv, of size: 181, created at: 2019-09-28 18:38:39, collected from: DAG: university (2019-09-28 16:38:26.880186) and task id student_ingest
 
 To retrieve the lineage, simply do this:
+````python
+enrollment_summary = PandasDataAsset("enrollment_summary")
+print(adapter.read_lineage(for_target=enrollment_summary))
+````
+> [(student,programme,enrollment) --> enrollment_summary  (DAG: university [2019-09-28 16:38:26.880186], task: enrollment_summary_transform), 0)]
 
 
 **Access to the individual metadata fields is possible through instance properties; not shown for brevity.
