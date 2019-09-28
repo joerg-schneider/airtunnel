@@ -26,7 +26,7 @@ Python library *to tame your airflow*!
 - [Known limitations](#known-limitations)
 - [Design Principles](#design-principles)
 - [Architecture: modules & classes](architecture-modules-classes)
-- [Contributing to airtunnel](#contributing-to-airtunnel)
+- [Contributing to Airtunnel](#contributing-to-airtunnel)
 
 ### Installation requirements
 - **Python >= 3.6 and Airflow >=1.10**: we assume Airtunnel is implemented best early on in a project, which is why going
