@@ -391,6 +391,13 @@ class SQLMetaAdapter(BaseMetaAdapter):
 
         results: pd.DataFrame = pd.read_sql(query, con=self._connection())
 
+        # if no load-time available, return a very old load-time:
+        if len(results) == 0:
+            return LoadStatus(
+                for_asset=for_asset,
+                load_time=datetime(year=1970, month=1, day=1)
+            )
+
         return LoadStatus(
             for_asset=for_asset,
             load_time=results[self.FN_LOAD_TIME].iloc[0],

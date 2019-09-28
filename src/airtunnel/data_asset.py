@@ -47,7 +47,7 @@ class BaseDataAsset:
     def make_ready_temp_path(self, airflow_context: Dict) -> str:
         return os.path.join(
             P_DATA_READY,
-            "." + str(airflow_context["task_instance"].dag_exec_date) + self.name,
+            "." + str(airflow_context["task_instance"].execution_date) + self.name,
         )
 
     @property
