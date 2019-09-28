@@ -44,7 +44,7 @@ class StagingToReadyOperator(BaseOperator):
                 moved_to_temp_path = True
 
             # load the prepared data
-            os.rename(self._asset.staging_ready_path, self._asset.ready_path)
+            shutil.move(self._asset.staging_ready_path, self._asset.ready_path)
             move_to_ready_succeeded = True
 
         except Exception as e:
