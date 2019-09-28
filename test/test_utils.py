@@ -44,7 +44,6 @@ def run_on_db(test_db_hook: DbApiHook, sql: str) -> Optional[pd.DataFrame]:
         return pd.read_sql_query(sql=sql, con=c)
     else:
         c.execute(sql)
-        c.commit()
         c.close()
 
 
