@@ -29,7 +29,7 @@ steps:
     export PYTHONPATH=${CUR_PATH}/src:${CUR_PATH}/test
     cd test/
     pytest conftest.py
-    pytest . --doctest-modules --junitxml=junit/test-results.xml --cov=airtunnel --cov-report=xml --cov-report=html
+    pytest . -s --doctest-modules --junitxml=junit/test-results.xml --cov=airtunnel --cov-report=xml --cov-report=html
   displayName: 'Test with pytest'
 
 - task: PublishTestResults@2
