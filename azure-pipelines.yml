@@ -17,3 +17,13 @@ steps:
     
 - script: pip install -e ".[dev]"
   displayName: 'Pip install'
+  
+- script: |
+  python -m pip install flake8
+  flake8 .
+displayName: 'Run lint tests'
+
+- script: |
+    pytest test/conftest.py
+    pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=airtunnel --cov-report=xml --cov-report=html
+  displayName: 'Test with pytest'
