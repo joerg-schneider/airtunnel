@@ -311,6 +311,17 @@ Graphically the finished DAG looks like this:
 
 ![alt text](docs/assets/university-dag.png "University DAG")
 
+#### What happened in the background?
+
+The four assets have been rebuilt and loaded into the *ready* layer of the physical data store:
+![alt text](docs/assets/ready-data.png "ready layer")
+
+Also, the ingested raw-data: 
+![alt text](docs/assets/ingest-archive.png "ready layer")
+
+…and the previous versions of the data assets have been archived:
+![alt text](docs/assets/ready-archive.png "ready layer")
+
 ## Known limitations
 Airtunnel is still a very young project - there are several known limitations:
 - the PySparkDataAsset is not implemented

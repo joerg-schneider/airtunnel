@@ -58,7 +58,6 @@ class BaseDataAsset:
         return os.path.join(
             P_DATA_INGEST_ARCHIVE,
             self.name,
-            str(airflow_context["task_instance"].execution_date),
         )
 
     def staging_pickedup_path(self, airflow_context) -> str:
