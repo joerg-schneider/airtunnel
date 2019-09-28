@@ -303,18 +303,27 @@ with DAG(
 ````
 **Look how clean this DAG is** - it fully conveys what actually happens and with which dependencies. 
 
-Notice something special? Yes - we have never actually defined a `task_id` with these custom Airtunnel operators. If we don't, Airtunnel will derive
-the operator task_ids from the given data asset's name. An easy way that yields consistent naming! :+1:
+Notice something special? Yes - we have never actually defined a `task_id` with these custom Airtunnel operators. If we
+don't, Airtunnel will derive the operator task_ids from the given data asset's name. 
+An easy way that yields consistent naming! :+1:
 
 Graphically the finished DAG looks like this:
 
 ![alt text](docs/assets/university-dag.png "University DAG")
 
 ## Known limitations
-Airtunnel is still a very young project - there are several limitations:
-- ff
-- ff
-- ff
+Airtunnel is still a very young project - there are several known limitations:
+- the PySparkDataAsset is not implemented
+- interaction with a local physical data store has been built out using custom operators as a PoC and Airtunnel testing
+environment – in the near future, cloud storage providers should be supported
+- lineage collection for SQL is implemented fairly simplistic - it won't work well for queries with i.e. CTE at the top
+- declaration properties for data assets are at a common, minimum level - but might in the future be extended a lot. It's
+suggested to, in the meantime, leverage the non-validated "extra" section-key in the YAML, to declare additional properties Airtunnel does
+not cover.
+
+In general Airtunnel does not attempt to solve any use-case; rather, we like to stay open for extensions provided on the
+user side. As such, any of the shortcomings mentioned aboved can be realized through subclassing existing Airtunnel
+classes.
 
 ## Design Principles
 Taken from the [the official airtunnel announcement](https://medium.com).
