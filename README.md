@@ -316,10 +316,10 @@ Graphically the finished DAG looks like this:
 The four assets have been rebuilt and loaded into the *ready* layer of the physical data store:
 ![alt text](docs/assets/ready-data.png "ready layer")
 
-Also, the ingested raw-data: 
+The ingested raw-data has been archived under the DAG execution date: 
 ![alt text](docs/assets/ingest-archive.png "ready layer")
 
-…and the previous versions of the data assets have been archived:
+…as well as the previous versions of the data assets:
 ![alt text](docs/assets/ready-archive.png "ready layer")
 
 ## Known limitations
