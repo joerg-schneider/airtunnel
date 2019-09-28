@@ -1,8 +1,12 @@
+import logging
 import sqlite3
 
 import pytest
 
 from airtunnel.operators.sql.sqloperator import SQLOperator
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def test_param_check(test_db_hook):
@@ -10,6 +14,7 @@ def test_param_check(test_db_hook):
         x = SQLOperator(
             sql_hook=test_db_hook, script_file_relative_path=None, task_id="x"
         )
+        logger.info(x)
 
 
 @pytest.fixture

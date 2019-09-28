@@ -36,8 +36,8 @@ def test_afdb_lineage(test_meta_adapter: BaseMetaAdapter, test_db_hook: DbApiHoo
     results = test_utils.run_on_db(
         test_db_hook=test_db_hook,
         sql=f"""
-    select 
-        {SQLMetaAdapter.FN_DATA_ASSET_SRC}, 
+    select
+        {SQLMetaAdapter.FN_DATA_ASSET_SRC},
         {SQLMetaAdapter.FN_METADATA_TIME}
     from {SQLMetaAdapter.TN_LINEAGE}
     where {SQLMetaAdapter.FN_DATA_ASSET_TRG} = '{DUMMY_TABLE2}'
