@@ -17,6 +17,7 @@ Python library *to tame your airflow*!
 :beer: …spend less time debugging Airflow DAGs doing worthwhile things instead
 
 ## Getting started
+[![Build Status](https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel-dev?branchName=master)](https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&branchName=master)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
 
 ## Table of Contents
