@@ -61,7 +61,7 @@ V_ALLOWED_TYPES = (V_TYPE_DERIVED, V_TYPE_INGESTED)
 DEFAULT_LOAD_SECTION = {
     K_OUT_FORMAT: V_FORMAT_PARQUET,
     K_OUT_COMP_CODEC: V_COMP_GZIP,
-    K_ARCH_READY: True
+    K_ARCH_READY: True,
 }
 
 
@@ -259,6 +259,26 @@ class DataAssetDeclaration:
     @property
     def extra_declarations(self) -> Any:
         return self.all[SECTION_EXTRA]
+
+    @property
+    def is_parquet_output(self) -> bool:
+        return self.out_storage_format == V_FORMAT_PARQUET
+
+    @property
+    def is_csv_output(self) -> bool:
+        return self.out_storage_format == V_FORMAT_CSV
+
+    @property
+    def is_parquet_input(self) -> bool:
+        return self.in_storage_format == V_FORMAT_PARQUET
+
+    @property
+    def is_csv_input(self) -> bool:
+        return self.in_storage_format == V_FORMAT_CSV
+
+    @property
+    def is_xls_input(self) -> bool:
+        return self.in_storage_format == V_FORMAT_EXCEL
 
 
 def fetch_all_declarations() -> Iterable[DataAssetDeclaration]:

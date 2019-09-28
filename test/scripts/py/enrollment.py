@@ -1,16 +1,9 @@
-from os import path
-
-import pandas as pd
-
-from airtunnel import PandasDataAsset
+from airtunnel import PandasDataAsset, PandasDataAssetIO
 
 
 def rebuild_for_store(asset: PandasDataAsset, airflow_context):
-    dfs = [pd.read_csv(f) for f in asset.pickedup_files(airflow_context)]
-
-    combined: pd.DataFrame = pd.concat(dfs)
-
-    combined.to_parquet(
-        path.join(asset.staging_ready_path, asset.output_filename),
-        compression=asset.declarations.out_comp_codec,
+    enrollment_data = PandasDataAssetIO.read_data_asset(
+        asset=asset, source_files=asset.pickedup_files(airflow_context)
     )
+
+    PandasDataAssetIO.write_data_asset(asset=asset, data=enrollment_data)

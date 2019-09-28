@@ -11,7 +11,13 @@ from test.test_utils import DUMMY_TABLE, DUMMY_TABLE2
 
 @pytest.fixture(scope="function")
 def load_status() -> LoadStatus:
-    yield LoadStatus(for_asset=ShellDataAsset(DUMMY_TABLE2), load_time=datetime.now())
+    yield LoadStatus(
+        for_asset=ShellDataAsset(DUMMY_TABLE2),
+        load_time=datetime.now(),
+        dag_id="test_dag",
+        task_id="test_task",
+        dag_exec_date=datetime.now(),
+    )
 
 
 @pytest.fixture
@@ -24,6 +30,9 @@ def lineage() -> Lineage:
     yield Lineage(
         data_sources=[ShellDataAsset(DUMMY_TABLE)],
         data_target=ShellDataAsset(DUMMY_TABLE2),
+        dag_id="test_dag",
+        task_id="test_task",
+        dag_exec_date=datetime.now(),
     )
 
 
@@ -31,10 +40,10 @@ def lineage() -> Lineage:
 def ingested_file_metadata() -> IngestedFileMetadata:
     yield IngestedFileMetadata(
         for_asset=ShellDataAsset(DUMMY_TABLE),
-        fpath="test_path.csv",
-        fsize=100,
-        fmtime=datetime.now(),
-        fctime=datetime.now(),
+        filepath="test_path.csv",
+        filesize=100,
+        file_mod_time=datetime.now(),
+        file_create_time=datetime.now(),
         dag_id="test_dag",
         dag_exec_date=datetime.now(),
         task_id="test_task_id",
@@ -55,13 +64,13 @@ def test_ingested_file_metadata_cls(
 ) -> None:
     adapter.write_inspected_files([ingested_file_metadata])
     inspected_files_read = adapter.read_inspected_files(
-        for_asset=ingested_file_metadata.for_asset,
-        dag_id=ingested_file_metadata.dag_id,
-        dag_exec_date=ingested_file_metadata.dag_exec_date,
+        for_asset=ingested_file_metadata._for_asset,
+        dag_id=ingested_file_metadata._dag_id,
+        dag_exec_date=ingested_file_metadata._dag_exec_date,
     )
 
     assert len(inspected_files_read) == 1
-    assert inspected_files_read[0].for_asset == ingested_file_metadata.for_asset
+    assert inspected_files_read[0]._for_asset == ingested_file_metadata._for_asset
 
 
 def test_lineage_cls(lineage: Lineage, adapter: BaseMetaAdapter) -> None:

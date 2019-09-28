@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, timedelta
+from os import path
 from typing import Iterable, Optional
 
 from airtunnel import declaration_store
@@ -8,55 +9,145 @@ from airtunnel.operators.sql import sql_helpers
 
 
 class LoadStatus:
-    def __init__(self, for_asset: BaseDataAsset, load_time: Optional[datetime] = None):
+    def __init__(
+        self,
+        for_asset: BaseDataAsset,
+        load_time: Optional[datetime] = None,
+        dag_id: Optional[str] = None,
+        task_id: Optional[str] = None,
+        dag_exec_date: Optional[datetime] = None,
+    ):
         self.for_asset = for_asset
         if load_time is None:
-            self.load_time = datetime.now()
+            self._load_time = datetime.now()
         else:
-            self.load_time = load_time
+            self._load_time = load_time
+
+        self._dag_id = dag_id
+        self._task_id = task_id
+        self._dag_exec_date = dag_exec_date
 
     def is_within(self, frame: timedelta):
         return frame > (datetime.now() - self.load_time)
+
+    @property
+    def load_time(self) -> datetime:
+        return self._load_time
+
+    @property
+    def dag_id(self) -> str:
+        return self._dag_id
+
+    @property
+    def task_id(self) -> str:
+        return self._task_id
+
+    @property
+    def dag_exec_date(self) -> datetime:
+        return self._dag_exec_date
+
+    def __repr__(self) -> str:
+        return (
+            f"{self.for_asset.name} was loaded at {self.load_time}, "
+            f"from DAG {self.dag_id} ({self.dag_exec_date}) and task {self.task_id}"
+        )
 
 
 class IngestedFileMetadata:
     def __init__(
         self,
         for_asset: BaseDataAsset,
-        fpath: str,
-        fsize: int,
-        fmtime: datetime,
-        fctime: datetime,
+        filepath: str,
+        filesize: int,
+        file_mod_time: datetime,
+        file_create_time: datetime,
         dag_id: str,
         dag_exec_date: datetime,
         task_id: str,
     ):
-        self.for_asset = for_asset
-        self.fpath = fpath
-        self.fsize = fsize
-        self.fmtime = fmtime
-        self.fctime = fctime
-        self.dag_id = dag_id
-        self.task_id = task_id
-        self.dag_exec_date = dag_exec_date
+        self._for_asset = for_asset
+        self._filepath = filepath
+        self._filesize = filesize
+        self._file_mod_time = file_mod_time
+        self._file_create_time = file_create_time
+        self._dag_id = dag_id
+        self._task_id = task_id
+        self._dag_exec_date = dag_exec_date
+
+    @property
+    def for_asset(self) -> BaseDataAsset:
+        return self._for_asset
+
+    @property
+    def filepath(self) -> str:
+        return self._filepath
+
+    @property
+    def file_mod_time(self) -> datetime:
+        return self._file_mod_time
+
+    @property
+    def file_create_time(self) -> datetime:
+        return self._file_create_time
+
+    @property
+    def filesize(self) -> int:
+        return self._filesize
+
+    @property
+    def dag_id(self) -> str:
+        return self._dag_id
+
+    @property
+    def task_id(self) -> str:
+        return self._task_id
+
+    @property
+    def dag_exec_date(self) -> datetime:
+        return self._dag_exec_date
+
+    def __repr__(self) -> str:
+        return (
+            f"{self.for_asset.name} has source file: {path.basename(self.filepath)}, "
+            f"of size: {self.filesize}, created at: {self.file_create_time}, collected from:"
+            f" DAG: {self.dag_id} ({self.dag_exec_date}) and task id {self.task_id}"
+        )
 
 
 class Lineage:
-    __slots__ = ["__data_sources", "__data_target"]
-
     def __init__(
-        self, data_sources: Iterable[BaseDataAsset], data_target: BaseDataAsset
+        self,
+        data_sources: Iterable[BaseDataAsset],
+        data_target: BaseDataAsset,
+        dag_id: Optional[str] = None,
+        dag_exec_date: Optional[datetime] = None,
+        task_id: Optional[str] = None,
     ) -> None:
-        self.__data_sources = data_sources
-        self.__data_target = data_target
+        self._data_sources = data_sources
+        self._data_target = data_target
+        self._dag_id = dag_id
+        self._task_id = task_id
+        self._dag_exec_date = dag_exec_date
+
+    @property
+    def dag_id(self) -> str:
+        return self._dag_id
+
+    @property
+    def task_id(self) -> str:
+        return self._task_id
+
+    @property
+    def dag_exec_date(self) -> datetime:
+        return self._dag_exec_date
 
     @property
     def data_sources(self) -> Iterable[BaseDataAsset]:
-        return self.__data_sources
+        return self._data_sources
 
     @property
     def data_target(self) -> BaseDataAsset:
-        return self.__data_target
+        return self._data_target
 
     @staticmethod
     def lineage_from_sql_statement(
@@ -90,6 +181,14 @@ class Lineage:
                     sources.append(ShellDataAsset(tok))
 
         return Lineage(data_sources=sources, data_target=target)
+
+    def __repr__(self) -> str:
+        return (
+            f"{','.join([s.name for s in self.data_sources])}) --> {self.data_target.name} "
+            f" (DAG: {self.dag_id} [{self.dag_exec_date}], task: {self.task_id})"
+            if self.dag_id is not None and self.task_id is not None
+            else ""
+        )
 
     @staticmethod
     def lineage_from_sql_script(

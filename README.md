@@ -17,7 +17,17 @@ Python library *to tame your airflow*!
 :beer: …spend less time debugging Airflow DAGs doing worthwhile things instead
 
 ## Getting started
+[![Build Status](https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel-dev?branchName=master)](https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&branchName=master)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
+
+## Table of Contents
+- [Installation requirements](#installation-requirements)
+- [Installation and setup](#installation-and-setup)
+- [Tutorial: loading the university data model](#tutorial-loading-the-university-data-model)
+- [Known limitations](#known-limitations)
+- [Design Principles](#design-principles)
+- [Architecture: modules & classes](#architecture-modules--classes)
+- [Contributing to Airtunnel](#contributing-to-airtunnel)
 
 ### Installation requirements
 - **Python >= 3.6 and Airflow >=1.10**: we assume Airtunnel is implemented best early on in a project, which is why going
@@ -140,13 +150,238 @@ This description is super compact as we simply inherit all the defaults (parquet
 Wonderful, this is it in terms of declarations and we are ready to go to write some Pandas scripts! :rocket:
 
 #### Data Asset scripts
+To process data assets, we want to use Pandas. Hence, we will create four Python modules - one for each asset. All of
+these need to implement a method of the following signature:
+
+```python
+from airtunnel import PandasDataAsset
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+    pass
+```
+
+Let's start by specifying the script for the student asset, `student.py`:
+
+```python
+from airtunnel import PandasDataAsset, PandasDataAssetIO
+
+
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+
+    student_data = PandasDataAssetIO.read_data_asset(
+        asset=asset, source_files=asset.pickedup_files(airflow_context)
+    )
+
+    student_data = asset.rename_fields_as_declared(student_data)
+
+    PandasDataAssetIO.write_data_asset(asset=asset, data=student_data)
+``` 
+
+We can see, that we make use of the lightweight class `PandasDataAssetIO` which helps to translate data asset declarations
+around storage into Pandas commands. Similarly, column renames based upon declarations are a one-liner delegated to
+the PandasDataAsset implementation. Don't worry - in case you need special properties, both `read_data_asset()` and
+`write_data_asset()` optionally except additional keyword arguments that will be passed to the Pandas function. Or, just
+do not use `PandasDataAssetIO` at all - `rebuild_for_store` can be implemented as you wish.
+
+Mostly similar, the script `programme.py` looks like this:
+
+````python
+from airtunnel import PandasDataAsset, PandasDataAssetIO
+
+
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+    programme_data = PandasDataAssetIO.read_data_asset(
+        asset=asset, source_files=asset.pickedup_files(airflow_context)
+    )
+    programme_data = programme_data.drop_duplicates(
+        subset=asset.declarations.key_columns
+    )
+    PandasDataAssetIO.write_data_asset(asset=asset, data=programme_data)
+````
+
+Here we can see, that the script makes use of the declared key-columns to de-duplicate the inputs.
+
+The Python script `enrollment.py` looks like this:
+
+```python
+from airtunnel import PandasDataAsset, PandasDataAssetIO
+
+
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+    enrollment_data = PandasDataAssetIO.read_data_asset(
+        asset=asset, source_files=asset.pickedup_files(airflow_context)
+    )
+
+    PandasDataAssetIO.write_data_asset(asset=asset, data=enrollment_data)
+```
+
+This is as straight forward as it gets, just reading in input data and writing it with the output format.
+
+More interesting is the script `enrollment_summary.py` that performs the aggregation:
+
+````python
+import pandas as pd
+from airtunnel import PandasDataAsset, PandasDataAssetIO
+
+
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+    student = PandasDataAsset(name="student")
+    programme = PandasDataAsset(name="programme")
+    enrollment = PandasDataAsset(name="enrollment")
+
+    student_df = student.retrieve_from_store(airflow_context, consuming_asset=asset)
+    programme_df = programme.retrieve_from_store(airflow_context, consuming_asset=asset)
+    enrollment_df = enrollment.retrieve_from_store(
+        airflow_context, consuming_asset=asset
+    )
+
+    enrollment_summary: pd.DataFrame = enrollment_df.merge(
+        right=student_df, on=student.declarations.key_columns
+    ).merge(right=programme_df, on=programme.declarations.key_columns)
+
+    enrollment_summary = (
+        enrollment_summary.loc[:, ["student_major", "programme_name", "student_id"]]
+        .groupby(by=["student_major", "programme_name"])
+        .count()
+    )
+
+    PandasDataAssetIO.write_data_asset(asset=asset, data=enrollment_summary)
+````
+
+Several things happen there:
+- we can see how easy it is, to actually retrieve data from the *ready* layer of the data store: we define the data
+asset instance and call the `retrieve_from_store()` method.
+- additionally, when doing the above, we pass in the consuming asset - this will trigger a lineage collection and record
+data source, data target, dag id and task id.
+- finally we do the aggregation by joining (on the keys that we can retrieve from the declaration) and store the data
+
 #### The final DAG
+Here comes the great part - assembling the scripts we prepared above into the final DAG. For this, we leverage the data
+assets with their declarations, in addition to several custom operators (introduced in detail below) that Airtunnel
+provides.
+
+````python
+from datetime import datetime
+from airflow.models import DAG
+from airtunnel import PandasDataAsset
+from airtunnel.operators.archival import DataAssetArchiveOperator, IngestArchiveOperator
+from airtunnel.operators.ingestion import IngestOperator
+from airtunnel.operators.loading import StagingToReadyOperator
+from airtunnel.operators.transformation import PandasTransformationOperator
+from airtunnel.sensors.ingestion import SourceFileIsReadySensor
+
+student = PandasDataAsset("student")
+programme = PandasDataAsset("programme")
+enrollment = PandasDataAsset("enrollment")
+enrollment_summary = PandasDataAsset("enrollment_summary")
+
+with DAG(
+    dag_id="university",
+    schedule_interval=None,
+    start_date=datetime(year=2019, month=9, day=1),
+) as dag:
+    ingested_ready_tasks = set()
+
+    # a common stream of tasks for all ingested assets:
+    for ingested_asset in (student, programme, enrollment):
+        source_is_ready = SourceFileIsReadySensor(asset=ingested_asset)
+        ingest = IngestOperator(asset=ingested_asset)
+        transform = PandasTransformationOperator(asset=ingested_asset)
+        archive = DataAssetArchiveOperator(asset=ingested_asset)
+        staging_to_ready = StagingToReadyOperator(asset=ingested_asset)
+        ingest_archival = IngestArchiveOperator(asset=ingested_asset)
+
+        dag >> source_is_ready >> ingest >> transform >> archive >> staging_to_ready >> ingest_archival
+
+        ingested_ready_tasks.add(staging_to_ready)
+
+    # upon having loaded the three ingested assets, connect the aggregation downstream to them:
+    build_enrollment_summary = PandasTransformationOperator(asset=enrollment_summary)
+    build_enrollment_summary.set_upstream(ingested_ready_tasks)
+
+    staging_to_ready = StagingToReadyOperator(asset=enrollment_summary)
+
+    dag >> build_enrollment_summary >> staging_to_ready
+````
+**Look how clean this DAG is** - it fully conveys what actually happens and with which dependencies. 
+
+Notice something special? Yes - we have never actually defined a `task_id` with these custom Airtunnel operators. If we
+don't, Airtunnel will derive the operator task_ids from the given data asset's name. 
+An easy way that yields consistent naming! :+1:
+
+**Graphically the finished DAG looks like this:**
+
+![alt text](docs/assets/university-dag.png "University DAG")
+
+#### What happened in the background?
+
+The four assets have been rebuilt and loaded into the *ready* layer of the physical data store:
+![alt text](docs/assets/ready-data.png "ready layer")
+
+The ingested raw-data has been archived under the DAG execution date: 
+![alt text](docs/assets/ingest-archive.png "ready layer")
+
+…as well as the previous versions of the data assets:
+![alt text](docs/assets/ready-archive.png "ready layer")
+(*note:* we did not include an archival operator for `enrollment_summary` in the university DAG)
+
+#### Collected metadata
+One of Airtunnel's additional benefits is, that it extends Airflow's metadata model with data on load status, ingested
+raw files and lineage.
+
+To retrieve load status, simply do this:
+
+````python
+from airtunnel import PandasDataAsset
+from airtunnel.metadata.adapter import SQLMetaAdapter
+
+student = PandasDataAsset("student")
+adapter = SQLMetaAdapter()
+load_status = adapter.read_load_status(student)
+print(load_status)
+````
+
+> student was lxoaded at 2019-09-28 18:43:29.306133, from DAG university (2019-09-28 16:38:26.880186) and task student_staging_to_ready
+
+
+To retrieve ingested files metadata, simply do this:
+````python
+print(
+    adapter.read_inspected_files(
+        for_asset=student,
+        dag_id=load_status.dag_id,
+        dag_exec_date=load_status.dag_exec_date,
+    )
+)
+````
+> student has source file: student.csv, of size: 181, created at: 2019-09-28 18:38:39, collected from: DAG: university (2019-09-28 16:38:26.880186) and task id student_ingest
+
+*Note, that we pass in the latest execution date that we just pulled from the asset's load status!*
+
+To retrieve the lineage, simply do this:
+````python
+enrollment_summary = PandasDataAsset("enrollment_summary")
+print(adapter.read_lineage(for_target=enrollment_summary))
+````
+> [(student,programme,enrollment) --> enrollment_summary  (DAG: university [2019-09-28 16:38:26.880186], task: enrollment_summary_transform), 0)]
+
+*This gets all recursive known ancesters for enrollment_summary, grouped by DAG/task. The '0' from this tuple indicates,
+that this lineage link is at the very first and only level.*
+
+**Access to the individual metadata fields is possible through instance properties; not shown for brevity.**
 
 ## Known limitations
-Airtunnel is still a very young project - there are several limitations:
-- ff
-- ff
-- ff
+Airtunnel is still a very young project - there are several known limitations:
+- the PySparkDataAsset is not implemented
+- interaction with a local physical data store has been built out using custom operators as a PoC and Airtunnel testing
+environment – in the near future, cloud storage providers should be supported
+- lineage collection for SQL is implemented fairly simplistic - it won't work well for queries with i.e. CTE at the top
+- declaration properties for data assets are at a common, minimum level - but might in the future be extended a lot. It's
+suggested to, in the meantime, leverage the non-validated "extra" section-key in the YAML, to declare additional properties Airtunnel does
+not cover.
+
+In general Airtunnel does not attempt to solve any use-case; rather, we like to stay open for extensions provided on the
+user side. As such, any of the shortcomings mentioned aboved can be realized through subclassing existing Airtunnel
+classes.
 
 ## Design Principles
 Taken from the [the official airtunnel announcement](https://medium.com).
@@ -219,5 +454,5 @@ will call the `rebuild_for_store` function, with the current Airflow context as 
   Additionally there is `SQLOperator`, which allows you to run generic SQL scripts from the scripts store using an Airflow
 `DbApiHook` – good for maintenance scripts that are not Data Asset centered.
 
-## Contributing to airtunnel
+## Contributing to Airtunnel
 We love any contributions, be it feedback, issues or PRs on GitHub!

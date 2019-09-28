@@ -60,8 +60,8 @@ def test_ingested_data_asset_decl(test_data_asset) -> None:
     d = DataAssetDeclaration(data_asset=test_data_asset)
     # test the various properties:
 
-    assert d.archive_ingest == False
-    assert d.archive_ready == True
+    assert not d.archive_ingest
+    assert d.archive_ready
     assert d.ingest_file_glob == "test_*.csv"
     assert d.in_storage_format == "csv"
     assert d.out_comp_codec == "gzip"
@@ -69,9 +69,11 @@ def test_ingested_data_asset_decl(test_data_asset) -> None:
 
     with pytest.raises(ValueError):
         x = d.transform_renames
+        logger.info(x)
 
     with pytest.raises(ValueError):
         x = d.transform_date_formats
+        logger.info(x)
 
     assert len(d.staging_assets) == 3
 

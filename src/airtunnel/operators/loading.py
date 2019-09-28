@@ -14,7 +14,9 @@ from airtunnel.metadata.entities import LoadStatus
 class StagingToReadyOperator(BaseOperator):
     """ moves staged files to ready for a data asset, write load status metadata.
        if exists, moves prepared archive to final location. """
+
     ui_color = airtunnel.operators.Colours.loading
+
     @apply_defaults
     def __init__(self, asset: BaseDataAsset, *args, **kwargs):
         self._asset = asset
@@ -28,8 +30,6 @@ class StagingToReadyOperator(BaseOperator):
         # python does not have a straight forward "move and overwrite":
         # https://stackoverflow.com/questions/7419665/python-move-and-overwrite-files-and-folders
         # hence, we use a workaround, which is unfortunately less atomic. keep in mind for cloud storage!
-
-        # if there, rename the existing data asset folder
 
         moved_to_temp_path = False
         move_to_ready_succeeded = False
@@ -55,9 +55,13 @@ class StagingToReadyOperator(BaseOperator):
             if moved_to_temp_path and move_to_ready_succeeded:
                 try:
                     # log load-status
-                    # todo: have a config and allow to dynamically load meta adapter
                     SQLMetaAdapter().write_load_status(
-                        LoadStatus(for_asset=self._asset)
+                        LoadStatus(
+                            for_asset=self._asset,
+                            dag_id=self.dag_id,
+                            task_id=self.task_id,
+                            dag_exec_date=context["task_instance"].execution_date,
+                        )
                     )
                     self.log.info(
                         f"Successfully loaded - removing old copy at temp location: {asset_temp_path}"
