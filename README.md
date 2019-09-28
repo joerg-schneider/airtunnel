@@ -366,7 +366,7 @@ print(adapter.read_lineage(for_target=enrollment_summary))
 *This gets all recursive known ancesters for enrollment_summary, grouped by DAG/task. The '0' from this tuple indicates,
 that this lineage link is at the very first and only level.*
 
-**Access to the individual metadata fields is possible through instance properties; not shown for brevity.
+**Access to the individual metadata fields is possible through instance properties; not shown for brevity.**
 
 ## Known limitations
 Airtunnel is still a very young project - there are several known limitations:
