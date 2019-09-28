@@ -24,6 +24,8 @@ steps:
   displayName: 'Run lint tests'
 
 - script: |
+    CUR_PATH=$(pwd)
+    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
     pytest test/conftest.py
     pytest test --doctest-modules --junitxml=junit/test-results.xml --cov=airtunnel --cov-report=xml --cov-report=html
   displayName: 'Test with pytest'
