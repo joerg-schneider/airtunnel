@@ -245,6 +245,58 @@ data source, data target, dag id and task id.
 - finally we do the aggregation by joining (on the keys that we can retrieve from the declaration) and store the data
 
 #### The final DAG
+Here comes the great part - assembling the scripts we prepared above into the final DAG. For this, we leverage the data
+assets with their declarations, in addition to several custom operators (introduced in detail below) that Airtunnel
+provides.
+
+````python
+from airflow.models import DAG
+from airtunnel.operators.archival import *
+from airtunnel.operators.ingestion import *
+from airtunnel.operators.loading import *
+from airtunnel.operators.transformation import *
+from airtunnel.sensors.ingestion import SourceFileIsReadySensor
+
+student = PandasDataAsset("student")
+programme = PandasDataAsset("programme")
+enrollment = PandasDataAsset("enrollment")
+enrollment_summary = PandasDataAsset("enrollment_summary")
+
+with DAG(
+    dag_id="university",
+    schedule_interval=None,
+    start_date=datetime(year=2019, month=9, day=1),
+) as dag:
+    ingested_ready_tasks = set()
+
+    # a common stream of tasks for all ingested assets:
+    for ingested_asset in (student, programme, enrollment):
+        source_is_ready = SourceFileIsReadySensor(asset=ingested_asset)
+        ingest = IngestOperator(asset=ingested_asset)
+        transform = PandasTransformationOperator(asset=ingested_asset)
+        archive = DataAssetArchiveOperator(asset=ingested_asset)
+        staging_to_ready = StagingToReadyOperator(asset=ingested_asset)
+        ingest_archival = IngestArchiveOperator(asset=ingested_asset)
+
+        dag >> source_is_ready >> ingest >> transform >> archive >> staging_to_ready >> ingest_archival
+
+        ingested_ready_tasks.add(staging_to_ready)
+
+    # upon having loaded the three ingested assets, connect the aggregation downstream to them:
+    build_enrollment_summary = PandasTransformationOperator(asset=enrollment_summary)
+    build_enrollment_summary.set_upstream(ingested_ready_tasks)
+
+    staging_to_ready = StagingToReadyOperator(asset=enrollment_summary)
+
+    dag >> build_enrollment_summary >> staging_to_ready
+````
+Look how clean this DAG is - it fully conveys what actually happens and with which dependencies. Notice something special?
+Yes - we have never actually defined a `task_id` with these custom Airtunnel operators. If we don't, Airtunnel will derive
+the operator task_ids from the given data asset's name. An easy way that yields consistent naming! :+1:
+
+Graphically the finished DAG looks like this:
+
+![alt text](docs/assets/university-dag.png "University DAG")
 
 ## Known limitations
 Airtunnel is still a very young project - there are several limitations:
