@@ -21,7 +21,7 @@ steps:
 - script: |
   python -m pip install flake8
   flake8 .
-displayName: 'Run lint tests'
+  displayName: 'Run lint tests'
 
 - script: |
     pytest test/conftest.py
