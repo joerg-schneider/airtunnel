@@ -27,7 +27,7 @@ NECESSARY_DATA_STORE_PATHS = (
 )
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def test_db_path() -> str:
     db_path = os.path.join(tempfile.gettempdir(), "test.db")
     logger.info(f"Using test-database: {db_path}")
@@ -36,7 +36,7 @@ def test_db_path() -> str:
     os.remove(db_path)
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def provide_airflow_cfg(test_db_path: str) -> None:
     test_folder_path = os.path.abspath(os.path.dirname(__file__))
     cfg_path = os.path.join(test_folder_path, "airflow_home/airflow.cfg")
@@ -86,7 +86,7 @@ def provide_airflow_cfg(test_db_path: str) -> None:
     airflow.utils.db.initdb()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def test_db_hook(test_db_path, provide_airflow_cfg):
     from airflow.hooks.sqlite_hook import SqliteHook
 
