@@ -5,16 +5,16 @@ data science, and the hardships of running large data platforms in real life bus
 set of principles (read more on them [in the official airtunnel announcement](https://medium.com)) and a lightweight
 Python library *to tame your airflow*!
 
-## Why choose airtunnel? Because you will...
-:heart: stop worrying and love the uncompromised consistency
+## Why choose airtunnel? Because you will…
+:heart: …stop worrying and love the uncompromised consistency
 
-:rocket: need a clean codebase with separated concerns to be scalable
+:rocket: …need a clean codebase with separated concerns to be scalable
 
-:memo: get metadata for ingested files, load status and lineage out-of-the-box
+:memo: …get metadata for ingested files, load status and lineage out-of-the-box
 
-:running: have it up and running in minutes
+:running: …have it up and running in minutes
 
-:beer: spend less time debugging Airflow DAGs doing worthwhile things instead
+:beer: …spend less time debugging Airflow DAGs doing worthwhile things instead
 
 ## Getting started
 
