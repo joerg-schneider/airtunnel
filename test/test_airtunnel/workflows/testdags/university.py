@@ -1,9 +1,12 @@
+from datetime import datetime
+
 from airflow.models import DAG
 
-from airtunnel.operators.archival import *
-from airtunnel.operators.ingestion import *
-from airtunnel.operators.loading import *
-from airtunnel.operators.transformation import *
+from airtunnel import PandasDataAsset
+from airtunnel.operators.archival import DataAssetArchiveOperator, IngestArchiveOperator
+from airtunnel.operators.ingestion import IngestOperator
+from airtunnel.operators.loading import StagingToReadyOperator
+from airtunnel.operators.transformation import PandasTransformationOperator
 from airtunnel.sensors.ingestion import SourceFileIsReadySensor
 
 student = PandasDataAsset("student")
