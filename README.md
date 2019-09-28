@@ -17,6 +17,7 @@ Python library *to tame your airflow*!
 :beer: …spend less time debugging Airflow DAGs doing worthwhile things instead
 
 ## Getting started
+[![Code Style: Black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
 
 ### Installation requirements
 - **Python >= 3.6 and Airflow >=1.10**: we assume Airtunnel is implemented best early on in a project, which is why going
