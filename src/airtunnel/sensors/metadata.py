@@ -36,31 +36,39 @@ class AwaitLoadStatusSensor(BaseSensorOperator):
             )
 
         if refreshed_within is None:
-            refreshed_within = datetime.now() - timedelta(days=365 * 10)
+            self._refreshed_within = datetime.now() - timedelta(days=365 * 10)
         else:
-            refreshed_within = datetime.now() - refreshed_within
+            self._refreshed_within = datetime.now() - refreshed_within
 
         if refreshed_after is None:
-            refreshed_after = datetime.now() - timedelta(days=365 * 10)
-        else:
-            refreshed_after = refreshed_after
-
-        # we pick the more recent date as a comparison:
-        if refreshed_within > refreshed_after:
-            self._refreshed_after = refreshed_within
+            self._refreshed_after = datetime.now() - timedelta(days=365 * 10)
         else:
             self._refreshed_after = refreshed_after
 
-        self._meta_adapter = SQLMetaAdapter()
-
-        self.log.info(f"Poking for a load status after: {refreshed_after}")
+        self._compare_date = None
+        self._meta_adapter = None
 
         super().__init__(poke_interval=poke_interval, timeout=timeout, **kwargs)
 
     def poke(self, context):
+        if self._meta_adapter is None:
+            self._meta_adapter = SQLMetaAdapter()
+
+        if self._compare_date is None:
+            # we pick the more recent date as a comparison:
+            if self._refreshed_within > self._refreshed_after:
+                self._compare_date = self._refreshed_within
+            else:
+                self._compare_date = self._refreshed_after
+
+            self.log.info(f"Poking for a load status after: {self._compare_date}")
+
         current_load_status = self._meta_adapter.read_load_status(for_asset=self._asset)
 
-        if current_load_status is not None and current_load_status.load_time > self._refreshed_after:
+        if (
+            current_load_status is not None
+            and current_load_status.load_time > self._compare_date
+        ):
             return True
 
         self.log.info(
@@ -94,19 +102,29 @@ class AwaitAssetAncestorsUpdatedSensor(BaseSensorOperator):
 
         self._asset = asset
         self._ignore_ancestors = ignore_ancestors
-        self._meta_adapter = SQLMetaAdapter()
+        self._meta_adapter = None
         self._include_upstream_levels = include_upstream_levels
-
-        if ancestors_refreshed_within is None:
-            self._refreshed_since = datetime.now() - timedelta(days=365 * 10)
-        else:
-            self._refreshed_since = datetime.now() - ancestors_refreshed_within
-
-        self.log.info(f"Including ancestors refreshed since: {self._refreshed_since}")
+        self._ancestors_refreshed_within = ancestors_refreshed_within
+        self._refreshed_since = None
 
         super().__init__(poke_interval=poke_interval, timeout=timeout, **kwargs)
 
     def poke(self, context):
+        if self._meta_adapter is None:
+            self._meta_adapter = SQLMetaAdapter()
+
+        if self._refreshed_since is None:
+            if self._ancestors_refreshed_within is None:
+                self._refreshed_since = datetime.now() - timedelta(days=365 * 10)
+            else:
+                self._refreshed_since = (
+                    datetime.now() - self._ancestors_refreshed_within
+                )
+
+            self.log.info(
+                f"Including ancestors refreshed since: {self._refreshed_since}"
+            )
+
         lineage = self._meta_adapter.read_lineage(for_target=self._asset)
         for ancestor, upstream_level in lineage:
             if upstream_level in self._include_upstream_levels:
