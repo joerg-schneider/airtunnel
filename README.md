@@ -353,6 +353,7 @@ print(
 )
 ````
 > student has source file: student.csv, of size: 181, created at: 2019-09-28 18:38:39, collected from: DAG: university (2019-09-28 16:38:26.880186) and task id student_ingest
+(*Note, that we pass in the latest execution date that we just pulled from the asset's load status!*)
 
 To retrieve the lineage, simply do this:
 ````python
@@ -360,7 +361,8 @@ enrollment_summary = PandasDataAsset("enrollment_summary")
 print(adapter.read_lineage(for_target=enrollment_summary))
 ````
 > [(student,programme,enrollment) --> enrollment_summary  (DAG: university [2019-09-28 16:38:26.880186], task: enrollment_summary_transform), 0)]
-
+(*This gets all recursive known ancesters for enrollment_summary, grouped by DAG/task. The '0' from this tuple indicates,
+>that this lineage link is at the very first and only level.*)
 
 **Access to the individual metadata fields is possible through instance properties; not shown for brevity.
 
