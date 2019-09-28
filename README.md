@@ -209,12 +209,12 @@ will call the `rebuild_for_store` function, with the current Airflow context as 
   - DataAssetArchiveOperator
   
   To interact with Airtunnels metadata model, there are sensors `AwaitLoadStatusSensor` (pokes for an data asset to be
-  updated in a recent specified timedelta) and `AwaitAssetAncestorsUpdatedSensor (using lineage, pokes for updates on
+  updated in a recent specified timedelta) and `AwaitAssetAncestorsUpdatedSensor` (using lineage, pokes for updates on
   a Data Asset's ancestors). These can help build out more pull-based workflows, if you do not want/or can't leverage
   Airflows push-based approaches, like DAG triggering.
 
   Additionally there is `SQLOperator`, which allows you to run generic SQL scripts from the scripts store using an Airflow
-DbApi hook – good for maintenance scripts that are not Data Asset centered.
+`DbApiHook` – good for maintenance scripts that are not Data Asset centered.
 
 ## Contributing to airtunnel
 We love any contributions, be it feedback, issues or PRs on GitHub!
