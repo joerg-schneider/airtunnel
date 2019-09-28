@@ -71,12 +71,13 @@ class IngestOperator(BaseOperator):
         self.log.info(f"Asset staging picked-up directory is: {self.picked_up_dir}")
 
         # move previously discovered files to the pickedup directory for this asset:
-        # todo: consider if copy is better than move in terms of re-runnability!
         for f in inspected_files:
             # beware: naive implementation here:
-            target_path = f.fpath.replace(self._asset.landing_path, self.picked_up_dir)
-            self.log.info(f"Moving file {f.fpath} to {target_path}.")
-            os.rename(f.fpath, target_path)
+            target_path = f.filepath.replace(
+                self._asset.landing_path, self.picked_up_dir
+            )
+            self.log.info(f"Moving file {f.filepath} to {target_path}.")
+            os.rename(f.filepath, target_path)
 
         self._meta_adapter.write_inspected_files(discovered_files=inspected_files)
 
@@ -98,10 +99,10 @@ class IngestOperator(BaseOperator):
             ingested_files_meta.append(
                 IngestedFileMetadata(
                     for_asset=for_asset,
-                    fpath=f,
-                    fsize=f_stats.st_size,
-                    fctime=datetime.fromtimestamp(f_stats.st_ctime),
-                    fmtime=datetime.fromtimestamp(f_stats.st_mtime),
+                    filepath=f,
+                    filesize=f_stats.st_size,
+                    file_create_time=datetime.fromtimestamp(f_stats.st_ctime),
+                    file_mod_time=datetime.fromtimestamp(f_stats.st_mtime),
                     dag_id=dag_id,
                     dag_exec_date=dag_exec_date,
                     task_id=task_id,

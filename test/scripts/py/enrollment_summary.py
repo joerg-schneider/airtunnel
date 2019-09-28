@@ -8,10 +8,14 @@ def rebuild_for_store(asset: PandasDataAsset, airflow_context):
     programme = PandasDataAsset(name="programme")
     enrollment = PandasDataAsset(name="enrollment")
 
-    student_df = student.retrieve_from_store(airflow_context, consuming_asset=asset)
-    programme_df = programme.retrieve_from_store(airflow_context, consuming_asset=asset)
+    student_df = student.retrieve_from_store(
+        airflow_context=airflow_context, consuming_asset=asset
+    )
+    programme_df = programme.retrieve_from_store(
+        airflow_context=airflow_context, consuming_asset=asset
+    )
     enrollment_df = enrollment.retrieve_from_store(
-        airflow_context, consuming_asset=asset
+        airflow_context=airflow_context, consuming_asset=asset
     )
 
     enrollment_summary: pd.DataFrame = enrollment_df.merge(

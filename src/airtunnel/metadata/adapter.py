@@ -2,7 +2,7 @@ import json
 import logging
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Iterable, Dict, Union, List, Tuple
+from typing import Iterable, Dict, Union, List, Tuple, Optional
 
 import pandas as pd
 import sqlalchemy
@@ -45,7 +45,12 @@ class BaseMetaAdapter(ABC):
         pass
 
     @abstractmethod
-    def read_lineage(self, for_target: BaseDataAsset) -> List[Tuple[Lineage, int]]:
+    def read_lineage(
+        self,
+        for_target: BaseDataAsset,
+        dag_id: Optional[str] = None,
+        dag_exec_date: Optional[datetime] = None,
+    ) -> List[Tuple[Lineage, int]]:
         # should return the complete lineage for a data asset, i.e. all sources including
         # transitive ones, stating the upstream level at each node
         pass
@@ -127,6 +132,9 @@ class SQLMetaAdapter(BaseMetaAdapter):
             Column(self.FN_DATA_ASSET_SRC, String, primary_key=True),
             Column(self.FN_DATA_ASSET_TRG, String, primary_key=True),
             Column(self.FN_METADATA_TIME, DateTime, primary_key=True),
+            Column(self.FN_DAG_ID, String, primary_key=True),
+            Column(self.FN_EXEC_DATE, DateTime, primary_key=True),
+            Column(self.FN_TASK_ID, String, nullable=False),
         )
 
         self.t_load_status = Table(
@@ -134,6 +142,9 @@ class SQLMetaAdapter(BaseMetaAdapter):
             metadata,
             Column(self.FN_DATA_ASSET, String, primary_key=True),
             Column(self.FN_LOAD_TIME, DateTime, nullable=False),
+            Column(self.FN_DAG_ID, String, primary_key=True),
+            Column(self.FN_EXEC_DATE, DateTime, primary_key=True),
+            Column(self.FN_TASK_ID, String, nullable=False),
         )
 
         self.t_load_status_hist = Table(
@@ -141,6 +152,9 @@ class SQLMetaAdapter(BaseMetaAdapter):
             metadata,
             Column(self.FN_DATA_ASSET, String, primary_key=True),
             Column(self.FN_LOAD_TIME, DateTime, primary_key=True),
+            Column(self.FN_DAG_ID, String, primary_key=True),
+            Column(self.FN_EXEC_DATE, DateTime, primary_key=True),
+            Column(self.FN_TASK_ID, String, nullable=False),
         )
 
         self.t_infile_metadata = Table(
@@ -150,7 +164,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
             Column(self.FN_FILE_PATH, String, primary_key=True),
             Column(self.FN_DAG_ID, String, primary_key=True),
             Column(self.FN_EXEC_DATE, DateTime, primary_key=True),
-            Column(self.FN_TASK_ID, String, nullable=False),
+            Column(self.FN_TASK_ID, String, nullable=False, primary_key=True),
             Column(self.FN_FILE_SIZE, Integer, nullable=False),
             Column(self.FN_FILE_CREATE_TIME, DateTime, nullable=False),
             Column(self.FN_FILE_MOD_TIME, DateTime, primary_key=True),
@@ -182,6 +196,9 @@ class SQLMetaAdapter(BaseMetaAdapter):
                         self.FN_DATA_ASSET_SRC: src.name,
                         self.FN_DATA_ASSET_TRG: lineage.data_target.name,
                         self.FN_METADATA_TIME: datetime.now(),
+                        self.FN_EXEC_DATE: lineage.dag_exec_date,
+                        self.FN_TASK_ID: lineage.task_id,
+                        self.FN_DAG_ID: lineage.dag_id,
                     }
                 )
             )
@@ -191,42 +208,115 @@ class SQLMetaAdapter(BaseMetaAdapter):
         # self._execute(statements)
         logger.info(f"Lineage for target {lineage.data_target.name} saved.")
 
-    def read_lineage(self, for_target: BaseDataAsset):
+    def read_lineage(
+        self,
+        for_target: BaseDataAsset,
+        dag_id: Optional[str] = None,
+        dag_exec_date: Optional[datetime] = None,
+    ) -> List[Tuple[Lineage, int]]:
         collected_lineage = []
-        lineage_to_query = [(for_target.name, 0)]
 
-        def get_lineage_sources_for_target(target_name: str) -> Iterable[str]:
+        # we create a dummy entry as a starting anchor for the recursive search
+        lineage_to_query = [(Lineage(data_sources=[], data_target=for_target), 0)]
+
+        def get_lineage_sources_for_target(target_name: str) -> Iterable[Lineage]:
             select = self.t_lineage.select().where(
                 self.t_lineage.c[self.FN_DATA_ASSET_TRG] == target_name
             )
-            return (
-                pd.read_sql(sql=select, con=self._connection())
-                .loc[:, self.FN_DATA_ASSET_SRC]
-                .unique()
+
+            lineage_for_target = pd.read_sql(sql=select, con=self._connection())
+
+            if dag_id is not None:
+                lineage_for_target = lineage_for_target.loc[
+                    lineage_for_target[self.FN_DAG_ID] == dag_id
+                ]
+            if dag_exec_date is not None:
+                lineage_for_target = lineage_for_target.loc[
+                    lineage_for_target[self.FN_EXEC_DATE] == dag_exec_date
+                ]
+
+            max_execution_date_per_dag = (
+                lineage_for_target.loc[:, [self.FN_DAG_ID, self.FN_EXEC_DATE]]
+                .groupby(self.FN_DAG_ID)
+                .max()
             )
+
+            lineage_for_target_latest: pd.DataFrame = lineage_for_target.merge(
+                right=max_execution_date_per_dag, on=[self.FN_DAG_ID, self.FN_EXEC_DATE]
+            )
+
+            # we create a lineage entity for each unique dag_id, task_id combination for this source:
+            # sort by dag_id, task_id:
+            lineage_for_target_latest = lineage_for_target_latest.sort_values(
+                by=[self.FN_DAG_ID, self.FN_TASK_ID], ascending=True
+            )
+
+            # now we aggregate each sources per dag_id, task_id, dag_exec_date combination:
+            last_dag_id, last_task_id, last_exec_date = None, None, None
+            found_sources = []
+            lineage_returned = []
+
+            for idx, row in lineage_for_target_latest.iterrows():
+                cur_dag_id, cur_task_id, cur_exec_date = (
+                    row[self.FN_DAG_ID],
+                    row[self.FN_TASK_ID],
+                    row[self.FN_EXEC_DATE],
+                )
+                if last_dag_id is not None and last_task_id is not None:
+                    if cur_dag_id != last_dag_id or cur_task_id != last_task_id:
+                        lineage_returned.append(
+                            Lineage(
+                                data_sources=found_sources,
+                                data_target=ShellDataAsset(target_name),
+                                dag_id=last_dag_id,
+                                task_id=last_task_id,
+                                dag_exec_date=last_exec_date,
+                            )
+                        )
+                        found_sources = []
+
+                found_sources.append(ShellDataAsset(row[self.FN_DATA_ASSET_SRC]))
+                last_dag_id, last_task_id, last_exec_date = (
+                    cur_dag_id,
+                    cur_task_id,
+                    cur_exec_date,
+                )
+            if len(found_sources) > 0:
+                lineage_returned.append(
+                    Lineage(
+                        data_sources=found_sources,
+                        data_target=ShellDataAsset(target_name),
+                        dag_id=last_dag_id,
+                        task_id=last_task_id,
+                        dag_exec_date=last_exec_date,
+                    )
+                )
+
+            return lineage_returned
 
         while len(lineage_to_query) > 0:
             target_to_get_lineage_for, level = lineage_to_query.pop(0)
-            sources = get_lineage_sources_for_target(target_to_get_lineage_for)
+            sources = get_lineage_sources_for_target(
+                target_to_get_lineage_for.data_target.name
+            )
 
             for s in sources:
-                collected_lineage.append(
-                    (
-                        Lineage(
-                            data_target=ShellDataAsset(target_to_get_lineage_for),
-                            data_sources=[ShellDataAsset(s)],
-                        ),
-                        level,
-                    )
-                )
-                lineage_to_query.append((s, level + 1))
+                collected_lineage.append((s, level))
+                if s.data_target != for_target:
+                    lineage_to_query.append((s, level + 1))
 
         return collected_lineage
 
     def write_load_status(self, load_status: LoadStatus):
         # insert potentially existing records in
         move_to_hist = self.t_load_status_hist.insert().from_select(
-            [self.FN_DATA_ASSET, self.FN_LOAD_TIME],
+            [
+                self.FN_DATA_ASSET,
+                self.FN_LOAD_TIME,
+                self.FN_DAG_ID,
+                self.FN_EXEC_DATE,
+                self.FN_TASK_ID,
+            ],
             self.t_load_status.select().where(
                 self.t_load_status.c[self.FN_DATA_ASSET] == load_status.for_asset.name
             ),
@@ -240,6 +330,9 @@ class SQLMetaAdapter(BaseMetaAdapter):
             **{
                 self.FN_DATA_ASSET: load_status.for_asset.name,
                 self.FN_LOAD_TIME: load_status.load_time,
+                self.FN_DAG_ID: load_status.dag_id,
+                self.FN_TASK_ID: load_status.task_id,
+                self.FN_EXEC_DATE: load_status.dag_exec_date,
             }
         )
         self._execute_on_db(
@@ -254,15 +347,20 @@ class SQLMetaAdapter(BaseMetaAdapter):
     def write_inspected_files(self, discovered_files: Iterable[IngestedFileMetadata]):
 
         # clear any pre-existing entries for this dag-id
-        # we use the first file to retrieve the common key: dag_id & dag_exec_date
+        # we use the first file to retrieve the common key: dag_id & dag_exec_date & task_id
         discovered_files = list(discovered_files)
         first_file = discovered_files[0]
-        dag_id, dag_exec_date = first_file.dag_id, first_file.dag_exec_date
+        dag_id, dag_exec_date, task_id = (
+            first_file.dag_id,
+            first_file.dag_exec_date,
+            first_file.task_id,
+        )
 
         clean_query = self.t_infile_metadata.delete().where(
             and_(
                 self.t_infile_metadata.c[self.FN_DAG_ID] == dag_id,
                 self.t_infile_metadata.c[self.FN_EXEC_DATE] == dag_exec_date,
+                self.t_infile_metadata.c[self.FN_TASK_ID] == task_id,
             )
         )
         self._connection().execute(clean_query)
@@ -271,13 +369,13 @@ class SQLMetaAdapter(BaseMetaAdapter):
             self.t_infile_metadata.insert().values(
                 **{
                     self.FN_DATA_ASSET: infile.for_asset.name,
-                    self.FN_FILE_PATH: infile.fpath,
+                    self.FN_FILE_PATH: infile.filepath,
                     self.FN_DAG_ID: infile.dag_id,
                     self.FN_EXEC_DATE: infile.dag_exec_date,
                     self.FN_TASK_ID: infile.task_id,
-                    self.FN_FILE_SIZE: infile.fsize,
-                    self.FN_FILE_CREATE_TIME: infile.fctime,
-                    self.FN_FILE_MOD_TIME: infile.fmtime,
+                    self.FN_FILE_SIZE: infile.filesize,
+                    self.FN_FILE_CREATE_TIME: infile.file_create_time,
+                    self.FN_FILE_MOD_TIME: infile.file_mod_time,
                 }
             )
             for infile in discovered_files
@@ -294,7 +392,11 @@ class SQLMetaAdapter(BaseMetaAdapter):
         results: pd.DataFrame = pd.read_sql(query, con=self._connection())
 
         return LoadStatus(
-            for_asset=for_asset, load_time=results[self.FN_LOAD_TIME].iloc[0]
+            for_asset=for_asset,
+            load_time=results[self.FN_LOAD_TIME].iloc[0],
+            dag_id=results[self.FN_DAG_ID].iloc[0],
+            task_id=results[self.FN_TASK_ID].iloc[0],
+            dag_exec_date=results[self.FN_EXEC_DATE].iloc[0],
         )
 
     def read_inspected_files(
@@ -312,10 +414,10 @@ class SQLMetaAdapter(BaseMetaAdapter):
         return [
             IngestedFileMetadata(
                 for_asset=for_asset,
-                fpath=row[self.FN_FILE_PATH],
-                fsize=row[self.FN_FILE_SIZE],
-                fmtime=row[self.FN_FILE_MOD_TIME],
-                fctime=row[self.FN_FILE_CREATE_TIME],
+                filepath=row[self.FN_FILE_PATH],
+                filesize=row[self.FN_FILE_SIZE],
+                file_mod_time=row[self.FN_FILE_MOD_TIME],
+                file_create_time=row[self.FN_FILE_CREATE_TIME],
                 dag_id=dag_id,
                 dag_exec_date=dag_exec_date,
                 task_id=row[self.FN_TASK_ID],

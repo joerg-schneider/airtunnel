@@ -31,8 +31,6 @@ class StagingToReadyOperator(BaseOperator):
         # https://stackoverflow.com/questions/7419665/python-move-and-overwrite-files-and-folders
         # hence, we use a workaround, which is unfortunately less atomic. keep in mind for cloud storage!
 
-        # if there, rename the existing data asset folder
-
         moved_to_temp_path = False
         move_to_ready_succeeded = False
         asset_temp_path = None
@@ -57,9 +55,13 @@ class StagingToReadyOperator(BaseOperator):
             if moved_to_temp_path and move_to_ready_succeeded:
                 try:
                     # log load-status
-                    # todo: have a config and allow to dynamically load meta adapter
                     SQLMetaAdapter().write_load_status(
-                        LoadStatus(for_asset=self._asset)
+                        LoadStatus(
+                            for_asset=self._asset,
+                            dag_id=self.dag_id,
+                            task_id=self.task_id,
+                            dag_exec_date=context["task_instance"].dag_exec_date,
+                        )
                     )
                     self.log.info(
                         f"Successfully loaded - removing old copy at temp location: {asset_temp_path}"

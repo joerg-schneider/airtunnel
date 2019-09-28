@@ -47,7 +47,7 @@ class BaseDataAsset:
     def make_ready_temp_path(self, airflow_context: Dict) -> str:
         return os.path.join(
             P_DATA_READY,
-            "." + str(airflow_context["task_instance"].execution_date) + self.name,
+            "." + str(airflow_context["task_instance"].dag_exec_date) + self.name,
         )
 
     @property
@@ -55,16 +55,13 @@ class BaseDataAsset:
         return os.path.join(P_DATA_INGEST_LANDING, self.name)
 
     def ingest_archive_path(self, airflow_context) -> str:
-        return os.path.join(
-            P_DATA_INGEST_ARCHIVE,
-            self.name,
-        )
+        return os.path.join(P_DATA_INGEST_ARCHIVE, self.name)
 
     def staging_pickedup_path(self, airflow_context) -> str:
         return os.path.join(
             P_DATA_STAGING_PICKEDUP,
             self.name,
-            str(airflow_context["task_instance"].execution_date),
+            str(airflow_context["task_instance"].dag_exec_date),
         )
 
     @property
@@ -77,7 +74,7 @@ class BaseDataAsset:
         return os.path.join(
             P_DATA_ARCHIVE,
             self.name,
-            str(airflow_context["task_instance"].execution_date),
+            str(airflow_context["task_instance"].dag_exec_date),
         )
 
     def pickedup_files(self, airflow_context) -> List[str]:
@@ -114,9 +111,7 @@ class BaseDataAsset:
 
 class PandasDataAsset(BaseDataAsset):
     def retrieve_from_store(
-        self,
-        partition_spec: str = None,
-        consuming_asset: Optional[BaseDataAsset] = None,
+        self, airflow_context=None, consuming_asset: Optional[BaseDataAsset] = None
     ) -> pd.DataFrame:
 
         #  attempt to log lineage
@@ -126,9 +121,25 @@ class PandasDataAsset(BaseDataAsset):
                 from airtunnel.metadata.adapter import SQLMetaAdapter
                 from airtunnel.metadata.entities import Lineage
 
+                if airflow_context is not None:
+                    task_instance: TaskInstance = airflow_context["task_instance"]
+                    dag_id = task_instance.dag_id
+                    task_id = task_instance.task_id
+                    dag_exec_date = task_instance.execution_date
+                else:
+                    dag_id = None
+                    task_id = None
+                    dag_exec_date = None
+
                 db = SQLMetaAdapter()
                 db.write_lineage(
-                    Lineage(data_sources=[self], data_target=consuming_asset)
+                    Lineage(
+                        data_sources=[self],
+                        data_target=consuming_asset,
+                        dag_id=dag_id,
+                        task_id=task_id,
+                        dag_exec_date=dag_exec_date,
+                    )
                 )
                 logger.info(
                     f"Lineage from {self.name} to {consuming_asset.name} recorded"
@@ -142,8 +153,8 @@ class PandasDataAsset(BaseDataAsset):
 
     def rebuild_for_store(self, airflow_context, **kwargs):
         # we delegate the rebuild of this data asset to the Pandas script
+        script_path = path.join(airtunnel.paths.P_SCRIPTS_PY, self.name + ".py")
         try:
-            script_path = path.join(airtunnel.paths.P_SCRIPTS_PY, self.name + ".py")
             spec = importlib.util.spec_from_file_location("module.name", script_path)
             asset_script = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(asset_script)

@@ -23,7 +23,13 @@ with DAG(
 
     # a common stream of tasks for all ingested assets:
     for ingested_asset in (student, programme, enrollment):
-        source_is_ready = SourceFileIsReadySensor(asset=ingested_asset)
+        source_is_ready = SourceFileIsReadySensor(
+            # we reduce the poke interval to only 3 seconds so that our test runs complete faster
+            # do not do in production!! :)
+            asset=ingested_asset,
+            poke_interval=3,
+            no_of_required_static_pokes=2,
+        )
         ingest = IngestOperator(asset=ingested_asset)
         transform = PandasTransformationOperator(asset=ingested_asset)
         archive = DataAssetArchiveOperator(asset=ingested_asset)

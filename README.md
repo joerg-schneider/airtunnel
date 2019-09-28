@@ -307,7 +307,7 @@ Notice something special? Yes - we have never actually defined a `task_id` with 
 don't, Airtunnel will derive the operator task_ids from the given data asset's name. 
 An easy way that yields consistent naming! :+1:
 
-Graphically the finished DAG looks like this:
+**Graphically the finished DAG looks like this:**
 
 ![alt text](docs/assets/university-dag.png "University DAG")
 
@@ -321,6 +321,32 @@ The ingested raw-data has been archived under the DAG execution date:
 
 …as well as the previous versions of the data assets:
 ![alt text](docs/assets/ready-archive.png "ready layer")
+(*note:* we did not include an archival operator for `enrollment_summary` in the university DAG)
+
+**Collected metadata:**
+One of Airtunnel's additional benefits is, that is extends Airflow's metadata model with data on load status, ingested
+raw files and lineage.
+
+To retrieve load status, simply do this:
+
+````python
+from airtunnel import PandasDataAsset
+from airtunnel.metadata.adapter import SQLMetaAdapter
+
+student = PandasDataAsset("student")
+adapter = SQLMetaAdapter()
+print(adapter.read_load_status(student))
+````
+
+> student was loaded at 2019-09-28 18:11:59.013612, from DAG university (2019-09-28 16:06:56.728278) and task student_staging_to_ready
+
+To retrieve ingested files metadata, simply do this:
+
+
+To retrieve the lineage, simply do this:
+
+
+**Access to the individual metadata fields is possible through instance properties; not shown for brevity.
 
 ## Known limitations
 Airtunnel is still a very young project - there are several known limitations:
