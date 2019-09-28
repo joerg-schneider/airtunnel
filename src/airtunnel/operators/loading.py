@@ -60,7 +60,7 @@ class StagingToReadyOperator(BaseOperator):
                             for_asset=self._asset,
                             dag_id=self.dag_id,
                             task_id=self.task_id,
-                            dag_exec_date=context["task_instance"].dag_exec_date,
+                            dag_exec_date=context["task_instance"].execution_date,
                         )
                     )
                     self.log.info(

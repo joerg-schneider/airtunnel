@@ -339,7 +339,7 @@ load_status = adapter.read_load_status(student)
 print(load_status)
 ````
 
-> student was loaded at 2019-09-28 18:43:29.306133, from DAG university (2019-09-28 16:38:26.880186) and task student_staging_to_ready
+> student was lxoaded at 2019-09-28 18:43:29.306133, from DAG university (2019-09-28 16:38:26.880186) and task student_staging_to_ready
 
 
 To retrieve ingested files metadata, simply do this:
