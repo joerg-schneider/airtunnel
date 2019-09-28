@@ -290,8 +290,9 @@ with DAG(
 
     dag >> build_enrollment_summary >> staging_to_ready
 ````
-Look how clean this DAG is - it fully conveys what actually happens and with which dependencies. Notice something special?
-Yes - we have never actually defined a `task_id` with these custom Airtunnel operators. If we don't, Airtunnel will derive
+**Look how clean this DAG is** - it fully conveys what actually happens and with which dependencies. 
+
+Notice something special? Yes - we have never actually defined a `task_id` with these custom Airtunnel operators. If we don't, Airtunnel will derive
 the operator task_ids from the given data asset's name. An easy way that yields consistent naming! :+1:
 
 Graphically the finished DAG looks like this:
