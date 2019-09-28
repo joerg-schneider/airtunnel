@@ -196,7 +196,7 @@ concepts: metadata entities (the types of metadata information we want to intera
  `BaseMetaAdapter` is `SQLMetaAdapter`, which takes an Airflow `DbApiHook` and uses SQLAlchemy to read/write metadata.
  We believe it makes a lot of sense to simply store this metadata on the Airflow DB, to have everything in one place.
  This class model though is intended to, by subclassing, to read/write metadata using other means.
-- **Custom Operators**: Airtunnel ships various custom operators; the most important one for you to know being:
+- **Custom Operators**: Airtunnel ships various custom operators; the most important ones for you to know being:
 `PandasTransformationOperator`, `SQLTransformationOperator` and `PySparkTransformationOperator` that relate one-by-one
 to the corresponding data asset types introduced earlier. They are very lightweight and do what you can guess from their
 name: each one is instantiated (as part of a DAG) with an Data Asset instance of their type and on operator execute,
