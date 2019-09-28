@@ -40,7 +40,7 @@ def run_on_db(test_db_hook: DbApiHook, sql: str) -> Optional[pd.DataFrame]:
 
     c = test_db_hook.get_sqlalchemy_engine().connect()
 
-    if "select " in sql.lower():
+    if "select" in sql.lower().strip()[0:10]:
         return pd.read_sql_query(sql=sql, con=c)
     else:
         c.execute(sql)
