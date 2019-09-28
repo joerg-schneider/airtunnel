@@ -6,11 +6,11 @@ set of principles (read more on them [in the official airtunnel announcement](ht
 Python library *to tame your airflow*!
 
 ## Why choose airtunnel? Because you will...
-1) stop worrying and love the uncompromised consistency
-2) need a clean codebase with separated concerns to be scalable
-3) get metadata for ingested files, load status and lineage out-of-the-box
-4) have it up and running in minutes
-5) spend less time debugging Airflow DAGs doing worthwhile things instead
+:heart: stop worrying and love the uncompromised consistency
+:rocket: need a clean codebase with separated concerns to be scalable
+:memo: get metadata for ingested files, load status and lineage out-of-the-box
+:running: have it up and running in minutes
+:beer: spend less time debugging Airflow DAGs doing worthwhile things instead
 
 ## Getting started
 
@@ -91,7 +91,7 @@ load:
   archive_ready: yes
 ```
 
-Great! This is a very readable description of important parameters, that influence how we process this data asset.
+Great! :+1: This is a very readable description of important parameters, that influence how we process this data asset.
 Actually, we can leverage some of the defaults and can be less explicit when we describe `programme` (in its own
 `programme.yaml`):
 ````yaml
@@ -129,6 +129,8 @@ type: derived
 ```
 
 This description is super compact as we simply inherit all the defaults (parquet, gzip and archival) for loading.
+
+Wonderful, this is it in terms of declarations and we are ready to go to write some Pandas scripts! :rocket:
 
 #### Data Asset scripts
 #### The final DAG
