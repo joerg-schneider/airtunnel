@@ -27,6 +27,9 @@ def test_afdb_lineage(test_meta_adapter: BaseMetaAdapter, test_db_hook: DbApiHoo
         Lineage(
             data_target=ShellDataAsset(DUMMY_TABLE2),
             data_sources=[ShellDataAsset(DUMMY_TABLE)],
+            dag_id="test_dag",
+            task_id="test_task",
+            dag_exec_date=datetime.now(),
         )
     )
 
@@ -47,13 +50,22 @@ def test_afdb_lineage(test_meta_adapter: BaseMetaAdapter, test_db_hook: DbApiHoo
 
 def test_afdb_load_status(test_meta_adapter: BaseMetaAdapter, test_db_hook: DbApiHook):
     test_meta_adapter.write_load_status(
-        LoadStatus(for_asset=ShellDataAsset(DUMMY_TABLE), load_time=datetime.now())
+        LoadStatus(
+            for_asset=ShellDataAsset(DUMMY_TABLE),
+            load_time=datetime.now(),
+            dag_id="test_dag",
+            task_id="test_task",
+            dag_exec_date=datetime.now(),
+        )
     )
 
     test_meta_adapter.write_load_status(
         LoadStatus(
             for_asset=ShellDataAsset(DUMMY_TABLE),
             load_time=datetime.now() + timedelta(days=1),
+            dag_id="test_dag",
+            task_id="test_task",
+            dag_exec_date=datetime.now(),
         )
     )
 
@@ -61,6 +73,9 @@ def test_afdb_load_status(test_meta_adapter: BaseMetaAdapter, test_db_hook: DbAp
         LoadStatus(
             for_asset=ShellDataAsset(DUMMY_TABLE),
             load_time=datetime.now() + timedelta(days=2),
+            dag_id="test_dag",
+            task_id="test_task",
+            dag_exec_date=datetime.now(),
         )
     )
 

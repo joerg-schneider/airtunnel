@@ -11,7 +11,13 @@ from test.test_utils import DUMMY_TABLE, DUMMY_TABLE2
 
 @pytest.fixture(scope="function")
 def load_status() -> LoadStatus:
-    yield LoadStatus(for_asset=ShellDataAsset(DUMMY_TABLE2), load_time=datetime.now())
+    yield LoadStatus(
+        for_asset=ShellDataAsset(DUMMY_TABLE2),
+        load_time=datetime.now(),
+        dag_id="test_dag",
+        task_id="test_task",
+        dag_exec_date=datetime.now(),
+    )
 
 
 @pytest.fixture
@@ -24,6 +30,9 @@ def lineage() -> Lineage:
     yield Lineage(
         data_sources=[ShellDataAsset(DUMMY_TABLE)],
         data_target=ShellDataAsset(DUMMY_TABLE2),
+        dag_id="test_dag",
+        task_id="test_task",
+        dag_exec_date=datetime.now(),
     )
 
 
