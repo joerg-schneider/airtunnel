@@ -1,5 +1,6 @@
 import os
 
+from airtunnel.assetio import BaseDataAssetIO, PandasDataAssetIO
 from airtunnel.data_asset import BaseDataAsset, SQLDataAsset, PandasDataAsset
 
 if "ENV" in os.environ:
@@ -28,4 +29,6 @@ __all__ = [
     BaseDataAsset,
     SQLDataAsset,
     PandasDataAsset,
+    BaseDataAssetIO,
+    PandasDataAssetIO
 ]

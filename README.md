@@ -140,6 +140,110 @@ This description is super compact as we simply inherit all the defaults (parquet
 Wonderful, this is it in terms of declarations and we are ready to go to write some Pandas scripts! :rocket:
 
 #### Data Asset scripts
+To process data assets, we want to use Pandas. Hence, we will create four Python modules - one for each asset. All of
+these need to implement a method of the following signature:
+
+```python
+from airtunnel import PandasDataAsset
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+    pass
+```
+
+Let's start by specifying the script for the student asset, `student.py`:
+
+```python
+from airtunnel import PandasDataAsset, PandasDataAssetIO
+
+
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+
+    student_data = PandasDataAssetIO.read_data_asset(
+        asset=asset, source_files=asset.pickedup_files(airflow_context)
+    )
+
+    student_data = asset.rename_fields_as_declared(student_data)
+
+    PandasDataAssetIO.write_data_asset(asset=asset, data=student_data)
+``` 
+
+We can see, that we make use of the lightweight class `PandasDataAssetIO` which helps to translate data asset declarations
+around storage into Pandas commands. Similarly, column renames based upon declarations are a one-liner delegated to
+the PandasDataAsset implementation. Don't worry - in case you need special properties, both `read_data_asset()` and
+`write_data_asset()` optionally except additional keyword arguments that will be passed to the Pandas function. Or, just
+do not use `PandasDataAssetIO` at all - `rebuild_for_store` can be implemented as you wish.
+
+Very similar, the script to rebuild the `programme` asset looks like this:
+
+````python
+from airtunnel import PandasDataAsset, PandasDataAssetIO
+
+
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+    programme_data = PandasDataAssetIO.read_data_asset(
+        asset=asset, source_files=asset.pickedup_files(airflow_context)
+    )
+    programme_data = programme_data.drop_duplicates(
+        subset=asset.declarations.key_columns
+    )
+    PandasDataAssetIO.write_data_asset(asset=asset, data=programme_data)
+````
+
+Here we can see, that the script makes use of the declared key-columns to de-duplicate the inputs.
+
+The Python script for `enrollment` looks like this:
+
+```python
+from airtunnel import PandasDataAsset, PandasDataAssetIO
+
+
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+    enrollment_data = PandasDataAssetIO.read_data_asset(
+        asset=asset, source_files=asset.pickedup_files(airflow_context)
+    )
+
+    PandasDataAssetIO.write_data_asset(asset=asset, data=enrollment_data)
+```
+
+This is as straight forward as it gets, just reading in input data and writing it with the output format.
+
+More interesting is the script to build the `enrollment_summary` aggregation:
+
+````python
+import pandas as pd
+from airtunnel import PandasDataAsset, PandasDataAssetIO
+
+
+def rebuild_for_store(asset: PandasDataAsset, airflow_context):
+    student = PandasDataAsset(name="student")
+    programme = PandasDataAsset(name="programme")
+    enrollment = PandasDataAsset(name="enrollment")
+
+    student_df = student.retrieve_from_store(airflow_context, consuming_asset=asset)
+    programme_df = programme.retrieve_from_store(airflow_context, consuming_asset=asset)
+    enrollment_df = enrollment.retrieve_from_store(
+        airflow_context, consuming_asset=asset
+    )
+
+    enrollment_summary: pd.DataFrame = enrollment_df.merge(
+        right=student_df, on=student.declarations.key_columns
+    ).merge(right=programme_df, on=programme.declarations.key_columns)
+
+    enrollment_summary = (
+        enrollment_summary.loc[:, ["student_major", "programme_name", "student_id"]]
+        .groupby(by=["student_major", "programme_name"])
+        .count()
+    )
+
+    PandasDataAssetIO.write_data_asset(asset=asset, data=enrollment_summary)
+````
+
+Several things happen there:
+- we can see how easy it is, to actually retrieve data from the *ready* layer of the data store: we define the data
+asset instance and call the `retrieve_from_store()` method.
+- additionally, when doing the above, we pass in the consuming asset - this will trigger a lineage collection and record
+data source, data target, dag id and task id.
+- finally we do the aggregation by joining (on the keys that we can retrieve from the declaration) and store the data
+
 #### The final DAG
 
 ## Known limitations
