@@ -19,6 +19,8 @@ Python library *to tame your airflow*!
 ## Getting started
 [![Build Status](https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel-dev?branchName=master)](https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&branchName=master)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
+[![Python Version](https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg)](https://pypi.org/project/airtunnel/)
+[![PyPI version](https://badge.fury.io/py/airtunnel.svg)](https://pypi.org/project/airtunnel/)
 
 ## Table of Contents
 - [Installation requirements](#installation-requirements)
