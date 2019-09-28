@@ -32,9 +32,11 @@ declaration store, a scripts store and finally the data store:
 
     2.1) The declaration store folder has no subfolders. It is where your data asset declarations
      (YAML files) will reside
+     
     2.2) The scripts store folder is where all your Python & SQL scripts to process data assets will reside.
      It should be broken down by subfolders `py` for Python scripts and `sql` for SQL scripts. Please further add
      subfolders `dml` and `ddl` into the `sql` script folder.
+     
     2.3) The data store folder follows a convention as well. 
 
 3) Configure Airtunnel by extending your existing `airflow.cfg`
