@@ -1,10 +1,10 @@
 from abc import abstractmethod, ABC
 from os import path
-from typing import Union, Dict, Iterable, Optional
+from typing import Union, Iterable
 
 import pandas as pd
 
-from airtunnel import BaseDataAsset, PandasDataAsset
+from airtunnel.data_asset import BaseDataAsset, PandasDataAsset
 
 
 class BaseDataAssetIO(ABC):
@@ -13,16 +13,14 @@ class BaseDataAssetIO(ABC):
     def write_data_asset(
         asset: BaseDataAsset,
         data: Union[pd.DataFrame, "pyspark.sql.DataFrame"],
-        writer_kwargs: Optional[Dict] = {},
+        **writer_kwargs,
     ) -> None:
         pass
 
     @staticmethod
     @abstractmethod
     def read_data_asset(
-        asset: BaseDataAsset,
-        source_files: Iterable[str],
-        reader_kwargs: Optional[Dict] = {},
+        asset: BaseDataAsset, source_files: Iterable[str], **reader_kwargs
     ) -> Union[pd.DataFrame, "pyspark.sql.DataFrame"]:
         pass
 
@@ -30,7 +28,7 @@ class BaseDataAssetIO(ABC):
 class PandasDataAssetIO(BaseDataAssetIO):
     @staticmethod
     def write_data_asset(
-        asset: BaseDataAsset, data: pd.DataFrame, writer_kwargs: Optional[Dict] = {}
+        asset: BaseDataAsset, data: pd.DataFrame, **writer_kwargs
     ) -> None:
         if asset.declarations.is_parquet_output:
             data.to_parquet(
@@ -49,9 +47,7 @@ class PandasDataAssetIO(BaseDataAssetIO):
 
     @staticmethod
     def read_data_asset(
-        asset: PandasDataAsset,
-        source_files: Iterable[str],
-        reader_kwargs: Optional[Dict] = {},
+        asset: PandasDataAsset, source_files: Iterable[str], **reader_kwargs
     ) -> pd.DataFrame:
         if asset.declarations.is_csv_input:
             data = [pd.read_csv(f, **reader_kwargs) for f in source_files]
