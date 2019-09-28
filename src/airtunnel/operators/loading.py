@@ -36,12 +36,12 @@ class StagingToReadyOperator(BaseOperator):
         asset_temp_path = None
 
         try:
+            os.makedirs(self._asset.ready_path, exist_ok=True)
 
-            if os.path.exists(self._asset.ready_path):
-                self.log.info(f"Loading new version to {self._asset.ready_path}")
-                asset_temp_path = self._asset.make_ready_temp_path(context)
-                shutil.move(self._asset.ready_path, asset_temp_path)
-                moved_to_temp_path = True
+            self.log.info(f"Loading new version to {self._asset.ready_path}")
+            asset_temp_path = self._asset.make_ready_temp_path(context)
+            shutil.move(self._asset.ready_path, asset_temp_path)
+            moved_to_temp_path = True
 
             # load the prepared data
             shutil.move(self._asset.staging_ready_path, self._asset.ready_path)

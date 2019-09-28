@@ -27,7 +27,7 @@ NECESSARY_DATA_STORE_PATHS = (
 )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def test_db_path() -> str:
     db_path = os.path.join(tempfile.gettempdir(), "test.db")
     logger.info(f"Using test-database: {db_path}")
@@ -36,7 +36,7 @@ def test_db_path() -> str:
     os.remove(db_path)
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def provide_airflow_cfg(test_db_path: str) -> None:
     test_folder_path = os.path.abspath(os.path.dirname(__file__))
     cfg_path = os.path.join(test_folder_path, "airflow_home/airflow.cfg")
