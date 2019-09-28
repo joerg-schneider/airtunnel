@@ -1,0 +1,13 @@
+name: airtunnel
+channels:
+  - conda-forge
+dependencies:
+  - python = 3.7.*
+  - pytest = 4.4.*
+  - pip = 19.2.*
+  - pandas = 0.24.*
+  - pip:
+    - apache-airflow[crypto]==1.10.5
+    - schema==0.6.*
+    - pytest-cov==2.7.1
+    - pyarrow==0.13.*

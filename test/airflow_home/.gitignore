@@ -1,0 +1,4 @@
+airflow.cfg
+unittests.cfg
+logs
+logs/**

@@ -1,0 +1,10 @@
+type: ingested
+
+ingest:
+  file_input_glob: enrollment_*
+
+
+load:
+  key_columns:
+    - student_id
+    - programme_id
