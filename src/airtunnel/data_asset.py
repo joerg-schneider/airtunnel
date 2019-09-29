@@ -168,24 +168,28 @@ class PandasDataAsset(BaseDataAsset):
         return data.rename(columns=rename_map)
 
 
+# noinspection PyAbstractClass
+# noinspection PyMissingConstructor
 class PySparkDataAsset(BaseDataAsset):
     # todo: implement
-    pass
+    def __init__(self, name: str):
+        raise NotImplementedError("PySpark DataAsset is still under development.")
 
 
 class SQLDataAsset(BaseDataAsset):
-    def __init__(self, name: str, sql_hook: DbApiHook, db_schema: str = None):
+    def __init__(self, name: str, sql_hook: DbApiHook):
         if sql_hook is None:
             raise ValueError("Need a DbApiHook to instantiate the SQLDataAsset")
 
         self._sql_hook = sql_hook
-        self._db_schema = db_schema
         super(SQLDataAsset, self).__init__(name=name)
 
     def get_raw_sql_script(self, type: str = "dml") -> str:
         from scripts import sql
 
-        sql_location = path.join(path.dirname(sql.__file__), type, self.name + ".sql")
+        sql_location = path.join(
+            path.dirname(sql.__file__), type, self.name.replace(".", "/") + ".sql"
+        )
 
         if not path.exists(sql_location):
             raise FileNotFoundError(f"SQL script expected at {sql_location} not found!")
@@ -238,10 +242,6 @@ class SQLDataAsset(BaseDataAsset):
             con=self._sql_hook.get_conn(),
         )
 
-    @property
-    def db_schema(self):
-        return self._db_schema
-
 
 class ShellDataAsset(BaseDataAsset):
     """ A shell DataAsset, acting merely as a container - i.e. for lineage. """
@@ -270,7 +270,7 @@ class ShellDataAsset(BaseDataAsset):
             f"This is a {self.__class__.__name__}, use {self.to_full_data_asset.__name__} to convert."
         )
 
-    def retrieve_from_store(self, partition_spec: str = None):
+    def retrieve_from_store(self):
         raise NotImplementedError(
             f"This is a {self.__class__.__name__}, use {self.to_full_data_asset.__name__} to convert."
         )
