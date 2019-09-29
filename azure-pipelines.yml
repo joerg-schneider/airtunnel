@@ -44,3 +44,16 @@ steps:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
     reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
+- script: |
+    python -m pip install coverage-badge
+    cd test/
+    coverage-badge -o coverage.svg
+    mv coverage.svg ../coverage.svg
+    mkdir -p assets
+    mv coverage.svg assets/coverage.svg
+    git checkout gh-pages
+    git add assets/coverage.svg
+    git commit -m "AzureDevOps: updated coverage.svg for master"
+    git push
+  displayName: 'Coverage badge'
+
