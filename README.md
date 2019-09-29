@@ -21,6 +21,7 @@ Python library *to tame your airflow*!
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
 [![Python Version](https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg)](https://pypi.org/project/airtunnel/)
 [![PyPI version](https://badge.fury.io/py/airtunnel.svg)](https://pypi.org/project/airtunnel/)
+![Test-Coverage](https://github.com/joerg-schneider/airtunnel-dev/blob/gh-pages/assets/coverage.svg)
 
 ## Table of Contents
 - [Installation requirements](#installation-requirements)
