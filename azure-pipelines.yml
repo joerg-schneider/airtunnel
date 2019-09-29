@@ -46,14 +46,14 @@ steps:
 
 - script: |
     python -m pip install coverage-badge
-    cd test/
     coverage-badge -o coverage.svg
-    mv coverage.svg ../coverage.svg
     mkdir -p assets
     mv coverage.svg assets/coverage.svg
+    git config --global user.email "joerg@joerg-schneider.org"
+    git config --global user.name "joerg-schneider"
     git checkout gh-pages
     git add assets/coverage.svg
-    git commit -m "AzureDevOps: updated coverage.svg for master"
-    git push
+    #git commit -m "AzureDevOps: updated coverage.svg for master"
+    #git push
   displayName: 'Coverage badge'
 
