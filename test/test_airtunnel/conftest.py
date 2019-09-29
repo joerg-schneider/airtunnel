@@ -43,7 +43,9 @@ def test_db_path() -> str:
 
 @pytest.fixture(scope="session", autouse=True)
 def provide_airflow_cfg(test_db_path: str) -> None:
-    test_folder_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir)
+    test_folder_path = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), os.pardir
+    )
     cfg_path = os.path.join(test_folder_path, "airflow_home/airflow.cfg")
 
     cfg_path_template = os.path.join(

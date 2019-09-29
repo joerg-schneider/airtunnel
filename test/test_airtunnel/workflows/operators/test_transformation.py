@@ -9,7 +9,7 @@ from airtunnel.operators.transformation import (
 
 
 @pytest.fixture
-def test_sql_asset( test_db_hook:DbApiHook) -> SQLDataAsset:
+def test_sql_asset(test_db_hook: DbApiHook) -> SQLDataAsset:
     return SQLDataAsset("test_schema.test_table", test_db_hook)
 
 

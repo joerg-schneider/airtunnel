@@ -33,13 +33,12 @@ def test_testdag1():
         current_dir, os.pardir, os.pardir, "test_raw_landing_data"
     )
     for test_data_asset in os.listdir(landing_test_data):
-        landing_dir = os.path.join(airtunnel.paths.P_DATA_INGEST_LANDING, test_data_asset)
+        landing_dir = os.path.join(
+            airtunnel.paths.P_DATA_INGEST_LANDING, test_data_asset
+        )
         if os.path.exists(landing_dir):
             shutil.rmtree(landing_dir)
-        shutil.copytree(
-            os.path.join(landing_test_data, test_data_asset),
-            landing_dir,
-        )
+        shutil.copytree(os.path.join(landing_test_data, test_data_asset), landing_dir)
 
     run_sequential_airflow_dag(dag_id="university")
     run_sequential_airflow_dag(dag_id="metadata_sensors")
