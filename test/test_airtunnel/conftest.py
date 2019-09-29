@@ -1,9 +1,14 @@
+import datetime
 import logging
 import os
 import tempfile
 import urllib.parse
+from typing import Dict
 
+import pandas as pd
 import pytest
+from airflow.models import TaskInstance
+from airflow.operators.dummy_operator import DummyOperator
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -38,7 +43,7 @@ def test_db_path() -> str:
 
 @pytest.fixture(scope="session", autouse=True)
 def provide_airflow_cfg(test_db_path: str) -> None:
-    test_folder_path = os.path.abspath(os.path.dirname(__file__))
+    test_folder_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir)
     cfg_path = os.path.join(test_folder_path, "airflow_home/airflow.cfg")
 
     cfg_path_template = os.path.join(
@@ -86,7 +91,7 @@ def provide_airflow_cfg(test_db_path: str) -> None:
     airflow.utils.db.initdb()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def test_db_hook(test_db_path, provide_airflow_cfg):
     from airflow.hooks.sqlite_hook import SqliteHook
 
@@ -102,3 +107,21 @@ def test_setup_airflow_cfg(provide_airflow_cfg):
     # (if airflow.cfg is not correctly in-place, no other test-cases can safely import anything from "airflow"
     #  which unfortunately happens on pytest collect...)
     pass
+
+
+@pytest.fixture(scope="session")
+def iris() -> pd.DataFrame:
+    return pd.read_csv(
+        "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
+    )
+
+
+@pytest.fixture(scope="session")
+def fake_airflow_context() -> Dict:
+    fake_context = {
+        "task_instance": TaskInstance(
+            task=DummyOperator(task_id="dummy_tas_id"),
+            execution_date=datetime.datetime.now(),
+        )
+    }
+    return fake_context

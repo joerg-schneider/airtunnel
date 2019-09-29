@@ -6,8 +6,8 @@ from airflow.hooks.dbapi_hook import DbApiHook
 from airtunnel.data_asset import ShellDataAsset
 from airtunnel.metadata.adapter import BaseMetaAdapter, SQLMetaAdapter
 from airtunnel.metadata.entities import Lineage, LoadStatus
-from test import test_utils
-from test.test_utils import table_rowcount, DUMMY_TABLE, DUMMY_TABLE2
+from test_airtunnel import test_utils
+from test_airtunnel.test_utils import table_rowcount, DUMMY_TABLE, DUMMY_TABLE2
 
 
 @pytest.fixture(scope="module")

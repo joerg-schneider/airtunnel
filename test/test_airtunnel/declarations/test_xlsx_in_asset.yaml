@@ -1,0 +1,5 @@
+type: ingested
+
+ingest:
+  in_storage_format: xls
+  file_input_glob: test_xlsx_in_*

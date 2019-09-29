@@ -1,0 +1,9 @@
+type: ingested
+
+ingest:
+  in_storage_format: csv
+  file_input_glob: test_csv_in_*
+
+load:
+  out_storage_format: csv
+  out_compression_codec: gzip

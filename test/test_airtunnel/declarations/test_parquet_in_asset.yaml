@@ -1,0 +1,5 @@
+type: ingested
+
+ingest:
+  in_storage_format: parquet
+  file_input_glob: t*

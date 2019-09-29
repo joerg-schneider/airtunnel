@@ -6,7 +6,7 @@ import pytest
 from airtunnel.data_asset import ShellDataAsset
 from airtunnel.metadata.adapter import SQLMetaAdapter, BaseMetaAdapter
 from airtunnel.metadata.entities import Lineage, LoadStatus, IngestedFileMetadata
-from test.test_utils import DUMMY_TABLE, DUMMY_TABLE2
+from test_airtunnel.test_utils import DUMMY_TABLE, DUMMY_TABLE2
 
 
 @pytest.fixture(scope="function")

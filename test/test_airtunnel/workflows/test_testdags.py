@@ -6,7 +6,7 @@ import subprocess
 import pytest
 
 import airtunnel.paths
-from test_utils import run_sequential_airflow_dag
+from test_airtunnel.test_utils import run_sequential_airflow_dag
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

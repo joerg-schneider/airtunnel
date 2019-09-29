@@ -141,6 +141,8 @@ setup(
             "apache-airflow[crypto]==1.10.5",
             "pytest>=4.4.0,<4.5.0",
             "flake8",
+            "xlwt",
+            "xlrd"
         ]
     },
     # If there are data files included in your packages that need to be
