@@ -37,9 +37,6 @@ class BaseDataAsset:
                 data_asset=name
             )
 
-    def __load_declarations(self) -> Optional[DataAssetDeclaration]:
-        return DataAssetDeclaration(self.name)
-
     @property
     def ready_path(self) -> str:
         return os.path.join(P_DATA_READY, self.name)
