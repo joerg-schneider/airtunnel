@@ -10,6 +10,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-16.04' # other options: 'macOS-10.13', 'vs2017-win2016'
 
+variables:
+- group: airtunnel
+
 steps:
 - task: UsePythonVersion@0
   inputs:
@@ -62,6 +65,4 @@ steps:
     git commit -m "AzureDevOps: updated coverage.svg for master"
     git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
   displayName: 'Coverage badge'
-  variables:
-  - group: airtunnel
 
