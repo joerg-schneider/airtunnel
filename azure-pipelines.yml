@@ -56,7 +56,7 @@ steps:
     git config --global user.email "joerg@joerg-schneider.org"
     git config --global user.name "joerg-schneider"
 
-    git add assets/coverage.svg
+    git add ${CUR_PATH}/assets/coverage.svg
     git checkout gh-pages
 
     git commit -m "AzureDevOps: updated coverage.svg for master"
