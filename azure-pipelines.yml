@@ -60,6 +60,8 @@ steps:
 
     git add ${CUR_PATH}/assets/coverage.svg
     git commit -m "AzureDevOps: updated coverage.svg for master"
-    git push
+    git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
   displayName: 'Coverage badge'
+  variables:
+  - group: airtunnel
 
