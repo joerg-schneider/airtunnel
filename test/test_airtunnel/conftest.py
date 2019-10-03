@@ -54,7 +54,7 @@ def provide_airflow_cfg(test_db_path: str) -> None:
     )
 
     dags_folder_path = os.path.join(
-        test_folder_path, "test_airtunnel/workflows/testdags"
+        test_folder_path, "test_airtunnel/testdags"
     )
 
     decls_folder_path = os.path.join(test_folder_path, "test_airtunnel/declarations")
