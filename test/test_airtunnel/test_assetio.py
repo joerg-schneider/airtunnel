@@ -66,3 +66,9 @@ def test_read_write_parquet(
     PandasDataAssetIO.read_data_asset(
         asset=test_parquet_in_asset, source_files=[p], engine="auto"
     )
+
+
+def test_read_empty(test_parquet_in_asset: PandasDataAsset) -> None:
+    with pytest.warns(UserWarning):
+        empty = PandasDataAssetIO.read_data_asset(asset=test_parquet_in_asset, source_files=[])
+        assert pd.DataFrame().equals(empty)

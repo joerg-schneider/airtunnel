@@ -1,6 +1,7 @@
 import importlib
 import logging
 import os
+import warnings
 from abc import abstractmethod, ABC
 from os import path
 from typing import Optional, Union, Iterable, Dict, List
@@ -366,6 +367,7 @@ class PandasDataAssetIO(BaseDataAssetIO):
             data = [pd.read_parquet(f, **reader_kwargs) for f in source_files]
 
         if not data:
+            warnings.warn(f"No data for {asset.name} was read - please double check!!")
             return pd.DataFrame()
 
         return pd.concat(data) if len(data) > 1 else data[0]
