@@ -61,6 +61,7 @@ def test_load_status_cls(load_status: LoadStatus, adapter: BaseMetaAdapter) -> N
     assert status.is_within(frame=timedelta(seconds=20))
     # repr:
     x = "t" + str(status)
+    assert isinstance(x, str)
 
 
 def test_ingested_file_metadata_cls(
@@ -78,6 +79,7 @@ def test_ingested_file_metadata_cls(
 
     # repr:
     x = "t" + str(inspected_files_read)
+    assert isinstance(x, str)
 
 
 def test_lineage_cls(lineage: Lineage, adapter: BaseMetaAdapter) -> None:
@@ -89,6 +91,7 @@ def test_lineage_cls(lineage: Lineage, adapter: BaseMetaAdapter) -> None:
 
     # repr:
     x = "t" + str(retrieved_lineage)
+    assert isinstance(x, str)
 
 
 # -----
