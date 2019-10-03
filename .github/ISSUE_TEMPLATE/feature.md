@@ -4,7 +4,7 @@ about: Describe your feature
 title: ''
 labels: ''
 assignees: ''
-
+projects: 'https://github.com/joerg-schneider/airtunnel-dev/projects/1'
 ---
 
 **Feature summary**
