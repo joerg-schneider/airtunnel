@@ -144,12 +144,7 @@ class PandasDataAsset(BaseDataAsset):
         except Exception as e:
             logger.warning(f"Error on recording lineage: {e}")
 
-        return PandasDataAssetIO.read_data_asset(
-            asset=self,
-            source_files=[
-                path.join(*f) for f in os.walk(path.abspath(self.ready_path))
-            ],
-        )
+        return PandasDataAssetIO.retrieve_data_asset(asset=self)
 
     def rebuild_for_store(self, airflow_context, **kwargs):
         # we delegate the rebuild of this data asset to the Pandas script
@@ -296,8 +291,36 @@ class BaseDataAssetIO(ABC):
     ) -> Union[pd.DataFrame, "pyspark.sql.DataFrame"]:
         raise NotImplementedError
 
+    @staticmethod
+    @abstractmethod
+    def retrieve_data_asset(
+        asset: BaseDataAsset, **reader_kwargs
+    ) -> Union[pd.DataFrame, "pyspark.sql.DataFrame"]:
+        raise NotImplementedError
+
 
 class PandasDataAssetIO(BaseDataAssetIO):
+    @staticmethod
+    def retrieve_data_asset(asset: BaseDataAsset, **reader_kwargs) -> pd.DataFrame:
+        data = []
+        source_files = [
+            path.join(root, f)
+            for root, dirs, files in os.walk(asset.ready_path)
+            for f in files
+        ]
+
+        print(source_files)
+
+        if asset.declarations.is_parquet_output:
+            data = [pd.read_parquet(f, **reader_kwargs) for f in source_files]
+        elif asset.declarations.is_csv_output:
+            data = [pd.read_csv(f, **reader_kwargs) for f in source_files]
+
+        if not data:
+            return pd.DataFrame()
+
+        return pd.concat(data) if len(data) > 1 else data[0]
+
     @staticmethod
     def write_data_asset(
         asset: BaseDataAsset, data: pd.DataFrame, **writer_kwargs
