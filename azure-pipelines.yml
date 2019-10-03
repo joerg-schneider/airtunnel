@@ -64,4 +64,5 @@ steps:
     git commit -m "AzureDevOps: updated coverage.svg for master"
     git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
   displayName: 'Coverage badge'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
