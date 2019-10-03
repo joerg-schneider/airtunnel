@@ -6,8 +6,7 @@ import pandas as pd
 import pytest
 from airflow.hooks.dbapi_hook import DbApiHook
 
-from airtunnel import PandasDataAsset
-from airtunnel import PandasDataAssetIO
+from airtunnel import PandasDataAsset, PandasDataAssetIO
 from airtunnel.data_asset import ShellDataAsset, PySparkDataAsset, SQLDataAsset
 
 
@@ -79,6 +78,32 @@ def test_sql_data_asset(fake_airflow_context: Dict, test_db_hook: DbApiHook) -> 
 
     assert len(sql_data_asset.get_raw_sql_script(type="dml")) > 20
     assert len(sql_data_asset.get_raw_sql_script(type="ddl")) > 20
+
+
+def test_pandas_data_asset(
+    fake_airflow_context: Dict,
+    test_parquet_asset: PandasDataAsset,
+    test_parquet_asset_df: pd.DataFrame,
+) -> None:
+
+    # none, none
+    d1 = test_parquet_asset.retrieve_from_store()
+
+    # only airflow_context
+    d2 = test_parquet_asset.retrieve_from_store(airflow_context=fake_airflow_context)
+
+    # only consuming asset
+    d3 = test_parquet_asset.retrieve_from_store(
+        consuming_asset=ShellDataAsset(name="test_consumer")
+    )
+
+    # both parameters set
+    d4 = test_parquet_asset.retrieve_from_store(
+        airflow_context=fake_airflow_context,
+        consuming_asset=ShellDataAsset(name="test_consumer"),
+    )
+
+    assert d1.equals(d2) and d2.equals(d3) and d3.equals(d4)
 
 
 def test_pyspark_data_asset(fake_airflow_context) -> None:

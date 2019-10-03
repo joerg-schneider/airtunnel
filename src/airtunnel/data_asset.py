@@ -1,7 +1,7 @@
 import importlib
 import logging
 import os
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from os import path
 from typing import Optional, Union, Iterable, Dict, List
 
@@ -10,7 +10,7 @@ from airflow.hooks.dbapi_hook import DbApiHook
 from airflow.models import TaskInstance
 
 import airtunnel
-from airtunnel.declaration_store import DataAssetDeclaration, V_FORMAT_PARQUET
+from airtunnel.declaration_store import DataAssetDeclaration
 from airtunnel.operators.sql import sqloperator
 from airtunnel.paths import (
     P_DATA_READY,
@@ -144,9 +144,12 @@ class PandasDataAsset(BaseDataAsset):
         except Exception as e:
             logger.warning(f"Error on recording lineage: {e}")
 
-        # todo: this should here switch formats depending on declaration
-        if self.declarations.out_storage_format == V_FORMAT_PARQUET:
-            return pd.read_parquet(self.ready_path)
+        return PandasDataAssetIO.read_data_asset(
+            asset=self,
+            source_files=[
+                path.join(*f) for f in os.walk(path.abspath(self.ready_path))
+            ],
+        )
 
     def rebuild_for_store(self, airflow_context, **kwargs):
         # we delegate the rebuild of this data asset to the Pandas script
@@ -274,3 +277,61 @@ class ShellDataAsset(BaseDataAsset):
         raise NotImplementedError(
             f"This is a {self.__class__.__name__}, use {self.to_full_data_asset.__name__} to convert."
         )
+
+
+class BaseDataAssetIO(ABC):
+    @staticmethod
+    @abstractmethod
+    def write_data_asset(
+        asset: BaseDataAsset,
+        data: Union[pd.DataFrame, "pyspark.sql.DataFrame"],
+        **writer_kwargs,
+    ) -> None:
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def read_data_asset(
+        asset: BaseDataAsset, source_files: Iterable[str], **reader_kwargs
+    ) -> Union[pd.DataFrame, "pyspark.sql.DataFrame"]:
+        raise NotImplementedError
+
+
+class PandasDataAssetIO(BaseDataAssetIO):
+    @staticmethod
+    def write_data_asset(
+        asset: BaseDataAsset, data: pd.DataFrame, **writer_kwargs
+    ) -> None:
+        if asset.declarations.is_parquet_output:
+            data.to_parquet(
+                path.join(asset.staging_ready_path, asset.output_filename),
+                compression=asset.declarations.out_comp_codec,
+                **writer_kwargs,
+            )
+        elif asset.declarations.is_csv_output:
+            data.to_csv(
+                path_or_buf=path.join(asset.staging_ready_path, asset.output_filename),
+                compression=asset.declarations.out_comp_codec,
+                **writer_kwargs,
+            )
+        else:
+            raise ValueError(f"Only output formats of csv/parquet are supported!")
+
+    @staticmethod
+    def read_data_asset(
+        asset: PandasDataAsset, source_files: Iterable[str], **reader_kwargs
+    ) -> pd.DataFrame:
+
+        data = []
+
+        if asset.declarations.is_csv_input:
+            data = [pd.read_csv(f, **reader_kwargs) for f in source_files]
+        elif asset.declarations.is_xls_input:
+            data = [pd.read_excel(f, **reader_kwargs) for f in source_files]
+        elif asset.declarations.is_parquet_input:
+            data = [pd.read_parquet(f, **reader_kwargs) for f in source_files]
+
+        if not data:
+            return pd.DataFrame()
+
+        return pd.concat(data) if len(data) > 1 else data[0]

@@ -4,8 +4,7 @@ from os import path
 import pandas as pd
 import pytest
 
-from airtunnel import PandasDataAsset
-from airtunnel import PandasDataAssetIO
+from airtunnel import PandasDataAsset, PandasDataAssetIO
 
 
 @pytest.fixture
