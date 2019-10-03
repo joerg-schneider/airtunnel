@@ -30,8 +30,8 @@ steps:
     CUR_PATH=$(pwd)
     export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
     export PYTHONPATH=${CUR_PATH}/src:${CUR_PATH}/test
-    cd test/test_airtunnel
-    pytest conftest.py
+    cd test
+    pytest test_airtunnel/conftest.py
     pytest . -s --doctest-modules --junitxml=junit/test-results.xml --cov=airtunnel --cov-report=xml --cov-report=html
   displayName: 'Test with pytest'
 
