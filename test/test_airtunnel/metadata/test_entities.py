@@ -89,6 +89,19 @@ def test_lineage_cls(lineage: Lineage, adapter: BaseMetaAdapter) -> None:
     assert retrieved_lineage[0][0].data_target == lineage.data_target
     assert retrieved_lineage[0][0].data_sources == lineage.data_sources
 
+    # try with additional params:
+    l2 = adapter.read_lineage(lineage.data_target, dag_id=lineage.dag_id)
+
+    # ...another variation:
+    l3 = adapter.read_lineage(
+        lineage.data_target, dag_id=lineage.dag_id, dag_exec_date=lineage.dag_exec_date
+    )
+
+    # ...another variation:
+    l4 = adapter.read_lineage(lineage.data_target, dag_exec_date=lineage.dag_exec_date)
+
+    assert retrieved_lineage == l2 == l3 == l4
+
     # repr:
     x = "t" + str(retrieved_lineage)
     assert isinstance(x, str)
