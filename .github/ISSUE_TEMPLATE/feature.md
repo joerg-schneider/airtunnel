@@ -1,6 +1,6 @@
 ---
 name: Feature
-about: Describe your feature
+about: Add additional functionality to airtunnel
 title: ''
 labels: ''
 assignees: ''
