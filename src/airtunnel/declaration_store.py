@@ -36,6 +36,7 @@ K_ASSET_TYPE = "type"
 K_IN_DATE_FORMATS = "in_date_formats"
 K_STAGING_ASSETS = "staging_assets"
 K_KEY_COLUMNS = "key_columns"
+K_RUN_DDL = "run_ddl"
 
 
 # allowed YAML property values - prefixed by V_
@@ -62,6 +63,7 @@ DEFAULT_LOAD_SECTION = {
     K_OUT_FORMAT: V_FORMAT_PARQUET,
     K_OUT_COMP_CODEC: V_COMP_GZIP,
     K_ARCH_READY: True,
+    K_RUN_DDL: True,
 }
 
 
@@ -81,6 +83,7 @@ class DeclarationSchemas:
                 lambda o: o in V_ALLOWED_COMP
             ),
             Optional(K_ARCH_READY, default=True): lambda a: a in (True, False),
+            Optional(K_RUN_DDL, default=True): lambda a: a in (True, False),
             Optional(K_KEY_COLUMNS): Schema([Schema(str)]),
         }
     )
@@ -279,6 +282,10 @@ class DataAssetDeclaration:
     @property
     def is_xls_input(self) -> bool:
         return self.in_storage_format == V_FORMAT_EXCEL
+
+    @property
+    def run_ddl(self) -> bool:
+        return self._load_decls()[K_RUN_DDL]
 
 
 def fetch_all_declarations() -> Iterable[DataAssetDeclaration]:

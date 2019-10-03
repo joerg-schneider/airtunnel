@@ -71,13 +71,20 @@ def test_sql_data_asset(fake_airflow_context: Dict, test_db_hook: DbApiHook) -> 
     sql_data_asset = SQLDataAsset(name="test_parquet_in_asset", sql_hook=test_db_hook)
 
     with pytest.raises(FileNotFoundError):
-        sql_data_asset.get_raw_sql_script(type="dml")
-        sql_data_asset.get_raw_sql_script(type="ddl")
+        sql_data_asset.get_raw_sql_script(script_type="dml")
+    with pytest.raises(FileNotFoundError):
+        sql_data_asset.get_raw_sql_script(script_type="ddl")
 
     sql_data_asset = SQLDataAsset(name="test_schema.test_table", sql_hook=test_db_hook)
 
-    assert len(sql_data_asset.get_raw_sql_script(type="dml")) > 20
-    assert len(sql_data_asset.get_raw_sql_script(type="ddl")) > 20
+    assert len(sql_data_asset.get_raw_sql_script(script_type="dml")) > 20
+    assert len(sql_data_asset.get_raw_sql_script(script_type="ddl")) > 20
+
+    sql_data_asset.rebuild_for_store(
+        fake_airflow_context,
+        parameters={"idx_name": "idx1"},
+        dynamic_parameters=lambda f: {"idx_col": "y"},
+    )
 
 
 def test_pandas_data_asset(
@@ -104,6 +111,14 @@ def test_pandas_data_asset(
     )
 
     assert d1.equals(d2) and d2.equals(d3) and d3.equals(d4)
+
+
+def test_pandas_data_asset_exceptions(
+    fake_airflow_context: Dict, test_parquet_asset: PandasDataAsset
+) -> None:
+    with pytest.raises(Exception):
+        test_parquet_asset.name = "fail"
+        test_parquet_asset.rebuild_for_store(fake_airflow_context)
 
 
 def test_pyspark_data_asset(fake_airflow_context) -> None:

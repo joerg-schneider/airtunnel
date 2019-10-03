@@ -182,11 +182,13 @@ class SQLDataAsset(BaseDataAsset):
         self._sql_hook = sql_hook
         super(SQLDataAsset, self).__init__(name=name)
 
-    def get_raw_sql_script(self, type: str = "dml") -> str:
+    def get_raw_sql_script(self, script_type: str = "dml") -> str:
         from scripts import sql
 
         sql_location = path.join(
-            path.dirname(sql.__file__), type, self.name.replace(".", "/") + ".sql"
+            path.dirname(sql.__file__),
+            script_type,
+            self.name.replace(".", "/") + ".sql",
         )
 
         if not path.exists(sql_location):
@@ -200,10 +202,14 @@ class SQLDataAsset(BaseDataAsset):
         return loaded_sql_script
 
     def formatted_sql_script(
-        self, parameters, dynamic_parameters=None, airflow_context=None
+        self,
+        parameters: Dict,
+        script_type: str = "dml",
+        dynamic_parameters=None,
+        airflow_context=None,
     ):
 
-        loaded_sql_script = self.get_raw_sql_script()
+        loaded_sql_script = self.get_raw_sql_script(script_type=script_type)
 
         if dynamic_parameters is not None:
             parameters.update(
@@ -220,18 +226,27 @@ class SQLDataAsset(BaseDataAsset):
 
         return loaded_sql_script
 
+    # todo: we might check if a DDL script even exists, it could be optional!
     def rebuild_for_store(self, airflow_context, **kwargs):
-        formatted_sql_script = self.formatted_sql_script(
-            parameters=kwargs.get("parameters", None),
-            dynamic_parameters=kwargs.get("dynamic_parameters", None),
-            airflow_context=airflow_context,
-        )
+        # run first ddl, then dml -- or just solely dml:
+        scripts_to_run = ("ddl", "dml") if self.declarations.run_ddl else ("dml",)
 
-        script_statements = sqloperator.split_sql_script(formatted_sql_script)
+        for script_type in scripts_to_run:
+            formatted_sql_script = self.formatted_sql_script(
+                parameters=kwargs.get("parameters", None),
+                script_type=script_type,
+                dynamic_parameters=kwargs.get("dynamic_parameters", None),
+                airflow_context=airflow_context,
+            )
 
-        sqloperator.execute_script(
-            connection=self._sql_hook.get_cursor(), statements=script_statements
-        )
+            script_statements = sqloperator.split_sql_script(formatted_sql_script)
+
+            connection = self._sql_hook.get_sqlalchemy_engine().connect()
+            connection = connection.execution_options(autocommit=False)
+
+            sqloperator.execute_script(
+                connection=connection, statements=script_statements
+            )
 
     def retrieve_from_store(self) -> pd.DataFrame:
         schema_prefix = "" if self.db_schema is None else self.db_schema + "."
