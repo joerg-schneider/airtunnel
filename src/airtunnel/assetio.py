@@ -15,14 +15,14 @@ class BaseDataAssetIO(ABC):
         data: Union[pd.DataFrame, "pyspark.sql.DataFrame"],
         **writer_kwargs,
     ) -> None:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def read_data_asset(
         asset: BaseDataAsset, source_files: Iterable[str], **reader_kwargs
     ) -> Union[pd.DataFrame, "pyspark.sql.DataFrame"]:
-        pass
+        raise NotImplementedError
 
 
 class PandasDataAssetIO(BaseDataAssetIO):

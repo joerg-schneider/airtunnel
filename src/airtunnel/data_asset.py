@@ -99,11 +99,11 @@ class BaseDataAsset:
 
     @abstractmethod
     def rebuild_for_store(self, airflow_context, **kwargs):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def retrieve_from_store(self):
-        pass
+        raise NotImplementedError
 
 
 class PandasDataAsset(BaseDataAsset):
