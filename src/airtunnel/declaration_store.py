@@ -150,7 +150,7 @@ class DataAssetDeclaration:
 
     def __init__(self, data_asset: str):
 
-        if data_asset != data_asset.strip() and data_asset != data_asset.lower():
+        if data_asset != data_asset.strip() or data_asset != data_asset.lower():
             raise ValueError(
                 f"All data assets should be lower-cased and without leading/trailing space"
             )

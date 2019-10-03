@@ -81,3 +81,13 @@ def test_ingested_data_asset_decl(test_data_asset) -> None:
 def test_non_existent_asset() -> None:
     with pytest.raises(expected_exception=FileNotFoundError):
         DataAssetDeclaration(data_asset="does_not_exist")
+
+
+def test_exceptions(test_data_asset) -> None:
+    with pytest.raises(ValueError):
+        DataAssetDeclaration(data_asset="cAmELcAsE")
+
+    with pytest.raises(AttributeError):
+        DataAssetDeclaration(data_asset="faulty")
+
+
