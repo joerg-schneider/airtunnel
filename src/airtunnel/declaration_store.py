@@ -289,8 +289,11 @@ class DataAssetDeclaration:
 
 
 def fetch_all_declarations() -> Iterable[DataAssetDeclaration]:
-    return [
-        DataAssetDeclaration(data_asset=decl_file.replace(DECL_FILE_SUFFIX, ""))
-        for decl_file in os.listdir(P_DECLARATIONS)
-        if decl_file.endswith(DECL_FILE_SUFFIX)
-    ]
+    for decl_file in os.listdir(P_DECLARATIONS):
+        if decl_file.endswith(DECL_FILE_SUFFIX):
+            try:
+                yield DataAssetDeclaration(
+                    data_asset=decl_file.replace(DECL_FILE_SUFFIX, "")
+                )
+            except Exception as e:
+                logger.warning(f"Declaration file '{decl_file}' is broken!: {e}")

@@ -154,3 +154,9 @@ def test_lineage(test_sql1, test_sql2):
             )
             == expected_lineage
         )
+
+
+def test_lineage_from_script() -> None:
+    Lineage.lineage_from_sql_script(
+        script_file_relative_path="/dml/test_schema/test_table.sql"
+    )
