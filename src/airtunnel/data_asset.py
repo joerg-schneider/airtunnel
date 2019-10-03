@@ -249,10 +249,8 @@ class SQLDataAsset(BaseDataAsset):
             )
 
     def retrieve_from_store(self) -> pd.DataFrame:
-        schema_prefix = "" if self.db_schema is None else self.db_schema + "."
         return pd.read_sql(
-            sql=f"select * from {schema_prefix}{self.name}",
-            con=self._sql_hook.get_conn(),
+            sql=f"select * from {self.name}", con=self._sql_hook.get_conn()
         )
 
 
