@@ -20,6 +20,6 @@ A clear and concise description of airtunnel class changes and/or additions.
 Add any other context or screenshots about the feature request here.
 
 **Necessary actions**
-- [ ]
-- [ ]
+- [ ] ...
+- [ ] ...
 - [ ] Passing tests & adequate coverage
