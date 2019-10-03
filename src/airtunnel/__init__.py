@@ -1,4 +1,10 @@
-from airtunnel.data_asset import BaseDataAsset, SQLDataAsset, PandasDataAsset, BaseDataAssetIO, PandasDataAssetIO
+from airtunnel.data_asset import (
+    BaseDataAsset,
+    SQLDataAsset,
+    PandasDataAsset,
+    BaseDataAssetIO,
+    PandasDataAssetIO,
+)
 
 __all__ = [
     BaseDataAsset,
