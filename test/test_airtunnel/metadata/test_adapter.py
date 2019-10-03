@@ -97,3 +97,10 @@ def test_afdb_load_status(test_meta_adapter: BaseMetaAdapter, test_db_hook: DbAp
     )
     # we expect at least 2 entries here now:
     assert rc_hist > 1
+
+
+def test_generic_metadata(test_meta_adapter: BaseMetaAdapter):
+    payload = {"my_data": "my_value", "test_numerid": 42}
+    test_meta_adapter.write_generic_metadata(
+        for_asset=ShellDataAsset(DUMMY_TABLE), payload=payload
+    )
