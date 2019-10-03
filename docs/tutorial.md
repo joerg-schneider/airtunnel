@@ -246,18 +246,18 @@ An easy way that yields consistent naming! :+1:
 
 **Graphically the finished DAG looks like this:**
 
-![alt text](docs/assets/university-dag.png "University DAG")
+![alt text](assets/university-dag.png "University DAG")
 
 ## What happened in the background?
 
 The four assets have been rebuilt and loaded into the *ready* layer of the physical data store:
-![alt text](docs/assets/ready-data.png "ready layer")
+![alt text](assets/ready-data.png "ready layer")
 
 The ingested raw-data has been archived under the DAG execution date: 
-![alt text](docs/assets/ingest-archive.png "ready layer")
+![alt text](assets/ingest-archive.png "ready layer")
 
 …as well as the previous versions of the data assets:
-![alt text](docs/assets/ready-archive.png "ready layer")
+![alt text](assets/ready-archive.png "ready layer")
 (*note:* we did not include an archival operator for `enrollment_summary` in the university DAG)
 
 #### Collected metadata
