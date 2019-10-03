@@ -256,8 +256,8 @@ class DataAssetDeclaration:
 
     @property
     def key_columns(self) -> typing.Optional[List[str]]:
-        if K_KEY_COLUMNS in self.all:
-            return self.all[K_KEY_COLUMNS]
+        if K_KEY_COLUMNS in self._load_decls():
+            return self._load_decls()[K_KEY_COLUMNS]
 
     @property
     def extra_declarations(self) -> Any:
