@@ -14,6 +14,15 @@ def rebuild_for_store(asset: PandasDataAsset, airflow_context):
     programme_df = programme.retrieve_from_store(
         airflow_context=airflow_context, consuming_asset=asset
     )
+
+    # for test coverage we retrieve with several parameter constellations
+    # 1. no airflow_context, no consuming asset
+    enrollment_df = enrollment.retrieve_from_store()
+
+    # 2. only airflow_context
+    enrollment_df = enrollment.retrieve_from_store(airflow_context=airflow_context)
+
+    # 3. all parameters:
     enrollment_df = enrollment.retrieve_from_store(
         airflow_context=airflow_context, consuming_asset=asset
     )
