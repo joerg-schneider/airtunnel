@@ -155,6 +155,9 @@ def test_lineage(test_sql1, test_sql2):
             == expected_lineage
         )
 
+    # test lineage comparison when not equal:
+    assert test_sql1[1] != test_sql2[1]
+
 
 def test_lineage_from_script() -> None:
     Lineage.lineage_from_sql_script(
