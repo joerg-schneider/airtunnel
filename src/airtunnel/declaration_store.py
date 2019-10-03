@@ -158,9 +158,9 @@ class DataAssetDeclaration:
         self._asset_name = data_asset
         self._yaml = self.__load_from_yaml()
 
-        if K_ASSET_TYPE not in self._yaml:
+        if self._yaml is None or K_ASSET_TYPE not in self._yaml:
             raise AttributeError(
-                f"The mandatory type field is missing in {self._file}''"
+                f"The mandatory type field is missing in '{self._file}'"
             )
 
         defined_type = self._yaml[K_ASSET_TYPE]
