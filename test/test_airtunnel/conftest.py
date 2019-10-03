@@ -38,7 +38,8 @@ def test_db_path() -> str:
     logger.info(f"Using test-database: {db_path}")
     yield db_path
     logger.info(f"Removing file of test-database: {db_path}")
-    os.remove(db_path)
+    if os.path.exists(db_path):
+        os.remove(db_path)
 
 
 @pytest.fixture(scope="session", autouse=True)
