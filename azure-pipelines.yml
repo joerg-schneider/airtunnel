@@ -30,8 +30,8 @@ steps:
     CUR_PATH=$(pwd)
     export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
     export PYTHONPATH=${CUR_PATH}/src:${CUR_PATH}/test
-    cd test/test_airtunnel
-    pytest conftest.py
+    cd test
+    pytest test_airtunnel/conftest.py
     pytest . -s --doctest-modules --junitxml=junit/test-results.xml --cov=airtunnel --cov-report=xml --cov-report=html
   displayName: 'Test with pytest'
 
@@ -50,10 +50,9 @@ steps:
 - script: |
     CUR_PATH=$(pwd)
     python -m pip install coverage-badge
+    cd test && coverage-badge -o coverage.svg
 
-    cd test/test_airtunnel && coverage-badge -o coverage.svg
-
-    mv ${CUR_PATH}/test/test_airtunnel/coverage.svg /tmp/coverage.svg
+    mv ${CUR_PATH}/test/coverage.svg /tmp/coverage.svg
 
     git config --global user.email "joerg@joerg-schneider.org"
     git config --global user.name "joerg-schneider"
@@ -65,4 +64,5 @@ steps:
     git commit -m "AzureDevOps: updated coverage.svg for master"
     git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
   displayName: 'Coverage badge'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 

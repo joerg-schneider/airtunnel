@@ -1,7 +1,8 @@
 import importlib
 import logging
 import os
-from abc import abstractmethod
+import warnings
+from abc import abstractmethod, ABC
 from os import path
 from typing import Optional, Union, Iterable, Dict, List
 
@@ -10,7 +11,7 @@ from airflow.hooks.dbapi_hook import DbApiHook
 from airflow.models import TaskInstance
 
 import airtunnel
-from airtunnel.declaration_store import DataAssetDeclaration, V_FORMAT_PARQUET
+from airtunnel.declaration_store import DataAssetDeclaration
 from airtunnel.operators.sql import sqloperator
 from airtunnel.paths import (
     P_DATA_READY,
@@ -99,11 +100,11 @@ class BaseDataAsset:
 
     @abstractmethod
     def rebuild_for_store(self, airflow_context, **kwargs):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def retrieve_from_store(self):
-        pass
+        raise NotImplementedError
 
 
 class PandasDataAsset(BaseDataAsset):
@@ -144,9 +145,7 @@ class PandasDataAsset(BaseDataAsset):
         except Exception as e:
             logger.warning(f"Error on recording lineage: {e}")
 
-        # todo: this should here switch formats depending on declaration
-        if self.declarations.out_storage_format == V_FORMAT_PARQUET:
-            return pd.read_parquet(self.ready_path)
+        return PandasDataAssetIO.retrieve_data_asset(asset=self)
 
     def rebuild_for_store(self, airflow_context, **kwargs):
         # we delegate the rebuild of this data asset to the Pandas script
@@ -184,11 +183,13 @@ class SQLDataAsset(BaseDataAsset):
         self._sql_hook = sql_hook
         super(SQLDataAsset, self).__init__(name=name)
 
-    def get_raw_sql_script(self, type: str = "dml") -> str:
+    def get_raw_sql_script(self, script_type: str = "dml") -> str:
         from scripts import sql
 
         sql_location = path.join(
-            path.dirname(sql.__file__), type, self.name.replace(".", "/") + ".sql"
+            path.dirname(sql.__file__),
+            script_type,
+            self.name.replace(".", "/") + ".sql",
         )
 
         if not path.exists(sql_location):
@@ -202,10 +203,14 @@ class SQLDataAsset(BaseDataAsset):
         return loaded_sql_script
 
     def formatted_sql_script(
-        self, parameters, dynamic_parameters=None, airflow_context=None
+        self,
+        parameters: Dict,
+        script_type: str = "dml",
+        dynamic_parameters=None,
+        airflow_context=None,
     ):
 
-        loaded_sql_script = self.get_raw_sql_script()
+        loaded_sql_script = self.get_raw_sql_script(script_type=script_type)
 
         if dynamic_parameters is not None:
             parameters.update(
@@ -222,24 +227,31 @@ class SQLDataAsset(BaseDataAsset):
 
         return loaded_sql_script
 
+    # todo: we might check if a DDL script even exists, it could be optional!
     def rebuild_for_store(self, airflow_context, **kwargs):
-        formatted_sql_script = self.formatted_sql_script(
-            parameters=kwargs.get("parameters", None),
-            dynamic_parameters=kwargs.get("dynamic_parameters", None),
-            airflow_context=airflow_context,
-        )
+        # run first ddl, then dml -- or just solely dml:
+        scripts_to_run = ("ddl", "dml") if self.declarations.run_ddl else ("dml",)
 
-        script_statements = sqloperator.split_sql_script(formatted_sql_script)
+        for script_type in scripts_to_run:
+            formatted_sql_script = self.formatted_sql_script(
+                parameters=kwargs.get("parameters", None),
+                script_type=script_type,
+                dynamic_parameters=kwargs.get("dynamic_parameters", None),
+                airflow_context=airflow_context,
+            )
 
-        sqloperator.execute_script(
-            connection=self._sql_hook.get_cursor(), statements=script_statements
-        )
+            script_statements = sqloperator.split_sql_script(formatted_sql_script)
+
+            connection = self._sql_hook.get_sqlalchemy_engine().connect()
+            connection = connection.execution_options(autocommit=False)
+
+            sqloperator.execute_script(
+                connection=connection, statements=script_statements
+            )
 
     def retrieve_from_store(self) -> pd.DataFrame:
-        schema_prefix = "" if self.db_schema is None else self.db_schema + "."
         return pd.read_sql(
-            sql=f"select * from {schema_prefix}{self.name}",
-            con=self._sql_hook.get_conn(),
+            sql=f"select * from {self.name}", con=self._sql_hook.get_conn()
         )
 
 
@@ -274,3 +286,88 @@ class ShellDataAsset(BaseDataAsset):
         raise NotImplementedError(
             f"This is a {self.__class__.__name__}, use {self.to_full_data_asset.__name__} to convert."
         )
+
+
+class BaseDataAssetIO(ABC):
+    @staticmethod
+    @abstractmethod
+    def write_data_asset(
+        asset: BaseDataAsset,
+        data: Union[pd.DataFrame, "pyspark.sql.DataFrame"],
+        **writer_kwargs,
+    ) -> None:
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def read_data_asset(
+        asset: BaseDataAsset, source_files: Iterable[str], **reader_kwargs
+    ) -> Union[pd.DataFrame, "pyspark.sql.DataFrame"]:
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def retrieve_data_asset(
+        asset: BaseDataAsset, **reader_kwargs
+    ) -> Union[pd.DataFrame, "pyspark.sql.DataFrame"]:
+        raise NotImplementedError
+
+
+class PandasDataAssetIO(BaseDataAssetIO):
+    @staticmethod
+    def retrieve_data_asset(asset: BaseDataAsset, **reader_kwargs) -> pd.DataFrame:
+        data = []
+        source_files = [
+            path.join(root, f)
+            for root, dirs, files in os.walk(asset.ready_path)
+            for f in files
+        ]
+
+        if asset.declarations.is_parquet_output:
+            data = [pd.read_parquet(f, **reader_kwargs) for f in source_files]
+        elif asset.declarations.is_csv_output:
+            data = [pd.read_csv(f, **reader_kwargs) for f in source_files]
+
+        if not data:
+            return pd.DataFrame()
+
+        return pd.concat(data) if len(data) > 1 else data[0]
+
+    @staticmethod
+    def write_data_asset(
+        asset: BaseDataAsset, data: pd.DataFrame, **writer_kwargs
+    ) -> None:
+        if asset.declarations.is_parquet_output:
+            data.to_parquet(
+                path.join(asset.staging_ready_path, asset.output_filename),
+                compression=asset.declarations.out_comp_codec,
+                **writer_kwargs,
+            )
+        elif asset.declarations.is_csv_output:
+            data.to_csv(
+                path_or_buf=path.join(asset.staging_ready_path, asset.output_filename),
+                compression=asset.declarations.out_comp_codec,
+                **writer_kwargs,
+            )
+        else:
+            raise ValueError(f"Only output formats of csv/parquet are supported!")
+
+    @staticmethod
+    def read_data_asset(
+        asset: PandasDataAsset, source_files: Iterable[str], **reader_kwargs
+    ) -> pd.DataFrame:
+
+        data = []
+
+        if asset.declarations.is_csv_input:
+            data = [pd.read_csv(f, **reader_kwargs) for f in source_files]
+        elif asset.declarations.is_xls_input:
+            data = [pd.read_excel(f, **reader_kwargs) for f in source_files]
+        elif asset.declarations.is_parquet_input:
+            data = [pd.read_parquet(f, **reader_kwargs) for f in source_files]
+
+        if not data:
+            warnings.warn(f"No data for {asset.name} was read - please double check!!")
+            return pd.DataFrame()
+
+        return pd.concat(data) if len(data) > 1 else data[0]

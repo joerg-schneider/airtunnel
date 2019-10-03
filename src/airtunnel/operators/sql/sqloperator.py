@@ -76,14 +76,6 @@ class SQLOperator(BaseOperator):
         connection.close()
 
     @property
-    def sql_params_dict(self):
-        return self.__sql_params
-
-    @property
     def loaded_sql_script(self):
         script = self.__loaded_sql_script
         return script
-
-    @property
-    def loaded_sql_statements(self):
-        return self.__loaded_sql_statements

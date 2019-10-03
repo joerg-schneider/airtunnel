@@ -24,25 +24,25 @@ class BaseMetaAdapter(ABC):
 
     @abstractmethod
     def setup(self):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def write_inspected_files(self, discovered_files: Iterable[IngestedFileMetadata]):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def read_inspected_files(
         self, for_asset: BaseDataAsset, dag_id: str, dag_exec_date: datetime
     ) -> List[IngestedFileMetadata]:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def write_generic_metadata(self, for_asset: BaseDataAsset, payload: Dict):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def write_lineage(self, lineage: Lineage):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def read_lineage(
@@ -53,15 +53,15 @@ class BaseMetaAdapter(ABC):
     ) -> List[Tuple[Lineage, int]]:
         # should return the complete lineage for a data asset, i.e. all sources including
         # transitive ones, stating the upstream level at each node
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def write_load_status(self, load_status: LoadStatus):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def read_load_status(self, for_asset: BaseDataAsset) -> LoadStatus:
-        pass
+        raise NotImplementedError
 
 
 class SQLMetaAdapter(BaseMetaAdapter):

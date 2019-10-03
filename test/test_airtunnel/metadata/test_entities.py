@@ -53,10 +53,15 @@ def ingested_file_metadata() -> IngestedFileMetadata:
 def test_load_status_cls(load_status: LoadStatus, adapter: BaseMetaAdapter) -> None:
     load_status_time = datetime.now()
     adapter.write_load_status(load_status)
-    read_ls_time = adapter.read_load_status(for_asset=load_status.for_asset).load_time
+    status = adapter.read_load_status(for_asset=load_status.for_asset)
+    read_ls_time = status.load_time
 
     # check that the returned datetime is within bounds of 1 second:
     assert load_status_time - timedelta(seconds=1) < read_ls_time + timedelta(seconds=1)
+    assert status.is_within(frame=timedelta(seconds=20))
+    # repr:
+    x = "t" + str(status)
+    assert isinstance(x, str)
 
 
 def test_ingested_file_metadata_cls(
@@ -72,6 +77,10 @@ def test_ingested_file_metadata_cls(
     assert len(inspected_files_read) == 1
     assert inspected_files_read[0]._for_asset == ingested_file_metadata._for_asset
 
+    # repr:
+    x = "t" + str(inspected_files_read)
+    assert isinstance(x, str)
+
 
 def test_lineage_cls(lineage: Lineage, adapter: BaseMetaAdapter) -> None:
     adapter.write_lineage(lineage)
@@ -79,6 +88,23 @@ def test_lineage_cls(lineage: Lineage, adapter: BaseMetaAdapter) -> None:
     assert len(retrieved_lineage) > 0
     assert retrieved_lineage[0][0].data_target == lineage.data_target
     assert retrieved_lineage[0][0].data_sources == lineage.data_sources
+
+    # try with additional params:
+    l2 = adapter.read_lineage(lineage.data_target, dag_id=lineage.dag_id)
+
+    # ...another variation:
+    l3 = adapter.read_lineage(
+        lineage.data_target, dag_id=lineage.dag_id, dag_exec_date=lineage.dag_exec_date
+    )
+
+    # ...another variation:
+    l4 = adapter.read_lineage(lineage.data_target, dag_exec_date=lineage.dag_exec_date)
+
+    assert retrieved_lineage == l2 == l3 == l4
+
+    # repr:
+    x = "t" + str(retrieved_lineage)
+    assert isinstance(x, str)
 
 
 # -----
@@ -128,3 +154,12 @@ def test_lineage(test_sql1, test_sql2):
             )
             == expected_lineage
         )
+
+    # test lineage comparison when not equal:
+    assert test_sql1[1] != test_sql2[1]
+
+
+def test_lineage_from_script() -> None:
+    Lineage.lineage_from_sql_script(
+        script_file_relative_path="/dml/test_schema/test_table.sql"
+    )

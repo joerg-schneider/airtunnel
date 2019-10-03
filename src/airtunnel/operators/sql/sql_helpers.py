@@ -11,11 +11,11 @@ logger.setLevel(logging.INFO)
 MINIMUM_SQL_STATEMENT_LEN = 5
 
 
-def load_sql_script(script_file_relative_path: Union[str, List[str]]) -> str:
+def load_sql_script(script_file_relative_path: Union[str, Iterable[str]]) -> str:
     """ This method is static as it comes handy in other places. """
 
     # if given just a path to one file (string), put it in a list
-    if not isinstance(script_file_relative_path, list):
+    if isinstance(script_file_relative_path, str):
         script_file_relative_path = [script_file_relative_path]
 
     # init with empty str.

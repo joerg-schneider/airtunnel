@@ -18,6 +18,8 @@ from airtunnel.declaration_store import (
     K_ARCH_READY,
     K_OUT_COMP_CODEC,
     K_STAGING_ASSETS,
+    K_KEY_COLUMNS,
+    SECTION_EXTRA,
 )
 from airtunnel.paths import P_DECLARATIONS
 
@@ -45,11 +47,19 @@ def test_data_asset() -> str:
     {K_OUT_FORMAT}: parquet
     {K_OUT_COMP_CODEC}: gzip
     {K_ARCH_READY}: yes
+    {K_KEY_COLUMNS}:
+        - abc
 
 {K_STAGING_ASSETS}:
     - stage_asset_tmp1
     - stage_asset_tmp2
     - stage_asset_tmp3
+
+{SECTION_EXTRA}:
+    extra_key:
+        extra_value
+
+
 """
         )
     yield TEST_ASSET_NAME
@@ -66,6 +76,7 @@ def test_ingested_data_asset_decl(test_data_asset) -> None:
     assert d.in_storage_format == "csv"
     assert d.out_comp_codec == "gzip"
     assert d.out_storage_format == "parquet"
+    assert d.key_columns == ["abc"]
 
     with pytest.raises(ValueError):
         x = d.transform_renames
@@ -81,3 +92,24 @@ def test_ingested_data_asset_decl(test_data_asset) -> None:
 def test_non_existent_asset() -> None:
     with pytest.raises(expected_exception=FileNotFoundError):
         DataAssetDeclaration(data_asset="does_not_exist")
+
+
+def test_exceptions(test_data_asset) -> None:
+    with pytest.raises(ValueError):
+        DataAssetDeclaration(data_asset="cAmELcAsE")
+
+    with pytest.raises(AttributeError):
+        DataAssetDeclaration(data_asset="faulty")
+
+    with pytest.raises(AttributeError):
+        DataAssetDeclaration(data_asset="faulty_2")
+
+    derived_asset = DataAssetDeclaration(data_asset="enrollment_summary")
+
+    with pytest.raises(ValueError):
+        renames = derived_asset.transform_renames
+        logger.info(renames)
+
+    with pytest.raises(ValueError):
+        fglob = derived_asset.ingest_file_glob
+        logger.info(fglob)

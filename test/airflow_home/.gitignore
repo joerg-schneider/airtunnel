@@ -2,3 +2,4 @@ airflow.cfg
 unittests.cfg
 logs
 logs/**
+airflow-webserver.pid

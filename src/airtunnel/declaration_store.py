@@ -36,6 +36,7 @@ K_ASSET_TYPE = "type"
 K_IN_DATE_FORMATS = "in_date_formats"
 K_STAGING_ASSETS = "staging_assets"
 K_KEY_COLUMNS = "key_columns"
+K_RUN_DDL = "run_ddl"
 
 
 # allowed YAML property values - prefixed by V_
@@ -62,6 +63,7 @@ DEFAULT_LOAD_SECTION = {
     K_OUT_FORMAT: V_FORMAT_PARQUET,
     K_OUT_COMP_CODEC: V_COMP_GZIP,
     K_ARCH_READY: True,
+    K_RUN_DDL: True,
 }
 
 
@@ -81,6 +83,7 @@ class DeclarationSchemas:
                 lambda o: o in V_ALLOWED_COMP
             ),
             Optional(K_ARCH_READY, default=True): lambda a: a in (True, False),
+            Optional(K_RUN_DDL, default=True): lambda a: a in (True, False),
             Optional(K_KEY_COLUMNS): Schema([Schema(str)]),
         }
     )
@@ -147,7 +150,7 @@ class DataAssetDeclaration:
 
     def __init__(self, data_asset: str):
 
-        if data_asset != data_asset.strip() and data_asset != data_asset.lower():
+        if data_asset != data_asset.strip() or data_asset != data_asset.lower():
             raise ValueError(
                 f"All data assets should be lower-cased and without leading/trailing space"
             )
@@ -155,9 +158,9 @@ class DataAssetDeclaration:
         self._asset_name = data_asset
         self._yaml = self.__load_from_yaml()
 
-        if K_ASSET_TYPE not in self._yaml:
+        if self._yaml is None or K_ASSET_TYPE not in self._yaml:
             raise AttributeError(
-                f"The mandatory type field is missing in {self._file}''"
+                f"The mandatory type field is missing in '{self._file}'"
             )
 
         defined_type = self._yaml[K_ASSET_TYPE]
@@ -253,8 +256,8 @@ class DataAssetDeclaration:
 
     @property
     def key_columns(self) -> typing.Optional[List[str]]:
-        if K_KEY_COLUMNS in self.all:
-            return self.all[K_KEY_COLUMNS]
+        if K_KEY_COLUMNS in self._load_decls():
+            return self._load_decls()[K_KEY_COLUMNS]
 
     @property
     def extra_declarations(self) -> Any:
@@ -280,10 +283,17 @@ class DataAssetDeclaration:
     def is_xls_input(self) -> bool:
         return self.in_storage_format == V_FORMAT_EXCEL
 
+    @property
+    def run_ddl(self) -> bool:
+        return self._load_decls()[K_RUN_DDL]
+
 
 def fetch_all_declarations() -> Iterable[DataAssetDeclaration]:
-    return [
-        DataAssetDeclaration(data_asset=decl_file.replace(DECL_FILE_SUFFIX, ""))
-        for decl_file in os.listdir(P_DECLARATIONS)
-        if decl_file.endswith(DECL_FILE_SUFFIX)
-    ]
+    for decl_file in os.listdir(P_DECLARATIONS):
+        if decl_file.endswith(DECL_FILE_SUFFIX):
+            try:
+                yield DataAssetDeclaration(
+                    data_asset=decl_file.replace(DECL_FILE_SUFFIX, "")
+                )
+            except Exception as e:
+                logger.warning(f"Declaration file '{decl_file}' is broken!: {e}")
