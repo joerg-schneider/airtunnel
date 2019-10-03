@@ -53,10 +53,14 @@ def ingested_file_metadata() -> IngestedFileMetadata:
 def test_load_status_cls(load_status: LoadStatus, adapter: BaseMetaAdapter) -> None:
     load_status_time = datetime.now()
     adapter.write_load_status(load_status)
-    read_ls_time = adapter.read_load_status(for_asset=load_status.for_asset).load_time
+    status = adapter.read_load_status(for_asset=load_status.for_asset)
+    read_ls_time = status.load_time
 
     # check that the returned datetime is within bounds of 1 second:
     assert load_status_time - timedelta(seconds=1) < read_ls_time + timedelta(seconds=1)
+    assert status.is_within(frame=timedelta(seconds=20))
+    # repr:
+    x = "t" + str(status)
 
 
 def test_ingested_file_metadata_cls(
@@ -72,6 +76,9 @@ def test_ingested_file_metadata_cls(
     assert len(inspected_files_read) == 1
     assert inspected_files_read[0]._for_asset == ingested_file_metadata._for_asset
 
+    # repr:
+    x = "t" + str(inspected_files_read)
+
 
 def test_lineage_cls(lineage: Lineage, adapter: BaseMetaAdapter) -> None:
     adapter.write_lineage(lineage)
@@ -79,6 +86,9 @@ def test_lineage_cls(lineage: Lineage, adapter: BaseMetaAdapter) -> None:
     assert len(retrieved_lineage) > 0
     assert retrieved_lineage[0][0].data_target == lineage.data_target
     assert retrieved_lineage[0][0].data_sources == lineage.data_sources
+
+    # repr:
+    x = "t" + str(retrieved_lineage)
 
 
 # -----
