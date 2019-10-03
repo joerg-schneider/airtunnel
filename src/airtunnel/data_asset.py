@@ -322,8 +322,6 @@ class PandasDataAssetIO(BaseDataAssetIO):
             for f in files
         ]
 
-        print(source_files)
-
         if asset.declarations.is_parquet_output:
             data = [pd.read_parquet(f, **reader_kwargs) for f in source_files]
         elif asset.declarations.is_csv_output:
