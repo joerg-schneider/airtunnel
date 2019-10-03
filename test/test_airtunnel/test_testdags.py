@@ -29,9 +29,7 @@ def has_airflow_cli() -> bool:
 def test_testdag1():
     # prepare the landing data by copying it into the landing directory:
     current_dir = os.path.dirname(__file__)
-    landing_test_data = os.path.join(
-        current_dir, os.pardir, "test_raw_landing_data"
-    )
+    landing_test_data = os.path.join(current_dir, os.pardir, "test_raw_landing_data")
     for test_data_asset in os.listdir(landing_test_data):
         landing_dir = os.path.join(
             airtunnel.paths.P_DATA_INGEST_LANDING, test_data_asset

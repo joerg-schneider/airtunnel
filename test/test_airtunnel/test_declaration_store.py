@@ -92,5 +92,3 @@ def test_exceptions(test_data_asset) -> None:
 
     with pytest.raises(AttributeError):
         DataAssetDeclaration(data_asset="faulty_2")
-
-
