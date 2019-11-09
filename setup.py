@@ -142,8 +142,9 @@ setup(
             "pytest>=4.4.0,<4.5.0",
             "flake8",
             "xlwt",
-            "xlrd"
-        ]
+            "xlrd",
+        ],
+        "pyspark": ["pyspark>=2.3"],
     },
     # If there are data files included in your packages that need to be
     # installed, specify them here.
