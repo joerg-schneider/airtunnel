@@ -1,5 +1,5 @@
 # airtunnel
-<img src="docs/assets/airtunnel-logo.jpg" width="300px" />
+<img src="docs/assets/airtunnel-logo.jpg" width="300px" align="center"/>
 
 Airtunnel is a means of supplementing [Apache Airflow](https://github.com/apache/airflow), a platform for workflow
 automation in Python which is angled at analytics/data pipelining. It was born out of years of project experience in
