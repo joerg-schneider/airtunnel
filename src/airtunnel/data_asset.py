@@ -10,8 +10,15 @@ import pandas as pd
 from airflow.hooks.dbapi_hook import DbApiHook
 from airflow.models import TaskInstance
 
+PYSPARK_DEFAULT_SAVEMODE = "overwrite"
+
+try:
+    import pyspark
+except ImportError:
+    pyspark = None
+
 import airtunnel
-from airtunnel.declaration_store import DataAssetDeclaration
+from airtunnel.declaration_store import DataAssetDeclaration, V_COMP_NONE
 from airtunnel.operators.sql import sqloperator
 from airtunnel.paths import (
     P_DATA_READY,
@@ -118,30 +125,41 @@ class PandasDataAsset(BaseDataAsset):
 
     def rebuild_for_store(self, airflow_context, **kwargs):
         # we delegate the rebuild of this data asset to the Pandas script
-        script_path = path.join(airtunnel.paths.P_SCRIPTS_PY, self.name + ".py")
-        try:
-            spec = importlib.util.spec_from_file_location("module.name", script_path)
-            asset_script = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(asset_script)
-        except Exception as e:
-            logger.error(f"Could not load Pandas script expected at {script_path} ")
-            raise e
-
+        asset_script = _load_py_script(self)
         asset_script.rebuild_for_store(asset=self, airflow_context=airflow_context)
 
-    def rename_fields_as_declared(self, data: pd.DataFrame) -> pd.DataFrame:
+    def rename_fields_as_declared(self, data: "pyspark.sql.DataFrame") -> pd.DataFrame:
+        rename_map = {c: c for c in data.columns}
+        rename_map.update(self.declarations.transform_renames)
+        logger.info(f"Renaming according to: {rename_map}")
+
+        for c_from, c_to in rename_map.items():
+            data = data.withColumnRenamed(c_from, c_to)
+
+        return data
+
+
+class PySparkDataAsset(BaseDataAsset):
+    def rebuild_for_store(self, airflow_context, **kwargs):
+        # we delegate the rebuild of this data asset to the PySpark script
+        asset_script = _load_py_script(self)
+        asset_script.rebuild_for_store(asset=self, airflow_context=airflow_context)
+
+    def retrieve_from_store(
+        self, airflow_context=None, consuming_asset: Optional[BaseDataAsset] = None
+    ) -> "pyspark.sql.DataFrame":
+
+        _log_lineage(self, airflow_context, consuming_asset)
+
+        return PySparkDataAssetIO.retrieve_data_asset(asset=self)
+
+    def rename_fields_as_declared(
+        self, data: "pyspark.sql.DataFrame"
+    ) -> "pyspark.sql.DataFrame":
         rename_map = {c: c for c in data.columns}
         rename_map.update(self.declarations.transform_renames)
         logger.info(f"Renaming according to: {rename_map}")
         return data.rename(columns=rename_map)
-
-
-# noinspection PyAbstractClass
-# noinspection PyMissingConstructor
-class PySparkDataAsset(BaseDataAsset):
-    # todo: implement
-    def __init__(self, name: str):
-        raise NotImplementedError("PySpark DataAsset is still under development.")
 
 
 class SQLDataAsset(BaseDataAsset):
@@ -342,6 +360,83 @@ class PandasDataAssetIO(BaseDataAssetIO):
         return pd.concat(data) if len(data) > 1 else data[0]
 
 
+class PySparkDataAssetIO(BaseDataAssetIO):
+    SPARK_SESSION_KWARG = "spark"
+
+    @staticmethod
+    def retrieve_data_asset(
+        asset: BaseDataAsset, **reader_kwargs
+    ) -> "pyspark.sql.DataFrame":
+
+        if PySparkDataAssetIO.SPARK_SESSION_KWARG not in reader_kwargs:
+            raise ValueError("Please provide a Spark session using the kwarg 'spark'.")
+
+        spark_session: pyspark.sql.SparkSession = reader_kwargs.pop(
+            PySparkDataAssetIO.SPARK_SESSION_KWARG
+        )
+
+        if not isinstance(spark_session, pyspark.sql.SparkSession):
+            raise TypeError(
+                f"kwarg 'spark' is no instance of pyspark.sql.SparkSession: {type(spark_session)}"
+            )
+
+        if asset.declarations.is_parquet_output:
+            data = spark_session.read.parquet(asset.ready_path)
+        elif asset.declarations.is_csv_output:
+            data = spark_session.read.csv(path=asset.ready_path, **reader_kwargs)
+        else:
+            raise ValueError(f"Unsupported asset output format for PySpark data asset.")
+
+        return data
+
+    @staticmethod
+    def write_data_asset(
+        asset: BaseDataAsset, data: "pyspark.sql.DataFrame", **writer_kwargs
+    ) -> None:
+
+        if "mode" not in writer_kwargs:
+            writer_kwargs["mode"] = PYSPARK_DEFAULT_SAVEMODE
+
+        if (
+            "compression" not in writer_kwargs
+            and asset.declarations.out_comp_codec != V_COMP_NONE
+        ):
+            writer_kwargs["compression"] = asset.declarations.out_comp_codec
+
+        if asset.declarations.is_parquet_output:
+            data.write.parquet(asset.staging_ready_path, **writer_kwargs)
+
+        elif asset.declarations.is_csv_output:
+            data.write.csv(path=asset.staging_ready_path, **writer_kwargs)
+        else:
+            raise ValueError(f"Only output formats of csv/parquet are supported!")
+
+    @staticmethod
+    def read_data_asset(
+        asset: BaseDataAsset, source_files: Iterable[str], **reader_kwargs
+    ) -> "pyspark.sql.DataFrame":
+
+        if PySparkDataAssetIO.SPARK_SESSION_KWARG not in reader_kwargs:
+            raise ValueError("Please provide a Spark session using the kwarg 'spark'.")
+
+        spark_session: pyspark.sql.SparkSession = reader_kwargs.pop(
+            PySparkDataAssetIO.SPARK_SESSION_KWARG
+        )
+
+        data = None
+
+        if asset.declarations.is_csv_input:
+            data = spark_session.read.csv(path=list(source_files), **reader_kwargs)
+        elif asset.declarations.is_xls_input:
+            raise ValueError(
+                "Reading Excel into a PySpark data asset is not supported – consider PandasDataAsset."
+            )
+        elif asset.declarations.is_parquet_input:
+            data = spark_session.read.parquet(*source_files)
+
+        return data
+
+
 def _log_lineage(
     for_asset: BaseDataAsset, airflow_context, consuming_asset: Optional[BaseDataAsset]
 ):
@@ -377,3 +472,15 @@ def _log_lineage(
             )
     except Exception as e:
         logger.warning(f"Error on recording lineage: {e}")
+
+
+def _load_py_script(asset: BaseDataAsset):
+    script_path = path.join(airtunnel.paths.P_SCRIPTS_PY, asset.name + ".py")
+    try:
+        spec = importlib.util.spec_from_file_location("module.name", script_path)
+        asset_script = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(asset_script)
+    except Exception as e:
+        logger.error(f"Could not load Pandas script expected at {script_path} ")
+        raise e
+    return asset_script
