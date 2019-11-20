@@ -52,7 +52,7 @@ class BaseDataAsset:
     def make_ready_temp_path(self, airflow_context: Dict) -> str:
         return os.path.join(
             P_DATA_READY,
-            "." + str(airflow_context["task_instance"].execution_date) + self.name,
+            "." + str(airflow_context["task_instance"].execution_date).replace(" ", "_").replace(":", "_") + self.name,
         )
 
     @property
@@ -66,7 +66,7 @@ class BaseDataAsset:
         return os.path.join(
             P_DATA_STAGING_PICKEDUP,
             self.name,
-            str(airflow_context["task_instance"].execution_date),
+            str(airflow_context["task_instance"].execution_date).replace(" ", "_").replace(":", "_"),
         )
 
     @property
@@ -79,7 +79,7 @@ class BaseDataAsset:
         return os.path.join(
             P_DATA_ARCHIVE,
             self.name,
-            str(airflow_context["task_instance"].execution_date),
+            str(airflow_context["task_instance"].execution_date).replace(" ", "_").replace(":", "_"),
         )
 
     def pickedup_files(self, airflow_context) -> List[str]:
