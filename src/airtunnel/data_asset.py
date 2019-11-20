@@ -51,12 +51,15 @@ class BaseDataAsset:
 
     def make_ready_temp_path(self, airflow_context: Dict) -> str:
         return os.path.join(
-            P_DATA_READY,
-            "." + self._escaped_exec_date(airflow_context) + self.name,
+            P_DATA_READY, "." + self._escaped_exec_date(airflow_context) + self.name
         )
 
     def _escaped_exec_date(self, airflow_context):
-        return str(airflow_context["task_instance"].execution_date).replace(" ", "_").replace(":", "_")
+        return (
+            str(airflow_context["task_instance"].execution_date)
+            .replace(" ", "_")
+            .replace(":", "_")
+        )
 
     @property
     def landing_path(self) -> str:
@@ -67,9 +70,7 @@ class BaseDataAsset:
 
     def staging_pickedup_path(self, airflow_context) -> str:
         return os.path.join(
-            P_DATA_STAGING_PICKEDUP,
-            self.name,
-            self._escaped_exec_date(airflow_context),
+            P_DATA_STAGING_PICKEDUP, self.name, self._escaped_exec_date(airflow_context)
         )
 
     @property
@@ -80,9 +81,7 @@ class BaseDataAsset:
 
     def ready_archive_path(self, airflow_context) -> str:
         return os.path.join(
-            P_DATA_ARCHIVE,
-            self.name,
-            self._escaped_exec_date(airflow_context),
+            P_DATA_ARCHIVE, self.name, self._escaped_exec_date(airflow_context)
         )
 
     def pickedup_files(self, airflow_context) -> List[str]:
@@ -145,7 +144,10 @@ class PySparkDataAsset(BaseDataAsset):
         asset_script.rebuild_for_store(asset=self, airflow_context=airflow_context)
 
     def retrieve_from_store(
-        self, airflow_context=None, consuming_asset: Optional[BaseDataAsset] = None
+        self,
+        airflow_context=None,
+        consuming_asset: Optional[BaseDataAsset] = None,
+        spark_session: "pyspark.sql.SparkSession" = None,
     ) -> "pyspark.sql.DataFrame":
 
         _log_lineage(self, airflow_context, consuming_asset)
@@ -368,20 +370,12 @@ class PySparkDataAssetIO(BaseDataAssetIO):
 
     @staticmethod
     def retrieve_data_asset(
-        asset: BaseDataAsset, **reader_kwargs
+        asset: BaseDataAsset,
+        spark_session: "pyspark.sql.SparkSession" = None,
+        **reader_kwargs,
     ) -> "pyspark.sql.DataFrame":
 
-        if PySparkDataAssetIO.SPARK_SESSION_KWARG not in reader_kwargs:
-            raise ValueError("Please provide a Spark session using the kwarg 'spark'.")
-
-        spark_session: pyspark.sql.SparkSession = reader_kwargs.pop(
-            PySparkDataAssetIO.SPARK_SESSION_KWARG
-        )
-
-        if not isinstance(spark_session, pyspark.sql.SparkSession):
-            raise TypeError(
-                f"kwarg 'spark' is no instance of pyspark.sql.SparkSession: {type(spark_session)}"
-            )
+        PySparkDataAssetIO._check_spark_session(spark_session)
 
         if asset.declarations.is_parquet_output:
             data = spark_session.read.parquet(asset.ready_path)
@@ -416,11 +410,13 @@ class PySparkDataAssetIO(BaseDataAssetIO):
 
     @staticmethod
     def read_data_asset(
-        asset: BaseDataAsset, source_files: Iterable[str], **reader_kwargs
+        asset: BaseDataAsset,
+        source_files: Iterable[str],
+        spark_session: "pyspark.sql.SparkSession" = None,
+        **reader_kwargs,
     ) -> "pyspark.sql.DataFrame":
 
-        if PySparkDataAssetIO.SPARK_SESSION_KWARG not in reader_kwargs:
-            raise ValueError("Please provide a Spark session using the kwarg 'spark'.")
+        PySparkDataAssetIO._check_spark_session(spark_session)
 
         spark_session: pyspark.sql.SparkSession = reader_kwargs.pop(
             PySparkDataAssetIO.SPARK_SESSION_KWARG
@@ -438,6 +434,17 @@ class PySparkDataAssetIO(BaseDataAssetIO):
             data = spark_session.read.parquet(*source_files)
 
         return data
+
+    @staticmethod
+    def _check_spark_session(spark_session):
+        if spark_session is None:
+            raise ValueError(
+                "Please provide a Spark session using the kwarg 'spark_session'."
+            )
+        if not isinstance(spark_session, pyspark.sql.SparkSession):
+            raise TypeError(
+                f"kwarg 'spark' is no instance of pyspark.sql.SparkSession: {type(spark_session)}"
+            )
 
 
 def _log_lineage(
