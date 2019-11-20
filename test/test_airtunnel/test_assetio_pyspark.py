@@ -65,7 +65,7 @@ def test_read_write_parquet(
     fake_airflow_context: Any,
     spark_session: pyspark.sql.SparkSession,
 ) -> None:
-    p = path.join(test_parquet_in_asset.staging_pickedup_path(fake_airflow_context))
+    p = path.abspath(path.join(test_parquet_in_asset.staging_pickedup_path(fake_airflow_context)))
     os.makedirs(path.dirname(p), exist_ok=True)
     iris_spark.write.mode("overwrite").parquet(p)
 
