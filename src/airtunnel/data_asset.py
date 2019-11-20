@@ -112,38 +112,7 @@ class PandasDataAsset(BaseDataAsset):
         self, airflow_context=None, consuming_asset: Optional[BaseDataAsset] = None
     ) -> pd.DataFrame:
 
-        #  attempt to log lineage
-        try:
-            if consuming_asset is not None:
-                # have to have these imports here to avoid cross-import issues:
-                from airtunnel.metadata.adapter import SQLMetaAdapter
-                from airtunnel.metadata.entities import Lineage
-
-                if airflow_context is not None:
-                    task_instance: TaskInstance = airflow_context["task_instance"]
-                    dag_id = task_instance.dag_id
-                    task_id = task_instance.task_id
-                    dag_exec_date = task_instance.execution_date
-                else:
-                    dag_id = None
-                    task_id = None
-                    dag_exec_date = None
-
-                db = SQLMetaAdapter()
-                db.write_lineage(
-                    Lineage(
-                        data_sources=[self],
-                        data_target=consuming_asset,
-                        dag_id=dag_id,
-                        task_id=task_id,
-                        dag_exec_date=dag_exec_date,
-                    )
-                )
-                logger.info(
-                    f"Lineage from {self.name} to {consuming_asset.name} recorded"
-                )
-        except Exception as e:
-            logger.warning(f"Error on recording lineage: {e}")
+        _log_lineage(self, airflow_context, consuming_asset)
 
         return PandasDataAssetIO.retrieve_data_asset(asset=self)
 
@@ -371,3 +340,40 @@ class PandasDataAssetIO(BaseDataAssetIO):
             return pd.DataFrame()
 
         return pd.concat(data) if len(data) > 1 else data[0]
+
+
+def _log_lineage(
+    for_asset: BaseDataAsset, airflow_context, consuming_asset: Optional[BaseDataAsset]
+):
+    #  attempt to log lineage
+    try:
+        if consuming_asset is not None:
+            # have to have these imports here to avoid cross-import issues:
+            from airtunnel.metadata.adapter import SQLMetaAdapter
+            from airtunnel.metadata.entities import Lineage
+
+            if airflow_context is not None:
+                task_instance: TaskInstance = airflow_context["task_instance"]
+                dag_id = task_instance.dag_id
+                task_id = task_instance.task_id
+                dag_exec_date = task_instance.execution_date
+            else:
+                dag_id = None
+                task_id = None
+                dag_exec_date = None
+
+            db = SQLMetaAdapter()
+            db.write_lineage(
+                Lineage(
+                    data_sources=[for_asset],
+                    data_target=consuming_asset,
+                    dag_id=dag_id,
+                    task_id=task_id,
+                    dag_exec_date=dag_exec_date,
+                )
+            )
+            logger.info(
+                f"Lineage from {for_asset.name} to {consuming_asset.name} recorded"
+            )
+    except Exception as e:
+        logger.warning(f"Error on recording lineage: {e}")
