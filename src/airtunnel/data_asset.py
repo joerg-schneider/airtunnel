@@ -10,13 +10,6 @@ import pandas as pd
 from airflow.hooks.dbapi_hook import DbApiHook
 from airflow.models import TaskInstance
 
-PYSPARK_DEFAULT_SAVEMODE = "overwrite"
-
-try:
-    import pyspark
-except ImportError:
-    pyspark = None
-
 import airtunnel
 from airtunnel.declaration_store import DataAssetDeclaration, V_COMP_NONE
 from airtunnel.operators.sql import sqloperator
@@ -28,6 +21,13 @@ from airtunnel.paths import (
     P_DATA_INGEST_LANDING,
     P_DATA_ARCHIVE,
 )
+
+PYSPARK_DEFAULT_SAVEMODE = "overwrite"
+
+try:
+    import pyspark
+except ImportError:
+    pyspark = None
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
