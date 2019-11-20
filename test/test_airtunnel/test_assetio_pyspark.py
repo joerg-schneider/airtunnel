@@ -54,7 +54,7 @@ def test_read_write_csv(
         )
 
     # test retrieval
-    # Test check for 'spark' kwarg
+    # Test check for 'spark_session' kwarg
     with pytest.raises(ValueError):
         PySparkDataAssetIO.retrieve_data_asset(test_csv_asset)
 
@@ -76,7 +76,7 @@ def test_read_write_parquet(
         PySparkDataAssetIO.read_data_asset(test_parquet_in_asset, source_files=[p])
 
     x = PySparkDataAssetIO.read_data_asset(
-        test_parquet_in_asset, source_files=[p], spark=spark_session
+        test_parquet_in_asset, source_files=[p], spark_session=spark_session
     )
 
     assert count_before == x.count()
@@ -86,7 +86,7 @@ def test_read_write_parquet(
     x = PySparkDataAssetIO.read_data_asset(
         asset=test_parquet_in_asset,
         source_files=[p],
-        spark=spark_session,
+        spark_session=spark_session,
         mergeSchema=True,
     )
 
