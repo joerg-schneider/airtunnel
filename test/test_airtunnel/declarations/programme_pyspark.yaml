@@ -1,0 +1,8 @@
+type: ingested
+
+ingest:
+  file_input_glob: programme*
+
+load:
+  key_columns:
+    - programme_id

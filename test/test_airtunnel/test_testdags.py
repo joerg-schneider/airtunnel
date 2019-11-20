@@ -45,9 +45,6 @@ def test_testdag1():
     prep_landing_data()
     run_sequential_airflow_dag(dag_id="university")
     run_sequential_airflow_dag(dag_id="metadata_sensors")
-
-    # we put the dummy data again in the landing directories:
-    prep_landing_data()
     run_sequential_airflow_dag(dag_id="university_pyspark")
 
     # the landing file should be gone

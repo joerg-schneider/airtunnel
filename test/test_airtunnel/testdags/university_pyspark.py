@@ -9,10 +9,10 @@ from airtunnel.operators.loading import StagingToReadyOperator
 from airtunnel.operators.transformation import PySparkTransformationOperator
 from airtunnel.sensors.ingestion import SourceFileIsReadySensor
 
-student = PySparkDataAsset("student")
-programme = PySparkDataAsset("programme")
-enrollment = PySparkDataAsset("enrollment")
-enrollment_summary = PySparkDataAsset("enrollment_summary")
+student = PySparkDataAsset("student_pyspark")
+programme = PySparkDataAsset("programme_pyspark")
+enrollment = PySparkDataAsset("enrollment_pyspark")
+enrollment_summary = PySparkDataAsset("enrollment_summary_pyspark")
 
 with DAG(
     dag_id="university_pyspark",
