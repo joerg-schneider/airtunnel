@@ -30,16 +30,25 @@ def test_testdag1():
     # prepare the landing data by copying it into the landing directory:
     current_dir = os.path.dirname(__file__)
     landing_test_data = os.path.join(current_dir, os.pardir, "test_raw_landing_data")
-    for test_data_asset in os.listdir(landing_test_data):
-        landing_dir = os.path.join(
-            airtunnel.paths.P_DATA_INGEST_LANDING, test_data_asset
-        )
-        if os.path.exists(landing_dir):
-            shutil.rmtree(landing_dir)
-        shutil.copytree(os.path.join(landing_test_data, test_data_asset), landing_dir)
 
+    def prep_landing_data():
+        for test_data_asset in os.listdir(landing_test_data):
+            landing_dir = os.path.join(
+                airtunnel.paths.P_DATA_INGEST_LANDING, test_data_asset
+            )
+            if os.path.exists(landing_dir):
+                shutil.rmtree(landing_dir)
+            shutil.copytree(
+                os.path.join(landing_test_data, test_data_asset), landing_dir
+            )
+
+    prep_landing_data()
     run_sequential_airflow_dag(dag_id="university")
     run_sequential_airflow_dag(dag_id="metadata_sensors")
+
+    # we put the dummy data again in the landing directories:
+    prep_landing_data()
+    run_sequential_airflow_dag(dag_id="university_pyspark")
 
     # the landing file should be gone
     # assert not os.path.exists(landing_file_path)
