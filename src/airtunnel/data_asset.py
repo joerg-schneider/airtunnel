@@ -128,15 +128,11 @@ class PandasDataAsset(BaseDataAsset):
         asset_script = _load_py_script(self)
         asset_script.rebuild_for_store(asset=self, airflow_context=airflow_context)
 
-    def rename_fields_as_declared(self, data: "pyspark.sql.DataFrame") -> pd.DataFrame:
+    def rename_fields_as_declared(self, data: pd.DataFrame) -> pd.DataFrame:
         rename_map = {c: c for c in data.columns}
         rename_map.update(self.declarations.transform_renames)
         logger.info(f"Renaming according to: {rename_map}")
-
-        for c_from, c_to in rename_map.items():
-            data = data.withColumnRenamed(c_from, c_to)
-
-        return data
+        return data.rename(columns=rename_map)
 
 
 class PySparkDataAsset(BaseDataAsset):
@@ -159,7 +155,11 @@ class PySparkDataAsset(BaseDataAsset):
         rename_map = {c: c for c in data.columns}
         rename_map.update(self.declarations.transform_renames)
         logger.info(f"Renaming according to: {rename_map}")
-        return data.rename(columns=rename_map)
+
+        for c_from, c_to in rename_map.items():
+            data = data.withColumnRenamed(c_from, c_to)
+
+        return data
 
 
 class SQLDataAsset(BaseDataAsset):
