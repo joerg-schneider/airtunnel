@@ -366,8 +366,6 @@ class PandasDataAssetIO(BaseDataAssetIO):
 
 
 class PySparkDataAssetIO(BaseDataAssetIO):
-    SPARK_SESSION_KWARG = "spark"
-
     @staticmethod
     def retrieve_data_asset(
         asset: BaseDataAsset,
@@ -417,10 +415,6 @@ class PySparkDataAssetIO(BaseDataAssetIO):
     ) -> "pyspark.sql.DataFrame":
 
         PySparkDataAssetIO._check_spark_session(spark_session)
-
-        spark_session: pyspark.sql.SparkSession = reader_kwargs.pop(
-            PySparkDataAssetIO.SPARK_SESSION_KWARG
-        )
 
         data = None
 
