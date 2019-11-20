@@ -67,7 +67,7 @@ def test_read_write_parquet(
 ) -> None:
     p = path.join(test_parquet_in_asset.staging_pickedup_path(fake_airflow_context))
     os.makedirs(path.dirname(p), exist_ok=True)
-    iris_spark.write.parquet(p)
+    iris_spark.write.mode("overwrite").parquet(p)
 
     count_before = iris_spark.count()
     columns_before = len(iris_spark.columns)
