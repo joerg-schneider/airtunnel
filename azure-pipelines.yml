@@ -47,7 +47,6 @@ steps:
     coverage:
       with_toxenv: 'coverage'
       for_envs: [py37, py36]
-  displayName: 'Test with tox'
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
