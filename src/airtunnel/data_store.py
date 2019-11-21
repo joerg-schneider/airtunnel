@@ -1,8 +1,11 @@
+import importlib
 import logging
 import os
 import shutil
 from abc import ABC, abstractmethod
 from typing import TextIO
+
+from airflow import conf
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -61,3 +64,12 @@ class LocalDataStoreAdapter(BaseDataStoreAdapter):
     @staticmethod
     def open(file: str, mode: str, **kwargs) -> TextIO:
         return open(file=file, mode=mode, **kwargs)
+
+
+def get_adapter() -> BaseDataStoreAdapter:
+    data_store_adapter_class = conf.get(
+        section="airtunnel", key="data_store_adapter_class"
+    )
+    module, cls = data_store_adapter_class.rsplit(".", maxsplit=1)
+    mod = importlib.import_module(name=module)
+    return getattr(mod, cls)
