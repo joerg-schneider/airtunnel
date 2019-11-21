@@ -26,16 +26,7 @@ pool:
 variables:
 - group: airtunnel
 
-steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.6'
-
-- script: |
-    python -m pip install flake8
-    flake8 .
-  displayName: 'Run lint tests'
-
+jobs:
 - template: run-tox-env.yml@tox
   parameters:
     tox_version: ''
