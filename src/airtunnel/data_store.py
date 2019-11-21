@@ -66,7 +66,7 @@ class LocalDataStoreAdapter(BaseDataStoreAdapter):
         return open(file=file, mode=mode, **kwargs)
 
 
-def get_adapter() -> BaseDataStoreAdapter:
+def get_configured_adapter() -> BaseDataStoreAdapter:
     data_store_adapter_class = conf.get(
         section="airtunnel", key="data_store_adapter_class"
     )
