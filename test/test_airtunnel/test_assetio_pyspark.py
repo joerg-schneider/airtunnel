@@ -1,4 +1,5 @@
 import os
+import shutil
 from os import path
 from typing import Any
 
@@ -59,8 +60,15 @@ def test_read_write_csv(
         )
 
     # test retrieval
+    # before we can retrieve, we need to move the data from 'staging' to 'ready'
+    os.makedirs(test_csv_asset.ready_path, exist_ok=True)
+
+    # load the prepared data
+    shutil.rmtree(test_csv_asset.ready_path)
+    shutil.move(test_csv_asset.staging_ready_path, test_csv_asset.ready_path)
+
     retrieved = PySparkDataAssetIO.retrieve_data_asset(
-        test_csv_asset, spark_session=spark_session
+        test_csv_asset, spark_session=spark_session, inferSchema=True
     )
 
     # Test check for missing 'spark_session' kwarg
@@ -68,7 +76,7 @@ def test_read_write_csv(
         PySparkDataAssetIO.retrieve_data_asset(test_csv_asset)
 
     # Test check for invalid 'spark_session' kwarg
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         PySparkDataAssetIO.retrieve_data_asset(test_csv_asset, spark_session=42)
 
 
