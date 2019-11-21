@@ -1,9 +1,7 @@
-import os
-import shutil
-
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
+import airtunnel.data_store
 import airtunnel.operators
 from airtunnel.data_asset import BaseDataAsset
 from airtunnel.metadata.adapter import SQLMetaAdapter
@@ -20,6 +18,7 @@ class StagingToReadyOperator(BaseOperator):
     @apply_defaults
     def __init__(self, asset: BaseDataAsset, *args, **kwargs):
         self._asset = asset
+        self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
 
         if "task_id" not in kwargs:
             kwargs["task_id"] = asset.name + "_" + "staging_to_ready"
@@ -36,15 +35,28 @@ class StagingToReadyOperator(BaseOperator):
         asset_temp_path = None
 
         try:
-            os.makedirs(self._asset.ready_path, exist_ok=True)
+            self._data_store_adapter.makedirs(
+                path=self._asset.ready_path, exist_ok=True
+            )
 
             self.log.info(f"Loading new version to {self._asset.ready_path}")
             asset_temp_path = self._asset.make_ready_temp_path(context)
-            shutil.move(self._asset.ready_path, asset_temp_path)
+
+            self._data_store_adapter.move(
+                source=self._asset.ready_path,
+                destination=asset_temp_path,
+                recursive=True,
+            )
+
             moved_to_temp_path = True
 
             # load the prepared data
-            shutil.move(self._asset.staging_ready_path, self._asset.ready_path)
+            self._data_store_adapter.move(
+                source=self._asset.staging_ready_path,
+                destination=self._asset.ready_path,
+                recursive=True,
+            )
+
             move_to_ready_succeeded = True
 
         except Exception as e:
@@ -69,10 +81,15 @@ class StagingToReadyOperator(BaseOperator):
                 except Exception as e:
                     self.log.warning(f"Error on logging load status: {e}")
                 # we can safely remove the old version
-                shutil.rmtree(path=asset_temp_path)
+                self._data_store_adapter.delete(path=asset_temp_path, recursive=True)
+
             elif moved_to_temp_path and not move_to_ready_succeeded:
                 self.log.warning(
                     f"Error on loading - restoring old version from {asset_temp_path}"
                 )
                 # we have to revert to the old version
-                shutil.move(asset_temp_path, self._asset.ready_path)
+                self._data_store_adapter.move(
+                    source=asset_temp_path,
+                    destination=self._asset.ready_path,
+                    recursive=True,
+                )
