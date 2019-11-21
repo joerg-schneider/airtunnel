@@ -38,35 +38,3 @@ jobs:
     coverage:
       with_toxenv: 'coverage'
       for_envs: [py37, py36]
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testResultsFiles: '**/test-*.xml'
-    testRunTitle: 'Publish test results for Python $(python.version)'
-
-- task: PublishCodeCoverageResults@1
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
-
-- script: |
-    CUR_PATH=$(pwd)
-    python -m pip install coverage-badge
-    cd test && coverage-badge -o coverage.svg
-
-    mv ${CUR_PATH}/test/coverage.svg /tmp/coverage.svg
-
-    git config --global user.email "joerg@joerg-schneider.org"
-    git config --global user.name "joerg-schneider"
-
-    git checkout gh-pages
-    mv /tmp/coverage.svg ${CUR_PATH}/assets/coverage.svg
-
-    git add ${CUR_PATH}/assets/coverage.svg
-    git commit -m "AzureDevOps: updated coverage.svg for master"
-    git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
-  displayName: 'Coverage badge'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-
