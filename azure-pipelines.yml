@@ -27,5 +27,13 @@ steps:
   displayName: 'Install Tox'
 
 - script: |
-    tox
-  displayName: 'Run Tox'
+    tox -e py37
+  displayName: 'Run Tox Python 3.7'
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.6'
+
+- script: |
+    tox -e py36
+  displayName: 'Run Tox Python 3.6'
