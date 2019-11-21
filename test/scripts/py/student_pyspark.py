@@ -10,6 +10,8 @@ def rebuild_for_store(asset: PySparkDataAsset, airflow_context):
         asset=asset,
         source_files=asset.pickedup_files(airflow_context),
         spark_session=spark_session,
+        header=True,
+        inferSchema=True,
     )
 
     student_data = asset.rename_fields_as_declared(student_data)

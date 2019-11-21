@@ -9,6 +9,8 @@ def rebuild_for_store(asset: PySparkDataAsset, airflow_context):
         asset=asset,
         source_files=asset.pickedup_files(airflow_context),
         spark_session=spark_session,
+        header=True,
+        inferSchema=True,
     )
     programme_data = programme_data.drop_duplicates(
         subset=asset.declarations.key_columns
