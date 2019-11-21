@@ -68,8 +68,9 @@ def test_read_write_csv(
     shutil.move(test_csv_asset.staging_ready_path, test_csv_asset.ready_path)
 
     retrieved = PySparkDataAssetIO.retrieve_data_asset(
-        test_csv_asset, spark_session=spark_session, inferSchema=True
+        test_csv_asset, spark_session=spark_session, inferSchema=True, header=True
     )
+    assert retrieved.count() == iris_spark.count()
 
     # Test check for missing 'spark_session' kwarg
     with pytest.raises(ValueError):
