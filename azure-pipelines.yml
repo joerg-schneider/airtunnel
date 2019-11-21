@@ -52,19 +52,14 @@ steps:
     tox -e py36
   displayName: 'Run Tox Python 3.6'
 
-
-- script: |
-    tox -e coverage
-  displayName: 'Tox Combine Coverage'
-
 - task: PublishTestResults@2
   condition: succeededOrFailed()
   inputs:
-    testResultsFiles: '**/test-*.xml'
+    testResultsFiles: '$(System.DefaultWorkingDirectory)/.tox/test-*.xml'
     testRunTitle: 'Publish test results for Python $(python.version)'
 
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: Cobertura
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/.tox/**/coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/.tox/**/htmlcov'
