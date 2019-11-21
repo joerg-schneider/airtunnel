@@ -3,16 +3,6 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-# we use tox for automated testing. template from: https://github.com/tox-dev/azure-pipelines-template
-resources:
-  repositories:
-  - repository: tox
-    type: github
-    endpoint: github
-    name: tox-dev/azure-pipelines-template
-    ref: master
-
-
 trigger:
 - master
 - develop
@@ -20,18 +10,22 @@ trigger:
 - bugfix/*
 - release/*
 
+pool:
+  vmImage: 'ubuntu-16.04' # other options: 'macOS-10.13', 'vs2017-win2016'
+
 variables:
 - group: airtunnel
 
-jobs:
-- template: run-tox-env.yml@tox
-  parameters:
-    tox_version: ''
-    jobs:
-      py37:
-        image: [linux, windows, macOs]
-      py36:
-        image: [linux, windows, macOs]
-    coverage:
-      with_toxenv: 'coverage'
-      for_envs: [py37, py36]
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7'
+
+- script: |
+    python -m pip install tox
+    tox --version
+  displayName: 'Install Tox'
+
+- script: |
+    tox
+  displayName: 'Run Tox'
