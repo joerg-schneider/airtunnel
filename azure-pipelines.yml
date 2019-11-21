@@ -27,6 +27,8 @@ steps:
   displayName: 'Install Tox'
 
 - script: |
+    CUR_PATH=$(pwd)
+    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
     tox -e py37
   displayName: 'Run Tox Python 3.7'
 
@@ -35,5 +37,7 @@ steps:
     versionSpec: '3.6'
 
 - script: |
+    CUR_PATH=$(pwd)
+    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
     tox -e py36
   displayName: 'Run Tox Python 3.6'
