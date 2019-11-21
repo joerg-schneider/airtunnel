@@ -3,7 +3,6 @@ from airflow.hooks.dbapi_hook import DbApiHook
 
 from airtunnel import PandasDataAsset, SQLDataAsset
 from airtunnel.operators.transformation import (
-    PySparkTransformationOperator,
     SQLTransformationOperator,
 )
 
@@ -19,9 +18,7 @@ def test_pandas_asset() -> PandasDataAsset:
 
 
 def test_pyspark_transformation_operator():
-    with pytest.raises(NotImplementedError):
-        # noinspection PyTypeChecker
-        PySparkTransformationOperator(asset=None, task_id="test")
+    pass
 
 
 def test_sql_transformation_operator(test_sql_asset: SQLDataAsset):

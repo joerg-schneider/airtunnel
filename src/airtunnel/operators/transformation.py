@@ -39,9 +39,6 @@ class PySparkTransformationOperator(BaseOperator):
             kwargs["task_id"] = asset.name + "_" + "transform"
 
         super().__init__(*args, **kwargs)
-        raise NotImplementedError(
-            "PySparkTransformationOperator is still in development"
-        )
 
     def execute(self, context):
         self.asset.rebuild_for_store(airflow_context=context)
