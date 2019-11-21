@@ -10,7 +10,7 @@ resources:
     type: github
     endpoint: github
     name: tox-dev/azure-pipelines-template
-    ref: refs/master
+    ref: master
 
 
 trigger:
