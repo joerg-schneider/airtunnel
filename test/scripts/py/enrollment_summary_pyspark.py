@@ -35,7 +35,7 @@ def rebuild_for_store(asset: PySparkDataAsset, airflow_context):
     enrollment_summary = (
         enrollment_summary.select(["student_major", "programme_name", "student_id"])
         .groupby(["student_major", "programme_name"])
-        .agg(f.count("*"))
+        .agg(f.count("*").alias("count"))
     )
 
     PySparkDataAssetIO.write_data_asset(asset=asset, data=enrollment_summary)
