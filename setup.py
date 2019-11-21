@@ -1,6 +1,6 @@
 from os import path
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 here = path.abspath(path.dirname(__file__))
 # Get the long description from the README file
@@ -105,7 +105,7 @@ setup(
     #   py_modules=["my_module"],
     #
     # packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
-    packages=["airtunnel"],
+    packages=find_packages("src"),
     package_dir={"": "src"},
     # Specify which Python versions you support. In contrast to the
     # 'Programming Language' classifiers above, 'pip install' will check this
@@ -119,7 +119,12 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=["pandas>=0.24", "schema>=0.6,<0.7", "apache-airflow"],
+    install_requires=[
+        "pandas>=0.23",
+        "schema>=0.6,<0.7",
+        "apache-airflow>=1.10",
+        "pyarrow>=0.13",
+    ],
     dependency_links=[],
     # Optional
     # List additional groups of dependencies here (e.g. development
@@ -136,14 +141,14 @@ setup(
     # },
     extras_require={
         "dev": [
-            "pyarrow==0.13",
             "pytest-cov==2.7.1",
             "apache-airflow[crypto]==1.10.5",
             "pytest>=4.4.0,<4.5.0",
             "flake8",
             "xlwt",
-            "xlrd"
-        ]
+            "xlrd",
+        ],
+        "pyspark": ["pyspark>=2.3"],
     },
     # If there are data files included in your packages that need to be
     # installed, specify them here.
