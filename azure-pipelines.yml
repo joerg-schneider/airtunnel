@@ -3,6 +3,16 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+# we use tox for automated testing. template from: https://github.com/tox-dev/azure-pipelines-template
+resources:
+  repositories:
+  - repository: tox
+    type: github
+    endpoint: github
+    name: tox-dev/azure-pipelines-template
+    ref: refs/tags/0.2
+
+
 trigger:
 - master
 - develop
