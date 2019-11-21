@@ -30,23 +30,24 @@ steps:
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.6'
-    
-- script: pip install -e ".[dev,pyspark]"
-  displayName: 'Pip install'
-  
+
 - script: |
     python -m pip install flake8
     flake8 .
   displayName: 'Run lint tests'
 
-- script: |
-    CUR_PATH=$(pwd)
-    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
-    export PYTHONPATH=${CUR_PATH}/src:${CUR_PATH}/test
-    cd test
-    pytest test_airtunnel/conftest.py
-    pytest . -s --doctest-modules --junitxml=junit/test-results.xml --cov=airtunnel --cov-report=xml --cov-report=html
-  displayName: 'Test with pytest'
+- template: run-tox-env.yml@tox
+  parameters:
+    tox_version: ''
+    jobs:
+      py37:
+        image: [linux, windows, macOs]
+      py36:
+        image: [linux, windows, macOs]
+    coverage:
+      with_toxenv: 'coverage'
+      for_envs: [py37, py36]
+  displayName: 'Test with tox'
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
