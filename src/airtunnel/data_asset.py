@@ -152,7 +152,7 @@ class PySparkDataAsset(BaseDataAsset):
 
         _log_lineage(self, airflow_context, consuming_asset)
 
-        return PySparkDataAssetIO.retrieve_data_asset(asset=self)
+        return PySparkDataAssetIO.retrieve_data_asset(asset=self, spark_session=spark_session)
 
     def rename_fields_as_declared(
         self, data: "pyspark.sql.DataFrame"
