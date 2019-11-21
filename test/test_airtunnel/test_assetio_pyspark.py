@@ -28,6 +28,11 @@ def test_parquet_in_asset() -> PySparkDataAsset:
 
 
 @pytest.fixture
+def test_xlsx_in_asset() -> PySparkDataAsset:
+    return PySparkDataAsset("test_xlsx_in_asset")
+
+
+@pytest.fixture
 def iris_spark(
     iris: pd.DataFrame, spark_session: pyspark.sql.SparkSession
 ) -> pyspark.sql.DataFrame:
@@ -54,9 +59,17 @@ def test_read_write_csv(
         )
 
     # test retrieval
-    # Test check for 'spark_session' kwarg
+    retrieved = PySparkDataAssetIO.retrieve_data_asset(
+        test_csv_asset, spark_session=spark_session
+    )
+
+    # Test check for missing 'spark_session' kwarg
     with pytest.raises(ValueError):
         PySparkDataAssetIO.retrieve_data_asset(test_csv_asset)
+
+    # Test check for invalid 'spark_session' kwarg
+    with pytest.raises(ValueError):
+        PySparkDataAssetIO.retrieve_data_asset(test_csv_asset, spark_session=42)
 
 
 def test_read_write_parquet(
@@ -65,7 +78,9 @@ def test_read_write_parquet(
     fake_airflow_context: Any,
     spark_session: pyspark.sql.SparkSession,
 ) -> None:
-    p = path.abspath(path.join(test_parquet_in_asset.staging_pickedup_path(fake_airflow_context)))
+    p = path.abspath(
+        path.join(test_parquet_in_asset.staging_pickedup_path(fake_airflow_context))
+    )
     os.makedirs(path.dirname(p), exist_ok=True)
     iris_spark.write.mode("overwrite").parquet(p)
 
@@ -91,6 +106,15 @@ def test_read_write_parquet(
     )
 
     assert count_before == x.count()
+
+
+def test_read_write_unsupported(
+    test_xlsx_in_asset: PySparkDataAsset, spark_session: pyspark.sql.SparkSession
+) -> None:
+    with pytest.raises(expected_exception=ValueError):
+        PySparkDataAssetIO.read_data_asset(
+            test_xlsx_in_asset, source_files=[], spark_session=spark_session
+        )
 
 
 def test_read_empty(test_parquet_in_asset: PySparkDataAsset) -> None:
