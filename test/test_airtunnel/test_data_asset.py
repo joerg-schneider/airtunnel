@@ -7,7 +7,7 @@ import pytest
 from airflow.hooks.dbapi_hook import DbApiHook
 
 from airtunnel import PandasDataAsset, PandasDataAssetIO
-from airtunnel.data_asset import ShellDataAsset, PySparkDataAsset, SQLDataAsset
+from airtunnel.data_asset import ShellDataAsset, SQLDataAsset
 
 
 @pytest.fixture
@@ -122,5 +122,4 @@ def test_pandas_data_asset_exceptions(
 
 
 def test_pyspark_data_asset(fake_airflow_context) -> None:
-    with pytest.raises(NotImplementedError):
-        PySparkDataAsset("test")
+    pass

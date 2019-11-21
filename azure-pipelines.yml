@@ -16,6 +16,8 @@ resources:
 trigger:
 - master
 - develop
+- feature/*
+- bugfix/*
 
 pool:
   vmImage: 'ubuntu-16.04' # other options: 'macOS-10.13', 'vs2017-win2016'
@@ -28,7 +30,7 @@ steps:
   inputs:
     versionSpec: '3.6'
     
-- script: pip install -e ".[dev]"
+- script: pip install -e ".[dev,pyspark]"
   displayName: 'Pip install'
   
 - script: |
