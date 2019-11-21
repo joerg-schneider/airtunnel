@@ -27,6 +27,10 @@ steps:
   displayName: 'Install Tox'
 
 - script: |
+    tox -e lint
+  displayName: 'Tox Lint'
+
+- script: |
     CUR_PATH=$(pwd)
     export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
     tox -e py37
@@ -41,3 +45,8 @@ steps:
     export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
     tox -e py36
   displayName: 'Run Tox Python 3.6'
+
+
+- script: |
+    tox -e coverage
+  displayName: 'Tox Combine Coverage'
