@@ -490,7 +490,7 @@ class BaseHookFactory:
     @staticmethod
     @abstractmethod
     def make_hook() -> Optional[BaseHook]:
-        pass
+        raise NotImplementedError
 
 
 class DefaultSQLHookFactory(BaseHookFactory):
