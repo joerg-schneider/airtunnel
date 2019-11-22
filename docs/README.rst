@@ -68,13 +68,14 @@ Installation and setup
 Installation requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
--  **Python >= 3.6 and Airflow >=1.10**
+-  **Python >= 3.6**, **Airflow >=1.10** and **Pandas >= 0.23**
 
    We assume Airtunnel is implemented best early on in a project, which is why going with a
    recent Python and Airflow version makes the most sense. In the future
    we might do more tests and include coverage for older Airflow
    versions.
 
+-  **PySpark** is supported from **2.3+**
 
 .. _Apache Airflow: https://github.com/apache/airflow
 .. _in the official airtunnel announcement: https://medium.com
