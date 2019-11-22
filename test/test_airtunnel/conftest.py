@@ -34,7 +34,7 @@ NECESSARY_DATA_STORE_PATHS = (
 
 @pytest.fixture(scope="session")
 def test_db_path() -> str:
-    db_path = os.path.join(tempfile.gettempdir(), "test.db")
+    db_path = os.path.join(tempfile.mkdtemp(), "airtunnel_test.db")
     logger.info(f"Using test-database: {db_path}")
     yield db_path
     logger.info(f"Removing file of test-database: {db_path}")

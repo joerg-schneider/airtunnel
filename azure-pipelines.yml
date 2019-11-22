@@ -8,6 +8,7 @@ trigger:
 - develop
 - feature/*
 - bugfix/*
+- release/*
 
 pool:
   vmImage: 'ubuntu-16.04' # other options: 'macOS-10.13', 'vs2017-win2016'
@@ -18,53 +19,47 @@ variables:
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.6'
-    
-- script: pip install -e ".[dev,pyspark]"
-  displayName: 'Pip install'
-  
+    versionSpec: '3.7'
+
 - script: |
-    python -m pip install flake8
-    flake8 .
-  displayName: 'Run lint tests'
+    python -m pip install tox
+    tox --version
+  displayName: 'Install Tox'
+
+- script: |
+    tox -e lint
+  displayName: 'Tox Lint'
 
 - script: |
     CUR_PATH=$(pwd)
     export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
-    export PYTHONPATH=${CUR_PATH}/src:${CUR_PATH}/test
-    cd test
-    pytest test_airtunnel/conftest.py
-    pytest . -s --doctest-modules --junitxml=junit/test-results.xml --cov=airtunnel --cov-report=xml --cov-report=html
-  displayName: 'Test with pytest'
+    tox -e py37-current_versions
+  displayName: 'Run Tox Python 3.7: Current Dependency Versions'
+
+- script: |
+    CUR_PATH=$(pwd)
+    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
+    tox -e py37-minimal_versions
+  displayName: 'Run Tox Python 3.7: Minimal Dependency Versions'
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.6'
+
+- script: |
+    CUR_PATH=$(pwd)
+    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
+    tox -e py36
+  displayName: 'Run Tox Python 3.6'
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
   inputs:
-    testResultsFiles: '**/test-*.xml'
+    testResultsFiles: '$(System.DefaultWorkingDirectory)/.tox/test-*.xml'
     testRunTitle: 'Publish test results for Python $(python.version)'
 
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: Cobertura
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
-
-- script: |
-    CUR_PATH=$(pwd)
-    python -m pip install coverage-badge
-    cd test && coverage-badge -o coverage.svg
-
-    mv ${CUR_PATH}/test/coverage.svg /tmp/coverage.svg
-
-    git config --global user.email "joerg@joerg-schneider.org"
-    git config --global user.name "joerg-schneider"
-
-    git checkout gh-pages
-    mv /tmp/coverage.svg ${CUR_PATH}/assets/coverage.svg
-
-    git add ${CUR_PATH}/assets/coverage.svg
-    git commit -m "AzureDevOps: updated coverage.svg for master"
-    git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
-  displayName: 'Coverage badge'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/.tox/coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/.tox/htmlcov'
