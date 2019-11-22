@@ -38,7 +38,7 @@ def test_data_asset_paths(
     # test various path getters/properties:
     test_path = test_parquet_asset.staging_pickedup_path(fake_airflow_context)
     assert isinstance(test_path, str)
-    test_path = test_parquet_asset.ingest_archive_path(fake_airflow_context)
+    test_path = test_parquet_asset.ingest_archive_path
     assert isinstance(test_path, str)
     test_path = test_parquet_asset.ready_path
     assert isinstance(test_path, str)

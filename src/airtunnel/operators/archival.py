@@ -1,8 +1,10 @@
+""" Airtunnel operators for archival tasks. """
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
 import airtunnel
 import airtunnel.data_store
+import airtunnel.operators
 from airtunnel.data_asset import BaseDataAsset
 
 
@@ -23,12 +25,13 @@ class IngestArchiveOperator(BaseOperator):
         super().__init__(*args, **kwargs)
 
     def execute(self, context):
+        """ Executes the IngestArchiveOperator. """
         self._data_store_adapter.makedirs(
-            path=self._asset.ingest_archive_path(context), exist_ok=True
+            path=self._asset.ingest_archive_path, exist_ok=True
         )
         self._data_store_adapter.move(
             source=self._asset.staging_pickedup_path(context),
-            destination=self._asset.ingest_archive_path(context),
+            destination=self._asset.ingest_archive_path,
             recursive=True,
         )
 
@@ -54,6 +57,7 @@ class DataAssetArchiveOperator(BaseOperator):
         super().__init__(*args, **kwargs)
 
     def execute(self, context):
+        """ Executes the DataAssetArchiveOperator. """
         if not self._data_store_adapter.exists(self._asset.ready_path):
             self.log.info(
                 f"Nothing to archive, {self._asset.ready_path} does not exist!"
