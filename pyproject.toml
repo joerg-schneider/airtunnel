@@ -31,6 +31,7 @@ testing = [
     "flake8",
     "xlwt",
 ]
+docs = ["sphinx >= 2.0.0, < 3"]
 
 [tool.black]
 line-length = 88
