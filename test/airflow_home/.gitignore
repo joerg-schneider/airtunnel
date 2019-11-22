@@ -3,3 +3,4 @@ unittests.cfg
 logs
 logs/**
 airflow-webserver.pid
+airtunnel_test.db
