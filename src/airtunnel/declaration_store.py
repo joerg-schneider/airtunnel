@@ -1,3 +1,4 @@
+""" Module for Airtunnel Declaration Store abstractions. """
 import logging
 import os
 import typing
@@ -146,6 +147,8 @@ class DeclarationSchemas:
 
 
 class DataAssetDeclaration:
+    """ Abstraction around declarations for an Airtunnel data asset. """
+
     __slots__ = ["_yaml", "_asset_name", "_file", "_data_asset_decl", "_asset_type"]
 
     def __init__(self, data_asset: str):
@@ -190,10 +193,12 @@ class DataAssetDeclaration:
 
     @property
     def asset_name(self) -> str:
+        """ Name of the declared asset. """
         return self._asset_name
 
     @property
-    def all(self):
+    def all(self) -> Dict:
+        """ Get all declarations """
         return self._data_asset_decl
 
     def _ingestion_decls(self):
@@ -205,14 +210,17 @@ class DataAssetDeclaration:
 
     @property
     def ingest_file_glob(self) -> str:
+        """ The declared file glob for ingestion. """
         return self._ingestion_decls()[K_FILE_INPUT_GLOB]
 
     @property
     def in_storage_format(self) -> str:
+        """ The declarad input storage format. """
         return self._ingestion_decls()[K_IN_STORAGE_FORMAT]
 
     @property
     def archive_ingest(self) -> bool:
+        """ Whether to archive the ingested files. """
         return self._ingestion_decls()[K_ARCH_INGEST]
 
     def _transform_decls(self) -> Dict:
@@ -228,10 +236,12 @@ class DataAssetDeclaration:
 
     @property
     def transform_renames(self) -> Dict[str, str]:
+        """ The declared rename transformations. """
         return self._transform_decls()[K_IN_RENAMES]
 
     @property
     def transform_date_formats(self) -> Dict[str, str]:
+        """ The declared data formats. """
         return self._transform_decls()[K_IN_DATE_FORMATS]
 
     def _load_decls(self):
@@ -239,56 +249,69 @@ class DataAssetDeclaration:
 
     @property
     def out_storage_format(self) -> str:
+        """ The declared output storage format. """
         return self._load_decls()[K_OUT_FORMAT]
 
     @property
     def out_comp_codec(self) -> str:
+        """ The declared output compression codec. """
         return self._load_decls()[K_OUT_COMP_CODEC]
 
     @property
     def archive_ready(self) -> bool:
+        """ Whether to archive the ready layer data of this data asset. """
         return self._load_decls()[K_ARCH_READY]
 
     @property
     def staging_assets(self) -> typing.Optional[List[str]]:
+        """ Return list of declared staging assets. """
         if K_STAGING_ASSETS in self.all:
             return self.all[K_STAGING_ASSETS]
 
     @property
     def key_columns(self) -> typing.Optional[List[str]]:
+        """ Return list of declared key columns. """
         if K_KEY_COLUMNS in self._load_decls():
             return self._load_decls()[K_KEY_COLUMNS]
 
     @property
     def extra_declarations(self) -> Any:
+        """ Return extra declarations."""
         return self.all[SECTION_EXTRA]
 
     @property
     def is_parquet_output(self) -> bool:
+        """ Whether the output for this data asset is Parquet. """
         return self.out_storage_format == V_FORMAT_PARQUET
 
     @property
     def is_csv_output(self) -> bool:
+        """ Whether the output for this data asset is CSV. """
         return self.out_storage_format == V_FORMAT_CSV
 
     @property
     def is_parquet_input(self) -> bool:
+        """ Whether the input for this data asset is Parquet. """
         return self.in_storage_format == V_FORMAT_PARQUET
 
     @property
     def is_csv_input(self) -> bool:
+        """ Whether the input for this data asset is CSV. """
         return self.in_storage_format == V_FORMAT_CSV
 
     @property
     def is_xls_input(self) -> bool:
+        """ Whether the input for this data asset is Excel. """
         return self.in_storage_format == V_FORMAT_EXCEL
 
     @property
     def run_ddl(self) -> bool:
+        """ Whether to run DDL for this data asset."""
         return self._load_decls()[K_RUN_DDL]
 
 
 def fetch_all_declarations() -> Iterable[DataAssetDeclaration]:
+    """ Fetch declarations for all data assets that exist. """
     for decl_file in os.listdir(P_DECLARATIONS):
         if decl_file.endswith(DECL_FILE_SUFFIX):
             try:
