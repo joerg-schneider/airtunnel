@@ -8,9 +8,12 @@ from datetime import datetime
 from typing import TextIO, List, Dict, Tuple
 
 from airflow import conf
+from airflow.exceptions import AirflowConfigException
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+DEFAULT_ADAPTER_CLASS = "airtunnel.data_store.LocalDataStoreAdapter"
 
 
 class BaseDataStoreAdapter(ABC):
@@ -61,9 +64,7 @@ class BaseDataStoreAdapter(ABC):
 
     @staticmethod
     @abstractmethod
-    def inspect(
-        files: List[str]
-    ) -> Dict[str, Tuple[datetime, datetime, int]]:
+    def inspect(files: List[str]) -> Dict[str, Tuple[datetime, datetime, int]]:
         pass
 
 
@@ -126,9 +127,13 @@ class LocalDataStoreAdapter(BaseDataStoreAdapter):
 
 
 def get_configured_adapter() -> BaseDataStoreAdapter:
-    data_store_adapter_class = conf.get(
-        section="airtunnel", key="data_store_adapter_class"
-    )
+    try:
+        data_store_adapter_class = conf.get(
+            section="airtunnel", key="data_store_adapter_class"
+        )
+    except AirflowConfigException:
+        data_store_adapter_class = DEFAULT_ADAPTER_CLASS
+
     module, cls = data_store_adapter_class.rsplit(".", maxsplit=1)
     mod = importlib.import_module(name=module)
     return getattr(mod, cls)
