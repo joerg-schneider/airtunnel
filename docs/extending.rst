@@ -57,6 +57,8 @@ You can verify it is being properly loaded, by running:
 
     # todo
 
+…which should then return: *<class 'yourpackage.yoursubpackage.RedisMetaAdapter'>*
+
 Custom DataStoreAdapter
 ~~~~~~~~~~~~~~~~~~~~~~~
 Airtunnel's physical data store is by default on the local filesystem, for which `LocalDataStoreAdapter` is a bridge
