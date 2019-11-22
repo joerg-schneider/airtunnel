@@ -512,7 +512,8 @@ def get_configured_adapter() -> BaseMetaAdapter:
 
     module, cls = meta_adapter_class.rsplit(".", maxsplit=1)
     mod = importlib.import_module(name=module)
-    return getattr(mod, cls)
+    adapter_class = getattr(mod, cls)
+    return adapter_class()
 
 
 def get_configured_hook() -> Optional[BaseHook]:
