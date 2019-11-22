@@ -20,52 +20,52 @@ class BaseDataStoreAdapter(ABC):
     @staticmethod
     @abstractmethod
     def move(source: str, destination: str, recursive: bool = False) -> None:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def copy(source: str, destination: str, recursive: bool = False) -> None:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def delete(path: str, recursive: bool = False) -> None:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def makedirs(path: str, exist_ok: bool = False, **kwargs) -> None:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def open(file: str, mode: str, **kwargs) -> TextIO:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def exists(path: str, **kwargs) -> bool:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def glob(pattern: str, **kwargs) -> List[str]:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def listdir(path: str, **kwargs) -> List[str]:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def modification_times(files: List[str]) -> Dict[str, int]:
-        pass
+        raise NotImplementedError
 
     @staticmethod
     @abstractmethod
     def inspect(files: List[str]) -> Dict[str, Tuple[datetime, datetime, int]]:
-        pass
+        raise NotImplementedError
 
 
 class LocalDataStoreAdapter(BaseDataStoreAdapter):
