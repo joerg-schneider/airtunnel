@@ -1,9 +1,11 @@
 
+|Build Status| |Code Style: Black| |Python Version| |PyPI version| |Test-Coverage|
+
 .. raw:: html
 
    <img src="_static/assets/airtunnel-logo.jpg" width="140px" align="right"/>
 
-Airtunnel is a means of supplementing `Apache Airflow`_, a platform for
+**Airtunnel** is a means of supplementing `Apache Airflow`_, a platform for
 workflow automation in Python which is angled at analytics/data
 pipelining. It was born out of years of project experience in data
 science, and the hardships of running large data platforms in real life
@@ -27,12 +29,6 @@ out-of-the-box
 
 🍺 …spend less time debugging Airflow DAGs doing worthwhile things
 instead
-
-Getting started
----------------
-
-|Build Status| |Code Style: Black| |Python Version| |PyPI version|
-|Test-Coverage|
 
 Table of Contents
 -----------------
