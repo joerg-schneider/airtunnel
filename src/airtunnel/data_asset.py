@@ -43,12 +43,15 @@ class BaseDataAsset:
 
     def __init__(self, name: str) -> None:
         self.name = name
+        """ Name of this data asset """
+
         # a ShellDataAsset is a special kind of wrapper which is purely name based and skips decl. loading
         # (useful for testing, capturing lineage, or similar tasks where declarations are not needed)
         if not isinstance(self, ShellDataAsset):
             self.declarations: DataAssetDeclaration = DataAssetDeclaration(
                 data_asset=name
             )
+            """ Declarations of this data asset """
 
     @property
     def ready_path(self) -> str:

@@ -15,6 +15,7 @@ Documentation content
    extending
    limitations
    development
+   API reference <api/modules>
 
 Indices and tables
 ==================
