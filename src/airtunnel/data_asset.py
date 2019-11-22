@@ -71,10 +71,11 @@ class BaseDataAsset:
             P_DATA_READY, "." + self._escaped_exec_date(airflow_context) + self.name
         )
 
-    def _escaped_exec_date(self, airflow_context):
+    @staticmethod
+    def _escaped_exec_date(airflow_context):
         """
         Creates a filesystem safe execution date string from a Airflow context.
-        
+
         :param airflow_context: a live Airflow context
         :return: a string with the exection datetime escaped
         """
@@ -325,7 +326,7 @@ class SQLDataAsset(BaseDataAsset):
 
         logger.info("Loading SQL script from: %s" % sql_location)
 
-        with open(sql_location, "r") as sql_file:
+        with open(sql_location) as sql_file:
             loaded_sql_script = sql_file.read() + "\n\n"
 
         return loaded_sql_script
