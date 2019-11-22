@@ -41,8 +41,7 @@ def test_db_path() -> str:
     yield db_path
 
 
-@pytest.fixture(scope="session", autouse=True)
-def provide_airflow_cfg(test_db_path: str) -> None:
+def update_airflow_cfg(test_db_path: str) -> None:
     test_folder_path = os.path.join(
         os.path.abspath(os.path.dirname(__file__)), os.pardir
     )
@@ -84,6 +83,11 @@ def provide_airflow_cfg(test_db_path: str) -> None:
         cfgfile.write(airflow_test_cfg)
 
     logger.info(f"Updated test airflow.cfg at: {cfg_path}")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def provide_airflow_cfg(test_db_path: str) -> None:
+    update_airflow_cfg(test_db_path)
 
     if not os.path.exists(test_db_path):
         logger.info(f"SQLite DB is missing – initializing it at: {test_db_path}")
