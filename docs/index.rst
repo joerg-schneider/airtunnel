@@ -11,6 +11,7 @@ Documentation content
 
    tutorial
    design
+   architecture
    extending
    limitations
    development
