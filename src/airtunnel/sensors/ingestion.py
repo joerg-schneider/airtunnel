@@ -1,11 +1,10 @@
-import glob
 import os
-from typing import List, Dict
 
 from airflow.models import TaskInstance
 from airflow.operators.sensors import BaseSensorOperator
 from airflow.utils.decorators import apply_defaults
 
+import airtunnel.data_store
 import airtunnel.operators
 from airtunnel.data_asset import BaseDataAsset
 
@@ -37,6 +36,7 @@ class SourceFileIsReadySensor(BaseSensorOperator):
         self._search_glob = os.path.join(
             self._asset.landing_path, self._asset.declarations.ingest_file_glob
         )
+        self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
 
     def poke(self, context):
         if (
@@ -59,7 +59,9 @@ class SourceFileIsReadySensor(BaseSensorOperator):
             # scan for matching files again:
             matching_files = self._matching_files()
             # get modification timestamps on all files:
-            matching_files_w_time = self._mtimes_for_matching_files(matching_files)
+            matching_files_w_time = self._data_store_adapter.modification_times(
+                matching_files
+            )
             # check if same as in previous probe:
             if matching_files_w_time == self._discovered_input_files:
                 # decrement the remaining number of checks for the files to remain static:
@@ -82,7 +84,7 @@ class SourceFileIsReadySensor(BaseSensorOperator):
             if len(matching_files) > 0:
                 # capture found files and their modification timestamps:
                 self.log.info(f"Found {len(matching_files)} source files to ingest")
-                self._discovered_input_files = self._mtimes_for_matching_files(
+                self._discovered_input_files = self._data_store_adapter.modification_times(
                     matching_files
                 )
             else:
@@ -92,8 +94,4 @@ class SourceFileIsReadySensor(BaseSensorOperator):
         return False
 
     def _matching_files(self):
-        return glob.glob(self._search_glob)
-
-    @staticmethod
-    def _mtimes_for_matching_files(filelist: List[str]) -> Dict[str, int]:
-        return {f: os.stat(f).st_mtime for f in filelist}
+        return self._data_store_adapter.glob(pattern=self._search_glob)

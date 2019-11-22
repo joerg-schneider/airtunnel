@@ -1,10 +1,10 @@
-import os
 from datetime import datetime
 from typing import List
 
 from airflow.models import BaseOperator, TaskInstance
 from airflow.utils.decorators import apply_defaults
 
+import airtunnel.data_store
 import airtunnel.operators
 from airtunnel.data_asset import BaseDataAsset
 from airtunnel.metadata.adapter import BaseMetaAdapter, SQLMetaAdapter
@@ -30,6 +30,7 @@ class IngestOperator(BaseOperator):
         self._meta_adapter = (
             metadata_adapter if metadata_adapter is not None else SQLMetaAdapter()
         )
+        self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
 
         self.picked_up_dir = None
 
@@ -50,6 +51,7 @@ class IngestOperator(BaseOperator):
             raise FileNotFoundError("No files to ingest!")
 
         inspected_files = self.inspect_discovered_files(
+            data_store_adapter=self._data_store_adapter,
             for_asset=self._asset,
             dag_id=self.dag_id,
             task_id=self.task_id,
@@ -58,7 +60,7 @@ class IngestOperator(BaseOperator):
         )
 
         # ensure pickedup directory exists (if i.e. very first run)
-        os.makedirs(self.picked_up_dir, exist_ok=True)
+        self._data_store_adapter.makedirs(self.picked_up_dir, exist_ok=True)
 
         # ensure asset staging pickedup directory is empty
         if not self._check_pickedup_dir_is_empty():
@@ -77,36 +79,33 @@ class IngestOperator(BaseOperator):
                 self._asset.landing_path, self.picked_up_dir
             )
             self.log.info(f"Moving file {f.filepath} to {target_path}.")
-            os.rename(f.filepath, target_path)
+            self._data_store_adapter.move(source=f.filepath, destination=target_path)
 
         self._meta_adapter.write_inspected_files(discovered_files=inspected_files)
 
     def _check_pickedup_dir_is_empty(self):
-        return len(os.listdir(self.picked_up_dir)) == 0
+        return len(self._data_store_adapter.listdir(path=self.picked_up_dir)) == 0
 
     @staticmethod
     def inspect_discovered_files(
+        data_store_adapter: airtunnel.data_store.BaseDataStoreAdapter,
         for_asset: BaseDataAsset,
         dag_id: str,
         task_id: str,
         dag_exec_date: datetime,
         files: List[str],
     ) -> List[IngestedFileMetadata]:
-        ingested_files_meta = []
 
-        for f in files:
-            f_stats = os.stat(f)
-            ingested_files_meta.append(
-                IngestedFileMetadata(
-                    for_asset=for_asset,
-                    filepath=f,
-                    filesize=f_stats.st_size,
-                    file_create_time=datetime.fromtimestamp(f_stats.st_ctime),
-                    file_mod_time=datetime.fromtimestamp(f_stats.st_mtime),
-                    dag_id=dag_id,
-                    dag_exec_date=dag_exec_date,
-                    task_id=task_id,
-                )
+        return [
+            IngestedFileMetadata(
+                for_asset=for_asset,
+                filepath=f,
+                filesize=stats[2],
+                file_create_time=stats[0],
+                file_mod_time=stats[1],
+                dag_id=dag_id,
+                dag_exec_date=dag_exec_date,
+                task_id=task_id,
             )
-
-        return ingested_files_meta
+            for f, stats in data_store_adapter.inspect(files).items()
+        ]
