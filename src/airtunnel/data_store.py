@@ -88,7 +88,7 @@ class LocalDataStoreAdapter(BaseDataStoreAdapter):
 
     @staticmethod
     def makedirs(path: str, exist_ok: bool = False, **kwargs) -> None:
-        os.makedirs(path=path, exist_ok=exist_ok, **kwargs)
+        os.makedirs(path, exist_ok=exist_ok, **kwargs)
 
     @staticmethod
     def open(file: str, mode: str, **kwargs) -> TextIO:
