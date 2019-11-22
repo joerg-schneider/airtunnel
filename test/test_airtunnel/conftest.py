@@ -1,14 +1,12 @@
 import datetime
 import logging
 import os
-import tempfile
+import subprocess
 import urllib.parse
 from typing import Dict
 
 import pandas as pd
 import pytest
-from airflow.models import TaskInstance
-from airflow.operators.dummy_operator import DummyOperator
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -32,14 +30,15 @@ NECESSARY_DATA_STORE_PATHS = (
 )
 
 
+def make_test_db_path() -> str:
+    return os.path.join(os.environ[AF_HOME], "airtunnel_test.db")
+
+
 @pytest.fixture(scope="session")
 def test_db_path() -> str:
-    db_path = os.path.join(tempfile.gettempdir(), "airtunnel_test.db")
+    db_path = make_test_db_path()
     logger.info(f"Using test-database: {db_path}")
     yield db_path
-    logger.info(f"Removing file of test-database: {db_path}")
-    if os.path.exists(db_path):
-        os.remove(db_path)
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -86,10 +85,13 @@ def provide_airflow_cfg(test_db_path: str) -> None:
 
     logger.info(f"Updated test airflow.cfg at: {cfg_path}")
 
-    # initialize the airflow db
-    import airflow.utils.db
-
-    airflow.utils.db.initdb()
+    if not os.path.exists(test_db_path):
+        logger.info(f"SQLite DB is missing – initializing it at: {test_db_path}")
+        # initialize the airflow db
+        subprocess.run("airflow initdb", shell=True, check=True)
+    else:
+        logger.info(f"SQLite DB exists at: {test_db_path}")
+        subprocess.run("airflow resetdb -y", shell=True, check=True)
 
 
 @pytest.fixture(scope="session")
@@ -119,6 +121,9 @@ def iris() -> pd.DataFrame:
 
 @pytest.fixture(scope="session")
 def fake_airflow_context() -> Dict:
+    from airflow.models import TaskInstance
+    from airflow.operators.dummy_operator import DummyOperator
+
     fake_context = {
         "task_instance": TaskInstance(
             task=DummyOperator(task_id="dummy_tas_id"),
