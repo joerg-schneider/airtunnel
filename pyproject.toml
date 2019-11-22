@@ -3,8 +3,34 @@ requires = [
     "setuptools >= 40.0.4",
     "setuptools_scm >= 2.0.0, <4",
     "wheel >= 0.29.0",
+    "flit_core >=2.0rc2,<3",
 ]
-build-backend = 'setuptools.build_meta'
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "airtunnel"
+author = "Jörg Schneider"
+author-email = "joerg@joerg-schneider.org"
+home-page = "http://airtunnel.readthedocs.org"
+
+requires = [
+    "pandas >= 0.23",
+    "schema >= 0.6",
+    "apache-airflow >= 1.10",
+    "pyarrow >= 0.13",
+]
+
+requires-python = ">=3.6"
+
+[tool.flit.metadata.requires-extra]
+pyspark = ["pyspark >= 2.3"]
+testing = [
+    "pytest-cov",
+    "pytest",
+    "xlrd",
+    "flake8",
+    "xlwt",
+]
 
 [tool.black]
 line-length = 88
