@@ -31,7 +31,10 @@ testing = [
     "flake8",
     "xlwt",
 ]
-docs = ["sphinx >= 2.0.0, < 3"]
+docs = [
+    "sphinx >= 2.0.0, < 3",
+    "sphinx_rtd_theme",
+]
 
 [tool.black]
 line-length = 88

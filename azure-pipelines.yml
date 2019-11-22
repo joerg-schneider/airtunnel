@@ -63,3 +63,7 @@ steps:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/.tox/coverage.xml'
     reportDirectory: '$(System.DefaultWorkingDirectory)/.tox/htmlcov'
+
+- script: |
+    tox -e docs
+  displayName: 'Tox Sphinx Docs'
