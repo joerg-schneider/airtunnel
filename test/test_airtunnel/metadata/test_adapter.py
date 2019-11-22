@@ -10,6 +10,11 @@ from test_airtunnel import test_utils
 from test_airtunnel.test_utils import table_rowcount, DUMMY_TABLE, DUMMY_TABLE2
 
 
+def _clear_meta_tables(test_db_hook: DbApiHook) -> None:
+    for t in SQLMetaAdapter.TABLES:
+        test_utils.run_on_db(test_db_hook=test_db_hook, sql=f"delete from {t}")
+
+
 @pytest.fixture(scope="module")
 def test_meta_adapter(test_db_hook) -> BaseMetaAdapter:
     return SQLMetaAdapter(sql_hook=test_db_hook)
@@ -20,6 +25,7 @@ def test_afdb_setup(test_meta_adapter: BaseMetaAdapter, test_db_hook: DbApiHook)
         test_db_hook=test_db_hook,
         sql=f"select * from {','.join(SQLMetaAdapter.TABLES)} ",
     )
+    _clear_meta_tables(test_db_hook)
 
 
 def test_afdb_lineage(test_meta_adapter: BaseMetaAdapter, test_db_hook: DbApiHook):
