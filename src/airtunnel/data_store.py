@@ -63,7 +63,7 @@ class BaseDataStoreAdapter(ABC):
     @abstractmethod
     def inspect(
         files: List[str]
-    ) -> Dict[str, Tuple[datetime.datetime, datetime.datetime, int]]:
+    ) -> Dict[str, Tuple[datetime, datetime, int]]:
         pass
 
 
