@@ -37,6 +37,11 @@ class BaseDataStoreAdapter(ABC):
     def open(file: str, mode: str, **kwargs) -> TextIO:
         pass
 
+    @staticmethod
+    @abstractmethod
+    def exists(path: str, **kwargs) -> bool:
+        pass
+
 
 class LocalDataStoreAdapter(BaseDataStoreAdapter):
     @staticmethod
@@ -64,6 +69,10 @@ class LocalDataStoreAdapter(BaseDataStoreAdapter):
     @staticmethod
     def open(file: str, mode: str, **kwargs) -> TextIO:
         return open(file=file, mode=mode, **kwargs)
+
+    @staticmethod
+    def exists(path: str, **kwargs) -> bool:
+        return os.path.exists(path=path)
 
 
 def get_configured_adapter() -> BaseDataStoreAdapter:
