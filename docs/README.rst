@@ -3,14 +3,14 @@
 
 .. raw:: html
 
-   <img src="_static/assets/airtunnel-logo.jpg" width="140px" align="right"/>
+   <img src="_static/assets/airtunnel-logo.jpg" width="120px" align="right"/>
 
 **Airtunnel** is a means of supplementing `Apache Airflow`_, a platform for
 workflow automation in Python which is angled at analytics/data
 pipelining. It was born out of years of project experience in data
 science, and the hardships of running large data platforms in real life
 businesses. Hence, Airtunnel is both a set of principles (read more on
-them `in the official airtunnel announcement`_) and a lightweight Python
+them `in the Airtunnel introduction`_) and a lightweight Python
 library *to tame your airflow*!
 
 Why choose airtunnel?
@@ -30,11 +30,12 @@ out-of-the-box
 🍺 …spend less time debugging Airflow DAGs doing worthwhile things
 instead
 
+Getting started
+---------------
+To get started, we warmly recommended to read the `Airtunnel introduction article`_ and the `Airtunnel tutorial`_
+
 Installation
 ------------
-
-Installation and setup
-~~~~~~~~~~~~~~~~~~~~~~
 
 1) We suppose you have installed Apache Airflow in some kind of Python virtual
    environment. From there, simply do a ``pip install airtunnel`` to get
@@ -44,14 +45,14 @@ Installation and setup
    need to add three folders for a declaration store, a scripts store
    and finally the data store:
 
-   2.1) The declaration store folder has no subfolders. It is where your
+   2.1) The *declaration store* folder has no subfolders. It is where your
    data asset declarations (YAML files) will reside
 
-   2.2) The scripts store folder is where all your Python & SQL scripts to process data assets will reside.
+   2.2) The *scripts store* folder is where all your Python & SQL scripts to process data assets will reside.
    It should be broken down by subfolders ``py`` for Python scripts and ``sql`` for SQL scripts. Please further add
    subfolders ``dml`` and ``ddl`` into the ``sql`` script folder.
 
-   2.3) The data store folder follows a convention as well.
+   2.3) The *data store* folder follows a convention as well.
 
 3) Configure Airtunnel by extending your existing ``airflow.cfg``
 
@@ -77,8 +78,15 @@ Installation requirements
 
 -  **PySpark** is supported from **2.3+**
 
+Documentation
+-------------
+Airtunnels documentation is `here`_.
+
 .. _Apache Airflow: https://github.com/apache/airflow
-.. _in the official airtunnel announcement: https://medium.com
+.. _in the Airtunnel introduction: https://medium.com
+.. _Airtunnel introduction article: https://medium.com
+.. _here: http://airtunnel.readthedocs.org
+.. _Airtunnel tutorial: #
 .. _Installation requirements: #installation-requirements
 .. _Installation and setup: #installation-and-setup
 .. _`Tutorial: loading the university data model`: #tutorial-loading-the-university-data-model
