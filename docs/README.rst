@@ -33,15 +33,6 @@ instead
 Installation
 ------------
 
-Installation requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
--  **Python >= 3.6 and Airflow >=1.10**: we assume Airtunnel is
-   implemented best early on in a project, which is why going with a
-   recent Python and Airflow version makes the most sense. In the future
-   we might do more tests and include coverage for older Airflow
-   versions.
-
 Installation and setup
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -74,6 +65,14 @@ Installation and setup
     3.4) add ``data_store_folder``, which takes the absolute path to the folder you set up in 2.3
     for your data store
 
+Installation requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-  **Python >= 3.6 and Airflow >=1.10**:
+   We assume Airtunnel is implemented best early on in a project, which is why going with a
+   recent Python and Airflow version makes the most sense. In the future
+   we might do more tests and include coverage for older Airflow
+   versions.
 
 
 .. _Apache Airflow: https://github.com/apache/airflow
