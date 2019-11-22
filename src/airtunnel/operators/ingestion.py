@@ -5,9 +5,10 @@ from airflow.models import BaseOperator, TaskInstance
 from airflow.utils.decorators import apply_defaults
 
 import airtunnel.data_store
+import airtunnel.metadata.adapter
 import airtunnel.operators
 from airtunnel.data_asset import BaseDataAsset
-from airtunnel.metadata.adapter import BaseMetaAdapter, SQLMetaAdapter
+from airtunnel.metadata.adapter import BaseMetaAdapter
 from airtunnel.metadata.entities import IngestedFileMetadata
 
 
@@ -28,7 +29,9 @@ class IngestOperator(BaseOperator):
     ):
         self._asset = asset
         self._meta_adapter = (
-            metadata_adapter if metadata_adapter is not None else SQLMetaAdapter()
+            metadata_adapter
+            if metadata_adapter is not None
+            else airtunnel.metadata.adapter.get_configured_adapter()
         )
         self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
 

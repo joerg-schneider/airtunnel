@@ -1,11 +1,16 @@
+import importlib
 import json
 import logging
+import os
 from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Iterable, Dict, Union, List, Tuple, Optional
 
 import pandas as pd
 import sqlalchemy
+from airflow import conf
+from airflow.exceptions import AirflowConfigException
+from airflow.hooks.base_hook import BaseHook
 from airflow.hooks.dbapi_hook import DbApiHook
 from airflow.settings import SQL_ALCHEMY_CONN
 from sqlalchemy import Table, Column, Integer, String, DateTime, MetaData, and_
@@ -16,6 +21,9 @@ from airtunnel.metadata.entities import IngestedFileMetadata, LoadStatus, Lineag
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+DEFAULT_ADAPTER_CLASS = "airtunnel.metadata.adapter.SQLMetaAdapter"
+DEFAULT_HOOK_FACTORY = "airtunnel.metadata.adapter.DefaultSQLHookFactory"
 
 
 class BaseMetaAdapter(ABC):
@@ -106,12 +114,31 @@ class SQLMetaAdapter(BaseMetaAdapter):
         self.t_load_status_hist: Table = None
         self.t_infile_metadata: Table = None
 
-        if sql_hook is None:
-            self.engine = sqlalchemy.create_engine(SQL_ALCHEMY_CONN)
-        else:
+        if sql_hook is not None:
+            # a sql hook was passed into the constructor – it takes highest precedence
+            self._check_hook_type(sql_hook)
             self.engine = sql_hook.get_sqlalchemy_engine()
+        else:
+
+            configured_custom_hook = get_configured_hook()
+
+            if configured_custom_hook is not None:
+                # a configured custom hook was returned by the factory:
+                configured_custom_hook = self._check_hook_type(configured_custom_hook)
+                self.engine = configured_custom_hook.get_sqlalchemy_engine()
+            else:
+                # nothing was defined, create engine based on the default Airflow conn:
+                self.engine = sqlalchemy.create_engine(SQL_ALCHEMY_CONN)
 
         self.setup()
+
+    @staticmethod
+    def _check_hook_type(hook: BaseHook) -> DbApiHook:
+        if not isinstance(hook, DbApiHook):
+            raise TypeError(
+                f"The defined/passed hook for SQLMetaAdapter needs to be an 'DbApiHook'"
+            )
+        return hook
 
     def setup(self):
 
@@ -457,3 +484,53 @@ class SQLMetaAdapter(BaseMetaAdapter):
             execute_statements(conn, statements)
 
         conn.close()
+
+
+class BaseHookFactory:
+    @staticmethod
+    @abstractmethod
+    def make_hook() -> Optional[BaseHook]:
+        pass
+
+
+class DefaultSQLHookFactory(BaseHookFactory):
+    @staticmethod
+    def make_hook() -> Optional[BaseHook]:
+        return None
+
+
+def get_configured_adapter() -> BaseMetaAdapter:
+    try:
+        meta_adapter_class = conf.get(section="airtunnel", key="meta_adapter_class")
+    except AirflowConfigException:
+        logger.warning(
+            f"'meta_adapter_class' for Airtunnel not configured in airflow.cfg – using default"
+        )
+        # set the default config as part of the environment, to hide future AirflowConfigExceptions:
+        os.environ["AIRFLOW__AIRTUNNEL__META_ADAPTER_CLASS"] = DEFAULT_ADAPTER_CLASS
+        meta_adapter_class = DEFAULT_ADAPTER_CLASS
+
+    module, cls = meta_adapter_class.rsplit(".", maxsplit=1)
+    mod = importlib.import_module(name=module)
+    return getattr(mod, cls)
+
+
+def get_configured_hook() -> Optional[BaseHook]:
+    try:
+        meta_hook_factory = conf.get(
+            section="airtunnel", key="meta_adapter_hook_factory"
+        )
+    except AirflowConfigException:
+        logger.warning(
+            f"'meta_adapter_hook_factory' for Airtunnel not configured in airflow.cfg – using default"
+        )
+        # set the default config as part of the environment, to hide future AirflowConfigExceptions:
+        os.environ[
+            "AIRFLOW__AIRTUNNEL__META_ADAPTER_HOOK_FACTORY"
+        ] = DEFAULT_HOOK_FACTORY
+        meta_hook_factory = DEFAULT_HOOK_FACTORY
+
+    module, cls = meta_hook_factory.rsplit(".", maxsplit=1)
+    mod = importlib.import_module(name=module)
+    factory: BaseHookFactory = getattr(mod, cls)
+    return factory.make_hook()

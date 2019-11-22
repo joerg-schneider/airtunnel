@@ -152,7 +152,9 @@ class PySparkDataAsset(BaseDataAsset):
 
         _log_lineage(self, airflow_context, consuming_asset)
 
-        return PySparkDataAssetIO.retrieve_data_asset(asset=self, spark_session=spark_session)
+        return PySparkDataAssetIO.retrieve_data_asset(
+            asset=self, spark_session=spark_session
+        )
 
     def rename_fields_as_declared(
         self, data: "pyspark.sql.DataFrame"
@@ -448,7 +450,7 @@ def _log_lineage(
     try:
         if consuming_asset is not None:
             # have to have these imports here to avoid cross-import issues:
-            from airtunnel.metadata.adapter import SQLMetaAdapter
+            import airtunnel.metadata.adapter
             from airtunnel.metadata.entities import Lineage
 
             if airflow_context is not None:
@@ -461,8 +463,8 @@ def _log_lineage(
                 task_id = None
                 dag_exec_date = None
 
-            db = SQLMetaAdapter()
-            db.write_lineage(
+            meta_adapter = airtunnel.metadata.adapter.get_configured_adapter()
+            meta_adapter.write_lineage(
                 Lineage(
                     data_sources=[for_asset],
                     data_target=consuming_asset,

@@ -2,9 +2,9 @@ from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
 import airtunnel.data_store
+import airtunnel.metadata.adapter
 import airtunnel.operators
 from airtunnel.data_asset import BaseDataAsset
-from airtunnel.metadata.adapter import SQLMetaAdapter
 from airtunnel.metadata.entities import LoadStatus
 
 
@@ -67,7 +67,7 @@ class StagingToReadyOperator(BaseOperator):
             if moved_to_temp_path and move_to_ready_succeeded:
                 try:
                     # log load-status
-                    SQLMetaAdapter().write_load_status(
+                    airtunnel.metadata.adapter.get_configured_adapter().write_load_status(
                         LoadStatus(
                             for_asset=self._asset,
                             dag_id=self.dag_id,
