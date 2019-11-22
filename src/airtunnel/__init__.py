@@ -13,11 +13,11 @@ from airtunnel.data_asset import (
 )
 
 __all__ = [
-    BaseDataAsset,
-    SQLDataAsset,
-    PandasDataAsset,
-    PySparkDataAsset,
-    BaseDataAssetIO,
-    PandasDataAssetIO,
-    PySparkDataAssetIO,
+    "BaseDataAsset",
+    "SQLDataAsset",
+    "PandasDataAsset",
+    "PySparkDataAsset",
+    "BaseDataAssetIO",
+    "PandasDataAssetIO",
+    "PySparkDataAssetIO",
 ]
