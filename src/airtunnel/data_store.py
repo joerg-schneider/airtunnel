@@ -132,6 +132,9 @@ def get_configured_adapter() -> BaseDataStoreAdapter:
             section="airtunnel", key="data_store_adapter_class"
         )
     except AirflowConfigException:
+        logger.warning(f"'data_store_adapter_class' for Airtunnel not configured in airflow.cfg – using default")
+        # set the default config as part of the environment, to hide future AirflowConfigExceptions:
+        os.environ["AIRFLOW__AIRTUNNEL__DATA_STORE_ADAPTER_CLASS"] = DEFAULT_ADAPTER_CLASS
         data_store_adapter_class = DEFAULT_ADAPTER_CLASS
 
     module, cls = data_store_adapter_class.rsplit(".", maxsplit=1)
