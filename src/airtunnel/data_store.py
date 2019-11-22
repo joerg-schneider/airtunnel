@@ -1,9 +1,11 @@
+import glob
 import importlib
 import logging
 import os
 import shutil
 from abc import ABC, abstractmethod
-from typing import TextIO
+from datetime import datetime
+from typing import TextIO, List, Dict, Tuple
 
 from airflow import conf
 
@@ -42,6 +44,28 @@ class BaseDataStoreAdapter(ABC):
     def exists(path: str, **kwargs) -> bool:
         pass
 
+    @staticmethod
+    @abstractmethod
+    def glob(pattern: str, **kwargs) -> List[str]:
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def listdir(path: str, **kwargs) -> List[str]:
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def modification_times(files: List[str]) -> Dict[str, int]:
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def inspect(
+        files: List[str]
+    ) -> Dict[str, Tuple[datetime.datetime, datetime.datetime, int]]:
+        pass
+
 
 class LocalDataStoreAdapter(BaseDataStoreAdapter):
     @staticmethod
@@ -73,6 +97,32 @@ class LocalDataStoreAdapter(BaseDataStoreAdapter):
     @staticmethod
     def exists(path: str, **kwargs) -> bool:
         return os.path.exists(path=path)
+
+    @staticmethod
+    def glob(pattern: str, **kwargs) -> List[str]:
+        return glob.glob(pattern)
+
+    @staticmethod
+    def listdir(path: str, **kwargs) -> List[str]:
+        return os.listdir(path)
+
+    @staticmethod
+    def modification_times(files: List[str]) -> Dict[str, int]:
+        return {f: os.stat(f).st_mtime for f in files}
+
+    @staticmethod
+    @abstractmethod
+    def inspect(files: List[str]) -> Dict[str, Tuple[datetime, datetime, int]]:
+        inspected = {}
+        for f in files:
+            f_stat = os.stat(f)
+            inspected[f] = (
+                datetime.fromtimestamp(f_stat.st_ctime),
+                datetime.fromtimestamp(f_stat.st_mtime),
+                f_stat.st_size,
+            )
+
+        return inspected
 
 
 def get_configured_adapter() -> BaseDataStoreAdapter:
