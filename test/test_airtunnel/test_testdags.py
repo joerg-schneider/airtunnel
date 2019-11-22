@@ -42,7 +42,13 @@ def test_testdag1():
                 os.path.join(landing_test_data, test_data_asset), landing_dir
             )
 
+    def clean_pickedup_dir():
+        for d in os.listdir(airtunnel.paths.P_DATA_STAGING_PICKEDUP):
+            if d != ".gitignore":
+                shutil.rmtree(os.path.join(airtunnel.paths.P_DATA_STAGING_PICKEDUP, d))
+
     prep_landing_data()
+    clean_pickedup_dir()
     run_sequential_airflow_dag(dag_id="university")
     run_sequential_airflow_dag(dag_id="metadata_sensors")
     run_sequential_airflow_dag(dag_id="university_pyspark")
