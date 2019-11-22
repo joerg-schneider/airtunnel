@@ -30,16 +30,8 @@ out-of-the-box
 🍺 …spend less time debugging Airflow DAGs doing worthwhile things
 instead
 
-Table of Contents
------------------
-
--  `Installation requirements`_
--  `Installation and setup`_
--  `Tutorial: loading the university data model`_
--  `Known limitations`_
--  `Design Principles`_
--  `Architecture: modules & classes`_
--  `Contributing to Airtunnel`_
+Installation
+------------
 
 Installation requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,7 +45,7 @@ Installation requirements
 Installation and setup
 ~~~~~~~~~~~~~~~~~~~~~~
 
-1) We suppose you have installed Apache Airflow in a Python virtual
+1) We suppose you have installed Apache Airflow in some kind of Python virtual
    environment. From there, simply do a ``pip install airtunnel`` to get
    the package.
 
@@ -64,8 +56,25 @@ Installation and setup
    2.1) The declaration store folder has no subfolders. It is where your
    data asset declarations (YAML files) will reside
 
-   2.2) The scripts store folder is where all your Python & SQL scripts
-   to process data assets will reside. It should be broken down by sub
+    2.2) The scripts store folder is where all your Python & SQL scripts to process data assets will reside.
+     It should be broken down by subfolders ``py`` for Python scripts and ``sql`` for SQL scripts. Please further add
+     subfolders ``dml`` and ``ddl`` into the ``sql`` script folder.
+
+    2.3) The data store folder follows a convention as well.
+
+3) Configure Airtunnel by extending your existing ``airflow.cfg``
+
+    3.1) Add the configuration section ``[airtunnel]`` in which,
+    you need to add three configuration keys.
+
+    3.2) add ``declarations_folder`` which takes the absolute path to the folder you set up in 2.1
+
+    3.3) add ``scripts_folder`` which takes the absolute path to the folder you set up in 2.2
+
+    3.4) add ``data_store_folder``, which takes the absolute path to the folder you set up in 2.3
+    for your data store
+
+
 
 .. _Apache Airflow: https://github.com/apache/airflow
 .. _in the official airtunnel announcement: https://medium.com
