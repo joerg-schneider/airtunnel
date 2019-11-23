@@ -190,7 +190,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
                 # nothing was defined, create engine based on the default Airflow conn:
                 self.engine = sqlalchemy.create_engine(SQL_ALCHEMY_CONN)
 
-        self._setup()
+        self._is_set_up = False
 
     @staticmethod
     def _check_hook_type(hook: BaseHook) -> DbApiHook:
@@ -202,6 +202,9 @@ class SQLMetaAdapter(BaseMetaAdapter):
 
     def _setup(self):
         """ Initial setup for this adapter, creates the tables on the DB if missing, using SQLAlchemy."""
+
+        if self._is_set_up:
+            return
 
         metadata = MetaData()
 
@@ -259,6 +262,8 @@ class SQLMetaAdapter(BaseMetaAdapter):
         )
         metadata.create_all(bind=self.engine)
 
+        self._is_set_up = True
+
     def write_generic_metadata(self, for_asset: BaseDataAsset, payload: Dict):
         """
         Log generic metadata in JSON format.
@@ -269,6 +274,8 @@ class SQLMetaAdapter(BaseMetaAdapter):
         """
         # serialize dict as a json and write it to JSON column in database
         payload_json = json.dumps(obj=payload, ensure_ascii=False)
+
+        self._setup()
 
         ins = self.t_generic_meta.insert().values(
             **{
@@ -288,6 +295,8 @@ class SQLMetaAdapter(BaseMetaAdapter):
         :param lineage: the lineage entity to log.
         :return: None
         """
+        self._setup()
+
         inserts = []
 
         for src in lineage.data_sources:
@@ -326,6 +335,8 @@ class SQLMetaAdapter(BaseMetaAdapter):
         """
 
         collected_lineage = []
+
+        self._setup()
 
         # we create a dummy entry as a starting anchor for the recursive search
         lineage_to_query = [(Lineage(data_sources=[], data_target=for_target), 0)]
@@ -425,6 +436,8 @@ class SQLMetaAdapter(BaseMetaAdapter):
         :param load_status: the load status entity to log.
         :return: None
         """
+        self._setup()
+
         # insert potentially existing records in
         move_to_hist = self.t_load_status_hist.insert().from_select(
             [
@@ -469,6 +482,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
         :param discovered_files: iterable of metadata entities for all discovered files
         :return: None
         """
+        self._setup()
         # clear any pre-existing entries for this dag-id
         # we use the first file to retrieve the common key: dag_id & dag_exec_date & task_id
         discovered_files = list(discovered_files)
@@ -513,7 +527,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
         :param for_asset: data asset for which to retrieve the load status information
         :return: the load status metadata entity
         """
-
+        self._setup()
         query = self.t_load_status.select().where(
             self.t_load_status.c[self.FN_DATA_ASSET] == for_asset.name
         )
@@ -545,7 +559,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
         :param dag_exec_date: an Airflow DAG execution date for which to retrieve the metadata for
         :return: list of metadata entities
         """
-
+        self._setup()
         query = self.t_infile_metadata.select().where(
             and_(
                 self.t_infile_metadata.c[self.FN_DAG_ID] == dag_id,
@@ -668,9 +682,7 @@ def get_configured_meta_adapter_hook() -> Optional[BaseHook]:
             f"'meta_adapter_hook_factory' for Airtunnel not configured in airflow.cfg – using default"
         )
         # set the default config as part of the environment, to hide future AirflowConfigExceptions:
-        os.environ[
-            META_ADAPTER_HOOK_FACTORY_ENV_NAME
-        ] = DEFAULT_HOOK_FACTORY
+        os.environ[META_ADAPTER_HOOK_FACTORY_ENV_NAME] = DEFAULT_HOOK_FACTORY
         meta_hook_factory = DEFAULT_HOOK_FACTORY
 
     module, cls = meta_hook_factory.rsplit(".", maxsplit=1)
