@@ -65,9 +65,9 @@ def split_sql_script(full_script: str) -> List[str]:
     # split the input file at each semicolon
     # removing too short tokens
     return [
-        stmnt.strip()
-        for stmnt in full_sql.split(";")
-        if len(stmnt) > MINIMUM_SQL_STATEMENT_LEN
+        s.strip()
+        for s in full_sql.split(";")
+        if len(s) > MINIMUM_SQL_STATEMENT_LEN
     ]
 
 

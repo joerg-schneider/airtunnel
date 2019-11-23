@@ -1,4 +1,4 @@
-""" Module for Airtunnels paths, i.e. to the declaration, data and scripts store folders. """
+""" Module for Airtunnel's paths, i.e. to the declaration, data and scripts store folders. """
 from os import path
 
 from airflow import conf

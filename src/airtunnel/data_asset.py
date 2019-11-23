@@ -23,7 +23,7 @@ from airtunnel.paths import (
     P_DATA_ARCHIVE,
 )
 
-PYSPARK_DEFAULT_SAVEMODE = "overwrite"
+PYSPARK_DEFAULT_SAVE_MODE = "overwrite"
 
 try:
     import pyspark
@@ -80,7 +80,7 @@ class BaseDataAsset:
         Creates a filesystem safe execution date string from a Airflow context.
 
         :param airflow_context: a live Airflow context
-        :return: a string with the exection datetime escaped
+        :return: a string with the execution datetime escaped
         """
         return (
             str(airflow_context["task_instance"].execution_date)
@@ -151,13 +151,13 @@ class BaseDataAsset:
 
         ti: TaskInstance = airflow_context["task_instance"]
 
-        descovered_files = ti.xcom_pull(
+        discovered_files = ti.xcom_pull(
             dag_id=ti.dag_id, key=self.discovered_files_xcom_key
         )
 
         return [
             f.replace(self.landing_path, self.staging_pickedup_path(airflow_context))
-            for f in descovered_files
+            for f in discovered_files
         ]
 
     @property
@@ -640,7 +640,7 @@ class PySparkDataAssetIO(BaseDataAssetIO):
         """
 
         if "mode" not in writer_kwargs:
-            writer_kwargs["mode"] = PYSPARK_DEFAULT_SAVEMODE
+            writer_kwargs["mode"] = PYSPARK_DEFAULT_SAVE_MODE
 
         if (
             "compression" not in writer_kwargs

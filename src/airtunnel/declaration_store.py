@@ -215,7 +215,7 @@ class DataAssetDeclaration:
 
     @property
     def in_storage_format(self) -> str:
-        """ The declarad input storage format. """
+        """ The declared input storage format. """
         return self._ingestion_decls()[K_IN_STORAGE_FORMAT]
 
     @property

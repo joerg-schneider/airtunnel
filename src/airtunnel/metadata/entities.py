@@ -255,8 +255,8 @@ class Lineage:
         )
 
         return [
-            Lineage.lineage_from_sql_statement(statement=stmnt)
-            for stmnt in sql_helpers.split_sql_script(full_script=script)
+            Lineage.lineage_from_sql_statement(statement=s)
+            for s in sql_helpers.split_sql_script(full_script=script)
         ]
 
     def __eq__(self, other: "Lineage"):
