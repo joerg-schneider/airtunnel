@@ -198,7 +198,8 @@ class Lineage:
 
         :param statement: the string with the SQL statement
         :param known_data_assets: iterable of known data asset names to restrict the search space of lineage sources and
-        targets to it - if not given, all known data assets will be fetched from the declaration store
+                                  targets to it - if not given, all known data assets will be fetched from the
+                                  declaration store
         :return: the lineage entity with ShellDataAssets as data source(s) and data target and without
                  additional context (DAG ID, task ID, DAG execution datetime)
         """
