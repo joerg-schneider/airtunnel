@@ -1,3 +1,4 @@
+""" Module defining Airtunnel metadata adapters. """
 import importlib
 import json
 import logging
@@ -27,29 +28,61 @@ DEFAULT_HOOK_FACTORY = "airtunnel.metadata.adapter.DefaultSQLHookFactory"
 
 
 class BaseMetaAdapter(ABC):
+    """ Base class for all Airtunnel MetaAdapters. """
+
     def __init__(self):
         pass
 
     @abstractmethod
-    def setup(self):
+    def _setup(self):
+        """ Method called on initialization of a MetaAdapter implementation. """
         raise NotImplementedError
 
     @abstractmethod
-    def write_inspected_files(self, discovered_files: Iterable[IngestedFileMetadata]):
+    def write_inspected_files(
+        self, discovered_files: Iterable[IngestedFileMetadata]
+    ) -> None:
+        """
+        Log metadata of discovered files of the ingestion process.
+
+        :param discovered_files: iterable of metadata entities for all discovered files
+        :return: None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def read_inspected_files(
         self, for_asset: BaseDataAsset, dag_id: str, dag_exec_date: datetime
     ) -> List[IngestedFileMetadata]:
+        """
+        Read existing metadata of previously inspected files.
+
+        :param for_asset: a data asset for which to retrieve the metadata for
+        :param dag_id: an Airflow DAG ID for which to retrieve the metadata for
+        :param dag_exec_date: an Airflow DAG execution date for which to retrieve the metadata for
+        :return: list of metadata entities
+        """
         raise NotImplementedError
 
     @abstractmethod
-    def write_generic_metadata(self, for_asset: BaseDataAsset, payload: Dict):
+    def write_generic_metadata(self, for_asset: BaseDataAsset, payload: Dict) -> None:
+        """
+        Log generic metadata in JSON format.
+
+        :param for_asset: a data asset for which to retrieve the metadata for
+        :param payload: the generic metadata to log – needs to be serializable as JSON
+        :return: None
+        """
         raise NotImplementedError
 
     @abstractmethod
-    def write_lineage(self, lineage: Lineage):
+    def write_lineage(self, lineage: Lineage) -> None:
+        """
+        Log lineage information.
+
+        :param lineage: the lineage entity to log.
+        :return: None
+        """
         raise NotImplementedError
 
     @abstractmethod
@@ -59,20 +92,49 @@ class BaseMetaAdapter(ABC):
         dag_id: Optional[str] = None,
         dag_exec_date: Optional[datetime] = None,
     ) -> List[Tuple[Lineage, int]]:
+        """
+        Read previously logged lineage metadata.
+
+        :param for_target: the data asset for which to retrieve lineage information for, here the data target
+        :param dag_id: the DAG ID for which to restrict the lineage search on (optional)
+        :param dag_exec_date: the DAG execution datetime for which to restrict the lineage search on (optional)
+        :return: the lineage information captured as a list of tuples, in which the first element is a lineage metadata
+        entity and the second an int of the upstream level in the lineage chain
+        """
         # should return the complete lineage for a data asset, i.e. all sources including
         # transitive ones, stating the upstream level at each node
         raise NotImplementedError
 
     @abstractmethod
-    def write_load_status(self, load_status: LoadStatus):
+    def write_load_status(self, load_status: LoadStatus) -> None:
+        """
+        Log load status metadata.
+
+        :param load_status: the load status entity to log.
+        :return: None
+        """
         raise NotImplementedError
 
     @abstractmethod
     def read_load_status(self, for_asset: BaseDataAsset) -> LoadStatus:
+        """
+        Read previously logged load status for a data asset.
+
+        :param for_asset: data asset for which to retrieve the load status information
+        :return: the load status metadata entity
+        """
         raise NotImplementedError
 
 
 class SQLMetaAdapter(BaseMetaAdapter):
+    """ BaseMetaAdapter implementation using SQLAlchemy, hence compatible with relational databases that SQLAlchemy
+    supports. The database connection that is used for metadata logging (=SQLAlchemy engine) can be customized through
+    an Airflow DbApiHook that is either explicitly given as part of the constructor, or configured using the Airtunnel
+    configuration parameter: ``meta_adapter_hook_factory``.
+
+    If neither of these two define a DbApiHook to use, SQLMetaAdapter will use Airflow's backend database by leveraging
+    the configured SQLAlchemy connection string and creating the engine based on it.
+    """
 
     # we define some table names as constants:
     TN_LOAD_STATUS_HIST = "airtunnel_load_status_hist"
@@ -108,11 +170,6 @@ class SQLMetaAdapter(BaseMetaAdapter):
 
     def __init__(self, sql_hook: DbApiHook = None):
         super(SQLMetaAdapter, self).__init__()
-        self.t_generic_meta: Table = None
-        self.t_lineage: Table = None
-        self.t_load_status: Table = None
-        self.t_load_status_hist: Table = None
-        self.t_infile_metadata: Table = None
 
         if sql_hook is not None:
             # a sql hook was passed into the constructor – it takes highest precedence
@@ -130,7 +187,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
                 # nothing was defined, create engine based on the default Airflow conn:
                 self.engine = sqlalchemy.create_engine(SQL_ALCHEMY_CONN)
 
-        self.setup()
+        self._setup()
 
     @staticmethod
     def _check_hook_type(hook: BaseHook) -> DbApiHook:
@@ -140,7 +197,8 @@ class SQLMetaAdapter(BaseMetaAdapter):
             )
         return hook
 
-    def setup(self):
+    def _setup(self):
+        """ Initial setup for this adapter, creates the tables on the DB if missing, using SQLAlchemy."""
 
         metadata = MetaData()
 
@@ -199,7 +257,14 @@ class SQLMetaAdapter(BaseMetaAdapter):
         metadata.create_all(bind=self.engine)
 
     def write_generic_metadata(self, for_asset: BaseDataAsset, payload: Dict):
-        # serialize dict as a json and write it to JSON column in postgres
+        """
+        Log generic metadata in JSON format.
+
+        :param for_asset: a data asset for which to retrieve the metadata for
+        :param payload: the generic metadata to log – needs to be serializable as JSON
+        :return: None
+        """
+        # serialize dict as a json and write it to JSON column in database
         payload_json = json.dumps(obj=payload, ensure_ascii=False)
 
         ins = self.t_generic_meta.insert().values(
@@ -214,6 +279,12 @@ class SQLMetaAdapter(BaseMetaAdapter):
         self._execute_on_db(statements=ins)
 
     def write_lineage(self, lineage: Lineage):
+        """
+        Log lineage information.
+
+        :param lineage: the lineage entity to log.
+        :return: None
+        """
         inserts = []
 
         for src in lineage.data_sources:
@@ -230,7 +301,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
                 )
             )
 
-        self._execute_on_db(statements=inserts, wrap_transaction=True)
+        self._execute_on_db(statements=inserts)
 
         # self._execute(statements)
         logger.info(f"Lineage for target {lineage.data_target.name} saved.")
@@ -241,12 +312,22 @@ class SQLMetaAdapter(BaseMetaAdapter):
         dag_id: Optional[str] = None,
         dag_exec_date: Optional[datetime] = None,
     ) -> List[Tuple[Lineage, int]]:
+        """
+        Read previously logged lineage metadata.
+
+        :param for_target: the data asset for which to retrieve lineage information for, here the data target.
+        :param dag_id: the DAG ID for which to restrict the lineage search on (optional)
+        :param dag_exec_date: the DAG execution datetime for which to restrict the lineage search on (optional)
+        :return: the lineage information captured as a list of tuples, in which the first element is a lineage metadata
+        entity and the second an int of the upstream level in the lineage chain
+        """
+
         collected_lineage = []
 
         # we create a dummy entry as a starting anchor for the recursive search
         lineage_to_query = [(Lineage(data_sources=[], data_target=for_target), 0)]
 
-        def get_lineage_sources_for_target(target_name: str) -> Iterable[Lineage]:
+        def _get_lineage_sources_for_target(target_name: str) -> Iterable[Lineage]:
             select = self.t_lineage.select().where(
                 self.t_lineage.c[self.FN_DATA_ASSET_TRG] == target_name
             )
@@ -275,7 +356,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
             # we create a lineage entity for each unique dag_id, task_id combination for this source:
             # sort by dag_id, task_id:
             lineage_for_target_latest = lineage_for_target_latest.sort_values(
-                by=[self.FN_DAG_ID, self.FN_TASK_ID], ascending=True
+                by=[self.FN_DAG_ID, self.FN_TASK_ID]
             )
 
             # now we aggregate each sources per dag_id, task_id, dag_exec_date combination:
@@ -323,7 +404,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
 
         while len(lineage_to_query) > 0:
             target_to_get_lineage_for, level = lineage_to_query.pop(0)
-            sources = get_lineage_sources_for_target(
+            sources = _get_lineage_sources_for_target(
                 target_to_get_lineage_for.data_target.name
             )
 
@@ -335,6 +416,12 @@ class SQLMetaAdapter(BaseMetaAdapter):
         return collected_lineage
 
     def write_load_status(self, load_status: LoadStatus):
+        """
+        Log load status metadata.
+
+        :param load_status: the load status entity to log.
+        :return: None
+        """
         # insert potentially existing records in
         move_to_hist = self.t_load_status_hist.insert().from_select(
             [
@@ -367,12 +454,18 @@ class SQLMetaAdapter(BaseMetaAdapter):
                 move_to_hist,
                 delete_existing_load_status,
                 insert_new_load_status,
-            ],
-            wrap_transaction=True,
+            ]
         )
 
-    def write_inspected_files(self, discovered_files: Iterable[IngestedFileMetadata]):
+    def write_inspected_files(
+        self, discovered_files: Iterable[IngestedFileMetadata]
+    ) -> None:
+        """
+        Log metadata of discovered files of the ingestion process.
 
+        :param discovered_files: iterable of metadata entities for all discovered files
+        :return: None
+        """
         # clear any pre-existing entries for this dag-id
         # we use the first file to retrieve the common key: dag_id & dag_exec_date & task_id
         discovered_files = list(discovered_files)
@@ -408,9 +501,15 @@ class SQLMetaAdapter(BaseMetaAdapter):
             for infile in discovered_files
         ]
 
-        self._execute_on_db(statements=ins_queries, wrap_transaction=True)
+        self._execute_on_db(statements=ins_queries)
 
     def read_load_status(self, for_asset: BaseDataAsset) -> LoadStatus:
+        """
+        Read previously logged load status for a data asset.
+
+        :param for_asset: data asset for which to retrieve the load status information
+        :return: the load status metadata entity
+        """
 
         query = self.t_load_status.select().where(
             self.t_load_status.c[self.FN_DATA_ASSET] == for_asset.name
@@ -435,6 +534,14 @@ class SQLMetaAdapter(BaseMetaAdapter):
     def read_inspected_files(
         self, for_asset: BaseDataAsset, dag_id: str, dag_exec_date: datetime
     ) -> List[IngestedFileMetadata]:
+        """
+        Read existing metadata of previously inspected files.
+
+        :param for_asset: a data asset for which to retrieve the metadata for
+        :param dag_id: an Airflow DAG ID for which to retrieve the metadata for
+        :param dag_exec_date: an Airflow DAG execution date for which to retrieve the metadata for
+        :return: list of metadata entities
+        """
 
         query = self.t_infile_metadata.select().where(
             and_(
@@ -466,40 +573,60 @@ class SQLMetaAdapter(BaseMetaAdapter):
         statements: Union[Iterable[DDLElement], DDLElement],
         wrap_transaction: bool = True,
     ):
-        def execute_statements(conn, statements):
-            if isinstance(statements, Iterable):
-                for statement in statements:
-                    conn.execute(statement)
+        def _execute_statements(conn_, statements_):
+            if isinstance(statements_, Iterable):
+                for statement in statements_:
+                    conn_.execute(statement)
             else:
-                conn.execute(statements)
+                conn_.execute(statements_)
 
         conn = self._connection()
 
         if wrap_transaction:
             trans = conn.begin()
-            execute_statements(conn, statements)
+            _execute_statements(conn, statements)
             trans.commit()
 
         else:
-            execute_statements(conn, statements)
+            _execute_statements(conn, statements)
 
         conn.close()
 
 
 class BaseHookFactory:
+    """ Base class to define the interface we expect for a custom hook factory. """
+
     @staticmethod
     @abstractmethod
     def make_hook() -> Optional[BaseHook]:
+        """ Creates and returns an Airflow hook that should be used to log metadata. """
         raise NotImplementedError
 
 
 class DefaultSQLHookFactory(BaseHookFactory):
+    """ Default (dummy) hook factory used with the SQLMetaAdapter if nothing custom is defined. """
+
     @staticmethod
     def make_hook() -> Optional[BaseHook]:
+        """ This implementation does not create a hook, but returns 'None' so that the SQLMetaAdapter falls back to
+        simply creating a SQLAlchemy engine based on Airflow's configured SQLAlchemy connection string.
+        We do not attempt to create a hook in this scenario, as we can not know for certain the type of database backend
+        one uses with their Airflow setup, and therefor we can not safely chose and instantiate the hook of the right
+        type.
+        """
         return None
 
 
 def get_configured_adapter() -> BaseMetaAdapter:
+    """
+    Gets the configured (or default) BaseMetaAdapter to use for metadata operations.
+
+    It can be defined using the config key ``meta_adapter_class`` with a value that
+    points to a class implementing ``airtunnel.metadata.adapter.BaseMetaAdapter``. This class
+    will then be retrieved and used as the metadata adapter in Airtunnel's Airflow operators.
+
+    :return: the configured (or default) BaseMetaAdapter
+    """
     try:
         meta_adapter_class = conf.get(section="airtunnel", key="meta_adapter_class")
     except AirflowConfigException:
@@ -517,6 +644,18 @@ def get_configured_adapter() -> BaseMetaAdapter:
 
 
 def get_configured_hook() -> Optional[BaseHook]:
+    """
+    Gets the configured hook to use for metadata operations.
+
+    It can be defined using the config key ``meta_adapter_hook_factory`` with a value that
+    points to a class implementing ``airtunnel.metadata.adapter.BaseHookFactory``. This class
+    will then be retrieved and the method ``make_hook()`` will be called to get the hook.
+
+    If nothing defined, ``airtunnel.metadata.adapter.DefaultSQLHookFactory`` is used, which returns 'None'
+    for a hook – letting an implemented metadata adapter proceed to create their own default hook/connection.
+
+    :return: a BaseHook to use for metadata operations or 'None' if not defined
+    """
     try:
         meta_hook_factory = conf.get(
             section="airtunnel", key="meta_adapter_hook_factory"
