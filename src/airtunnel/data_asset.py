@@ -368,7 +368,6 @@ class SQLDataAsset(BaseDataAsset):
 
         return loaded_sql_script
 
-    # todo: we might check if a DDL script even exists, it could be optional!
     def rebuild_for_store(
         self,
         airflow_context,
