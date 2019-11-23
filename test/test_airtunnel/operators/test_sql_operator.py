@@ -33,13 +33,13 @@ def sqlite_operator(test_db_hook):
 
 def test_read_sql_file(sqlite_operator):
     sqlite_operator._load_sql_script()
-    assert len(sqlite_operator.loaded_sql_script) > 0
+    assert len(sqlite_operator._loaded_sql_script) > 0
 
     s1 = "drop table if exists test_table;"
     s2 = "create table test_table(x integer primary key, y string, z double);"
 
-    assert s1 in sqlite_operator.loaded_sql_script
-    assert s2 in sqlite_operator.loaded_sql_script
+    assert s1 in sqlite_operator._loaded_sql_script
+    assert s2 in sqlite_operator._loaded_sql_script
 
 
 def test_split_sql_file(sqlite_operator):

@@ -1,3 +1,4 @@
+""" Module for Airtunnel's SQLOperator. """
 import logging
 from typing import Union, List
 
@@ -17,6 +18,8 @@ log = logging.getLogger(__name__)
 
 
 class SQLOperator(BaseOperator):
+    """ Airtunnel's SQLOperator. """
+
     @apply_defaults
     def __init__(
         self,
@@ -30,52 +33,43 @@ class SQLOperator(BaseOperator):
 
         super(SQLOperator, self).__init__(*args, **kwargs)
 
-        self.__connection = None
-        self.__sql_hook = sql_hook
-        self.__sql_relative_path = script_file_relative_path
-        self.__sql_params = {} if parameters is None else parameters
-        self.__dynamic_params_func = dynamic_parameters
-        self.__loaded_sql_script = None
-        self.__loaded_sql_statements = None
-        self.__db_connection = None
+        self._connection = None
+        self._sql_hook = sql_hook
+        self._sql_relative_path = script_file_relative_path
+        self._sql_params = {} if parameters is None else parameters
+        self._dynamic_params_func = dynamic_parameters
+        self._loaded_sql_script = None
+        self._loaded_sql_statements = None
+        self._db_connection = None
 
-        self.check_arguments()
+        self._check_arguments()
 
-    def check_arguments(self):
-        assert self.__sql_relative_path is not None, "SQL path needs to be supplied!"
+    def _check_arguments(self):
+        assert self._sql_relative_path is not None, "SQL path needs to be supplied!"
 
     def _load_sql_script(self) -> None:
-        self.__loaded_sql_script = load_sql_script(
-            script_file_relative_path=self.__sql_relative_path
+        self._loaded_sql_script = load_sql_script(
+            script_file_relative_path=self._sql_relative_path
         )
 
     def execute(self, context):
-        """
-
-        :param context: the Airflow context
-        :return: None
-        """
+        """ Execute the operator instance using Airflow. """
 
         self._load_sql_script()
 
-        if self.__dynamic_params_func is not None:
-            self.__sql_params.update(
-                prepare_sql_params(self.__dynamic_params_func, context)
+        if self._dynamic_params_func is not None:
+            self._sql_params.update(
+                prepare_sql_params(self._dynamic_params_func, context)
             )
 
-        if self.__sql_params != {}:
-            self.__loaded_sql_script = format_sql_script(
-                sql_script=self.__loaded_sql_script, sql_params_dict=self.__sql_params
+        if self._sql_params != {}:
+            self._loaded_sql_script = format_sql_script(
+                sql_script=self._loaded_sql_script, sql_params_dict=self._sql_params
             )
 
-        self.__loaded_sql_statements = split_sql_script(self.__loaded_sql_script)
+        self._loaded_sql_statements = split_sql_script(self._loaded_sql_script)
 
-        connection = self.__sql_hook.get_sqlalchemy_engine().connect()
+        connection = self._sql_hook.get_sqlalchemy_engine().connect()
         connection = connection.execution_options(autocommit=False)
-        execute_script(connection, self.__loaded_sql_statements)
+        execute_script(connection, self._loaded_sql_statements)
         connection.close()
-
-    @property
-    def loaded_sql_script(self):
-        script = self.__loaded_sql_script
-        return script
