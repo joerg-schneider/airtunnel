@@ -21,6 +21,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath("./../src"))
 
+from airtunnel import __version__
 
 # -- General configuration ------------------------------------------------
 
@@ -56,7 +57,7 @@ copyright = u"2019, Jörg Schneider"
 # built documents.
 #
 # The short X.Y version.
-version = "0.5.0"
+version = __version__
 # The full version, including alpha/beta/rc tags.
 release = version
 

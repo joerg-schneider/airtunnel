@@ -31,6 +31,41 @@ steps:
   displayName: 'Tox Lint'
 
 - script: |
+    CUR_PATH=$(pwd)
+    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
+    tox -e py37-current_versions
+  displayName: 'Run Tox Python 3.7: Current Dependency Versions'
+
+- script: |
+    CUR_PATH=$(pwd)
+    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
+    tox -e py37-minimal_versions
+  displayName: 'Run Tox Python 3.7: Minimal Dependency Versions'
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.6'
+
+- script: |
+    CUR_PATH=$(pwd)
+    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
+    tox -e py36
+  displayName: 'Run Tox Python 3.6'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: '$(System.DefaultWorkingDirectory)/.tox/test-*.xml'
+    testRunTitle: 'Publish test results for Python $(python.version)'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/.tox/coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/.tox/htmlcov'
+
+- script: |
+    export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
     tox -e docs
   displayName: 'Tox Sphinx Docs'
 
