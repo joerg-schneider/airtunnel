@@ -51,10 +51,11 @@ steps:
     git add *.html
     git add .nojekyll
     git add *.js
+    git add .buildinfo objects.inv
     git add _images
     git add _sources
     git add _static
     git add api
     git commit -m "AzureDevOps: updated docs"
-    #git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
+    git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
   displayName: 'Publish Docs'
