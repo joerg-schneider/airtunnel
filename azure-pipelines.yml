@@ -94,3 +94,4 @@ steps:
     git commit -m "AzureDevOps: updated docs"
     git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
   displayName: 'Publish Docs'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
