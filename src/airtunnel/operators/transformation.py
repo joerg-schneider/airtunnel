@@ -5,7 +5,6 @@ import logging
 from airflow.operators import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
-import airtunnel
 import airtunnel.operators
 from airtunnel.data_asset import PandasDataAsset
 from airtunnel.data_asset import PySparkDataAsset
