@@ -20,7 +20,7 @@ class StagingToReadyOperator(BaseOperator):
     @apply_defaults
     def __init__(self, asset: BaseDataAsset, *args, **kwargs):
         self._asset = asset
-        self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
+        self._data_store_adapter = airtunnel.data_store.get_configured_data_store_adapter()
 
         if "task_id" not in kwargs:
             kwargs["task_id"] = asset.name + "_" + "staging_to_ready"
@@ -70,7 +70,7 @@ class StagingToReadyOperator(BaseOperator):
             if moved_to_temp_path and move_to_ready_succeeded:
                 try:
                     # log load-status
-                    airtunnel.metadata.adapter.get_configured_adapter().write_load_status(
+                    airtunnel.metadata.adapter.get_configured_meta_adapter().write_load_status(
                         LoadStatus(
                             for_asset=self._asset,
                             dag_id=self.dag_id,

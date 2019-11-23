@@ -177,7 +177,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
             self.engine = sql_hook.get_sqlalchemy_engine()
         else:
 
-            configured_custom_hook = get_configured_hook()
+            configured_custom_hook = get_configured_meta_adapter_hook()
 
             if configured_custom_hook is not None:
                 # a configured custom hook was returned by the factory:
@@ -617,7 +617,7 @@ class DefaultSQLHookFactory(BaseHookFactory):
         return None
 
 
-def get_configured_adapter() -> BaseMetaAdapter:
+def get_configured_meta_adapter() -> BaseMetaAdapter:
     """
     Gets the configured (or default) BaseMetaAdapter to use for metadata operations.
 
@@ -643,7 +643,7 @@ def get_configured_adapter() -> BaseMetaAdapter:
     return adapter_class()
 
 
-def get_configured_hook() -> Optional[BaseHook]:
+def get_configured_meta_adapter_hook() -> Optional[BaseHook]:
     """
     Gets the configured hook to use for metadata operations.
 

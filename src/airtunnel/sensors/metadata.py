@@ -8,7 +8,7 @@ from airflow.utils.decorators import apply_defaults
 
 import airtunnel.operators
 from airtunnel import BaseDataAsset
-from airtunnel.metadata.adapter import get_configured_adapter
+from airtunnel.metadata.adapter import get_configured_meta_adapter
 
 
 @apply_defaults
@@ -55,7 +55,7 @@ class AwaitLoadStatusSensor(BaseSensorOperator):
     def poke(self, context):
         """ Perform the poke operation for this sensor from Airflow. """
         if self._meta_adapter is None:
-            self._meta_adapter = get_configured_adapter()
+            self._meta_adapter = get_configured_meta_adapter()
 
         if self._compare_date is None:
             # we pick the more recent date as a comparison:
@@ -114,7 +114,7 @@ class AwaitAssetAncestorsUpdatedSensor(BaseSensorOperator):
     def poke(self, context):
         """ Perform the poke operation for this sensor from Airflow. """
         if self._meta_adapter is None:
-            self._meta_adapter = get_configured_adapter()
+            self._meta_adapter = get_configured_meta_adapter()
 
         if self._refreshed_since is None:
             if self._ancestors_refreshed_within is None:

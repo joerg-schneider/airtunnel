@@ -17,7 +17,7 @@ class IngestArchiveOperator(BaseOperator):
     @apply_defaults
     def __init__(self, asset: BaseDataAsset, *args, **kwargs):
         self._asset = asset
-        self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
+        self._data_store_adapter = airtunnel.data_store.get_configured_data_store_adapter()
 
         if "task_id" not in kwargs:
             kwargs["task_id"] = asset.name + "_" + "ingest_archival"
@@ -49,7 +49,7 @@ class DataAssetArchiveOperator(BaseOperator):
     @apply_defaults
     def __init__(self, asset: BaseDataAsset, *args, **kwargs):
         self._asset = asset
-        self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
+        self._data_store_adapter = airtunnel.data_store.get_configured_data_store_adapter()
 
         if "task_id" not in kwargs:
             kwargs["task_id"] = asset.name + "_" + "ready_archival"

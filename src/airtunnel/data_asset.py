@@ -11,7 +11,7 @@ import pandas as pd
 from airflow.hooks.dbapi_hook import DbApiHook
 from airflow.models import TaskInstance
 
-import airtunnel
+from airtunnel.data_store import get_configured_data_store_adapter
 from airtunnel.declaration_store import DataAssetDeclaration, V_COMP_NONE
 from airtunnel.operators.sql import sqloperator
 from airtunnel.paths import (
@@ -21,6 +21,8 @@ from airtunnel.paths import (
     P_DATA_INGEST_ARCHIVE,
     P_DATA_INGEST_LANDING,
     P_DATA_ARCHIVE,
+    P_SCRIPTS_SQL,
+    P_SCRIPTS_PY,
 )
 
 PYSPARK_DEFAULT_SAVE_MODE = "overwrite"
@@ -120,8 +122,6 @@ class BaseDataAsset:
         :return: the staging/ready path for this data asset
         """
         p = os.path.join(P_DATA_STAGING_READY, self.name)
-        # todo: this has to be replaced using the data_store_adapter!
-        os.makedirs(p, exist_ok=True)
         return p
 
     def ready_archive_path(self, airflow_context) -> str:
@@ -315,13 +315,9 @@ class SQLDataAsset(BaseDataAsset):
         :param script_type: i.e. dml, ddl – translates to a subfolder in the script-store/sql/ folder
         :return: the raw SQL script as a string
         """
-        # todo: change this using the paths module
-        from scripts import sql
 
         sql_location = path.join(
-            path.dirname(sql.__file__),
-            script_type,
-            self.name.replace(".", "/") + ".sql",
+            P_SCRIPTS_SQL, script_type, self.name.replace(".", "/") + ".sql"
         )
 
         if not path.exists(sql_location):
@@ -511,6 +507,19 @@ class BaseDataAssetIO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
+    def prepare_staging_ready_path(asset: BaseDataAsset) -> None:
+        """
+        For a given data asset, prepare the staging/ready path for it, i.e. ensure it exists if this is the
+        first ever run.
+
+        :param asset: the data asset for which to prepare the staging/ready path
+        :return: None
+        """
+        get_configured_data_store_adapter().makedirs(
+            path=asset.staging_ready_path, exist_ok=True
+        )
+
 
 class PandasDataAssetIO(BaseDataAssetIO):
     """ IO interface for the Airtunnel PandasDataAsset. """
@@ -554,18 +563,32 @@ class PandasDataAssetIO(BaseDataAssetIO):
         :param writer_kwargs: additional keyword arguments to pass into the Pandas writer function
         :return: None
         """
+
+        BaseDataAssetIO.prepare_staging_ready_path(asset)
+
+        data_store_adapter = get_configured_data_store_adapter()
+
+        full_output_filepath = path.join(
+            asset.staging_ready_path, asset.output_filename
+        )
+
         if asset.declarations.is_parquet_output:
-            data.to_parquet(
-                path.join(asset.staging_ready_path, asset.output_filename),
-                compression=asset.declarations.out_comp_codec,
-                **writer_kwargs,
-            )
+            with data_store_adapter.open(full_output_filepath, mode="wb") as out_file:
+                # noinspection PyTypeChecker
+                data.to_parquet(
+                    out_file,
+                    compression=asset.declarations.out_comp_codec,
+                    **writer_kwargs,
+                )
         elif asset.declarations.is_csv_output:
-            data.to_csv(
-                path_or_buf=path.join(asset.staging_ready_path, asset.output_filename),
-                compression=asset.declarations.out_comp_codec,
-                **writer_kwargs,
-            )
+            with data_store_adapter.open(
+                full_output_filepath, mode="w", newline=""
+            ) as out_file:
+                data.to_csv(
+                    path_or_buf=out_file,
+                    compression=asset.declarations.out_comp_codec,
+                    **writer_kwargs,
+                )
         else:
             raise ValueError(f"Only output formats of csv/parquet are supported!")
 
@@ -582,13 +605,22 @@ class PandasDataAssetIO(BaseDataAssetIO):
         :return: the read in data as a dataframe
         """
         data = []
+        data_store_adapter = get_configured_data_store_adapter()
 
         if asset.declarations.is_csv_input:
-            data = [pd.read_csv(f, **reader_kwargs) for f in source_files]
+            for fpath in source_files:
+                with data_store_adapter.open(fpath, mode="rb") as f:
+                    data.append(pd.read_csv(f, **reader_kwargs))
+
         elif asset.declarations.is_xls_input:
-            data = [pd.read_excel(f, **reader_kwargs) for f in source_files]
+            for fpath in source_files:
+                with data_store_adapter.open(fpath, mode="rb") as f:
+                    data.append(pd.read_excel(f, **reader_kwargs))
+
         elif asset.declarations.is_parquet_input:
-            data = [pd.read_parquet(f, **reader_kwargs) for f in source_files]
+            for fpath in source_files:
+                with data_store_adapter.open(fpath, mode="rb") as f:
+                    data.append(pd.read_parquet(f, **reader_kwargs))
 
         if not data:
             warnings.warn(f"No data for {asset.name} was read - please double check!!")
@@ -647,6 +679,8 @@ class PySparkDataAssetIO(BaseDataAssetIO):
             and asset.declarations.out_comp_codec != V_COMP_NONE
         ):
             writer_kwargs["compression"] = asset.declarations.out_comp_codec
+
+        BaseDataAssetIO.prepare_staging_ready_path(asset)
 
         if asset.declarations.is_parquet_output:
             data.write.parquet(asset.staging_ready_path, **writer_kwargs)
@@ -722,7 +756,7 @@ def _log_lineage(
                 task_id = None
                 dag_exec_date = None
 
-            meta_adapter = airtunnel.metadata.adapter.get_configured_adapter()
+            meta_adapter = airtunnel.metadata.adapter.get_configured_meta_adapter()
             meta_adapter.write_lineage(
                 Lineage(
                     data_sources=[for_asset],
@@ -741,7 +775,7 @@ def _log_lineage(
 
 def _load_py_script(asset: BaseDataAsset):
     """ Load a Python script for a given DataAsset from the defined Airtunnel script store. """
-    script_path = path.join(airtunnel.paths.P_SCRIPTS_PY, asset.name + ".py")
+    script_path = path.join(P_SCRIPTS_PY, asset.name + ".py")
     try:
         spec = importlib.util.spec_from_file_location("module.name", script_path)
         asset_script = importlib.util.module_from_spec(spec)

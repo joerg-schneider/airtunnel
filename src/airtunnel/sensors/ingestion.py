@@ -49,7 +49,7 @@ class SourceFileIsReadySensor(BaseSensorOperator):
         self._search_glob = os.path.join(
             self._asset.landing_path, self._asset.declarations.ingest_file_glob
         )
-        self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
+        self._data_store_adapter = airtunnel.data_store.get_configured_data_store_adapter()
 
     def poke(self, context):
         """ Perform the poke operation for this sensor from Airflow. """

@@ -151,7 +151,7 @@ class LocalDataStoreAdapter(BaseDataStoreAdapter):
         return inspected
 
 
-def get_configured_adapter() -> BaseDataStoreAdapter:
+def get_configured_data_store_adapter() -> BaseDataStoreAdapter:
     """ Gets the configured DataStoreAdapter. """
     try:
         data_store_adapter_class = conf.get(

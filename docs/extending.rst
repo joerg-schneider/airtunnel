@@ -55,7 +55,8 @@ You can verify it is being properly loaded, by running:
 
 .. code:: python
 
-    # todo
+    from airtunnel.metadata.adapter import get_configured_meta_adapter
+    get_configured_meta_adapter()
 
 …which should then return: *<class 'yourpackage.yoursubpackage.RedisMetaAdapter'>*
 
@@ -78,8 +79,8 @@ You can verify it is being properly loaded, by running:
 
 .. code:: python
 
-    from airtunnel.data_store import get_configured_adapter
-    get_configured_adapter()
+    from airtunnel.data_store import get_configured_data_store_adapter
+    get_configured_data_store_adapter()
 
 
 …which should then return: *<class 'yourpackage.yoursubpackage.S3DataStoreAdapter'>*

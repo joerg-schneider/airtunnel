@@ -41,9 +41,9 @@ class IngestOperator(BaseOperator):
         self._meta_adapter = (
             metadata_adapter
             if metadata_adapter is not None
-            else airtunnel.metadata.adapter.get_configured_adapter()
+            else airtunnel.metadata.adapter.get_configured_meta_adapter()
         )
-        self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
+        self._data_store_adapter = airtunnel.data_store.get_configured_data_store_adapter()
 
         self.picked_up_dir = None
 
