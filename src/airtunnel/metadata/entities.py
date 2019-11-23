@@ -200,7 +200,7 @@ class Lineage:
         :param known_data_assets: iterable of known data asset names to restrict the search space of lineage sources and
         targets to it - if not given, all known data assets will be fetched from the declaration store
         :return: the lineage entity with ShellDataAssets as data source(s) and data target and without
-         additional context (DAG ID, task ID, DAG execution datetime)
+                 additional context (DAG ID, task ID, DAG execution datetime)
         """
 
         """ Note: simplistic algorithm with room for improvement! (i.e. would not support WITH style CTEs) """

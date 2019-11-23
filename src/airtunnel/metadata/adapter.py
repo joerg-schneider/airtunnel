@@ -102,7 +102,7 @@ class BaseMetaAdapter(ABC):
         :param dag_id: the DAG ID for which to restrict the lineage search on (optional)
         :param dag_exec_date: the DAG execution datetime for which to restrict the lineage search on (optional)
         :return: the lineage information captured as a list of tuples, in which the first element is a lineage metadata
-        entity and the second an int of the upstream level in the lineage chain
+                 entity and the second an int of the upstream level in the lineage chain
         """
         # should return the complete lineage for a data asset, i.e. all sources including
         # transitive ones, stating the upstream level at each node
@@ -331,7 +331,7 @@ class SQLMetaAdapter(BaseMetaAdapter):
         :param dag_id: the DAG ID for which to restrict the lineage search on (optional)
         :param dag_exec_date: the DAG execution datetime for which to restrict the lineage search on (optional)
         :return: the lineage information captured as a list of tuples, in which the first element is a lineage metadata
-        entity and the second an int of the upstream level in the lineage chain
+                 entity and the second an int of the upstream level in the lineage chain
         """
 
         collected_lineage = []

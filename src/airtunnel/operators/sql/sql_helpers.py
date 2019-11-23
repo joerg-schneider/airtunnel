@@ -104,8 +104,8 @@ def format_sql_script(sql_script: str, sql_params_dict: Dict[str, str]) -> str:
 
     :param sql_script: raw SQL script string with formatting parameters expressed as ``{parameter_key}``
     :param sql_params_dict: the dictionary (of type string to string) that will be passed
-    to the format function
-    :return:
+           to the format function
+    :return: the formatted SQL script as a string
     """
     logger.info("Formatting SQL script using params: %s" % str(sql_params_dict))
     return sql_script.format(**sql_params_dict)
@@ -118,7 +118,7 @@ def prepare_sql_params(compute_sql_params_function, airflow_context) -> Dict[str
     The dynamic function will be passed the live Airflow context, so that it can leverage it's information.
 
     :return: a dict (of type string to string) with additional formatting key-value pairs that are added
-    to the default static formatting parameters.
+             to the default static formatting parameters.
     """
     logger.info(
         "Computing SQL params using user passed function called %s "

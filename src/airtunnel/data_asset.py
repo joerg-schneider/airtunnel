@@ -174,7 +174,7 @@ class BaseDataAsset:
     def output_filename(self) -> str:
         """
         :return: creates an output filename for this data asset considering the declared storage format
-        and compression codec (if using compression)
+                 and compression codec (if using compression)
         """
         if self.declarations.out_comp_codec == V_COMP_NONE:
             comp_codec_suffix = ""
