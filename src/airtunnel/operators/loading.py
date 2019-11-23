@@ -1,3 +1,4 @@
+""" Airtunnel operators for loading (i.e. getting from staging/ready to ready in the data store) tasks. """
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
@@ -10,8 +11,9 @@ from airtunnel.metadata.entities import LoadStatus
 
 @apply_defaults
 class StagingToReadyOperator(BaseOperator):
-    """ moves staged files to ready for a data asset, write load status metadata.
-       if exists, moves prepared archive to final location. """
+    """ Airtunnel's StagingToReadyOperator – moves staged files (from staging/read) to ready for a data asset and
+       write load status metadata.
+    """
 
     ui_color = airtunnel.operators.Colours.loading
 
@@ -26,6 +28,7 @@ class StagingToReadyOperator(BaseOperator):
         super().__init__(*args, **kwargs)
 
     def execute(self, context):
+        """ Execute this operator from Airflow. """
         # python does not have a straight forward "move and overwrite":
         # https://stackoverflow.com/questions/7419665/python-move-and-overwrite-files-and-folders
         # hence, we use a workaround, which is unfortunately less atomic. keep in mind for cloud storage!
