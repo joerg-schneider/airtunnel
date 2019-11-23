@@ -1,9 +1,12 @@
+""" Airtunnel operators for transformation tasks. """
+
 import logging
 
 from airflow.operators import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
 import airtunnel
+import airtunnel.operators
 from airtunnel.data_asset import PandasDataAsset
 from airtunnel.data_asset import PySparkDataAsset
 from airtunnel.data_asset import SQLDataAsset
@@ -13,6 +16,10 @@ logger.setLevel(logging.INFO)
 
 
 class PandasTransformationOperator(BaseOperator):
+    """
+    Airtunnel's transformation operator for PandasDataAssets, calling ``rebuild_for_store()`` on them.
+    """
+
     ui_color = airtunnel.operators.Colours.transformation
 
     @apply_defaults
@@ -25,10 +32,15 @@ class PandasTransformationOperator(BaseOperator):
         super().__init__(*args, **kwargs)
 
     def execute(self, context):
+        """ Execute this operator using Airflow. """
         self.asset.rebuild_for_store(airflow_context=context)
 
 
 class PySparkTransformationOperator(BaseOperator):
+    """
+    Airtunnel's transformation operator for PySparkDataAssets, calling ``rebuild_for_store()`` on them.
+    """
+
     ui_color = airtunnel.operators.Colours.transformation
 
     @apply_defaults
@@ -41,10 +53,19 @@ class PySparkTransformationOperator(BaseOperator):
         super().__init__(*args, **kwargs)
 
     def execute(self, context):
+        """ Execute this operator using Airflow. """
         self.asset.rebuild_for_store(airflow_context=context)
 
 
 class SQLTransformationOperator(BaseOperator):
+    """
+    Airtunnel's transformation operator for SQLDataAssets, calling ``rebuild_for_store()`` on them.
+
+    Can be customized with static and dynamic parameters from the DAG definition/creation time, i.e. using the
+    operator's constructor.
+
+    """
+
     ui_color = airtunnel.operators.Colours.transformation
 
     @apply_defaults
@@ -67,6 +88,7 @@ class SQLTransformationOperator(BaseOperator):
         super().__init__(*args, **kwargs)
 
     def execute(self, context):
+        """ Execute this operator using Airflow. """
         self.asset.rebuild_for_store(
             airflow_context=context,
             parameters=self._parameters,
