@@ -64,7 +64,7 @@ class BaseDataStoreAdapter(ABC):
 
     @staticmethod
     @abstractmethod
-    def listdir(path: str, **kwargs) -> List[str]:
+    def listdir(path: str, recursive: bool = False, **kwargs) -> List[str]:
         """ List entries of a given path. """
         raise NotImplementedError
 
@@ -126,9 +126,16 @@ class LocalDataStoreAdapter(BaseDataStoreAdapter):
         return glob.glob(pattern)
 
     @staticmethod
-    def listdir(path: str, **kwargs) -> List[str]:
+    def listdir(path: str, recursive: bool = False, **kwargs) -> List[str]:
         """ List entries of a given path. """
-        return os.listdir(path)
+        if recursive:
+            return [
+                os.path.join(root, f)
+                for root, dirs, files in os.walk(path)
+                for f in files
+            ]
+        else:
+            return [os.path.join(path, p) for p in os.listdir(path)]
 
     @staticmethod
     def modification_times(files: List[str]) -> Dict[str, int]:
