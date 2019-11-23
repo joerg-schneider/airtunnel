@@ -20,7 +20,7 @@ def spark_session() -> pyspark.sql.SparkSession:
 
 @pytest.fixture
 def test_csv_asset() -> PySparkDataAsset:
-    return PySparkDataAsset("test_csv_out_asset")
+    return PySparkDataAsset("test_csv_out_asset_pyspark")
 
 
 @pytest.fixture

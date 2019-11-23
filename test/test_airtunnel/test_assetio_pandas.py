@@ -10,7 +10,7 @@ from airtunnel import PandasDataAsset, PandasDataAssetIO
 
 @pytest.fixture
 def test_csv_asset() -> PandasDataAsset:
-    return PandasDataAsset("test_csv_out_asset")
+    return PandasDataAsset("test_csv_out_asset_pandas")
 
 
 @pytest.fixture
