@@ -1,10 +1,21 @@
+import os
 from datetime import datetime, timedelta
+from typing import Optional
 
 import pytest
+from airflow.hooks.base_hook import BaseHook
 from airflow.hooks.dbapi_hook import DbApiHook
+from airflow.hooks.sqlite_hook import SqliteHook
 
 from airtunnel.data_asset import ShellDataAsset
-from airtunnel.metadata.adapter import BaseMetaAdapter, SQLMetaAdapter
+from airtunnel.metadata.adapter import (
+    BaseMetaAdapter,
+    SQLMetaAdapter,
+    get_configured_meta_adapter,
+    get_configured_meta_adapter_hook,
+    BaseHookFactory,
+    META_ADAPTER_HOOK_FACTORY_ENV_NAME,
+)
 from airtunnel.metadata.entities import Lineage, LoadStatus
 from test_airtunnel import test_utils
 from test_airtunnel.test_utils import table_rowcount, DUMMY_TABLE, DUMMY_TABLE2
@@ -18,6 +29,31 @@ def _clear_meta_tables(test_db_hook: DbApiHook) -> None:
 @pytest.fixture(scope="module")
 def test_meta_adapter(test_db_hook) -> BaseMetaAdapter:
     return SQLMetaAdapter(sql_hook=test_db_hook)
+
+
+class TestCustomHookFactory(BaseHookFactory):
+    """ A test co"""
+
+    @staticmethod
+    def make_hook() -> Optional[BaseHook]:
+        """ Makes a SqliteHook to test with. """
+        return SqliteHook()
+
+
+def test_get_configured_meta_adapter_hook():
+    assert get_configured_meta_adapter_hook() is None
+    os.environ[
+        META_ADAPTER_HOOK_FACTORY_ENV_NAME
+    ] = "test_airtunnel.metadata.test_adapter.TestCustomHookFactory"
+    assert get_configured_meta_adapter_hook() is not None and isinstance(
+        get_configured_meta_adapter_hook(), SqliteHook
+    )
+
+
+def test_get_configured_meta_adapter():
+    assert isinstance(get_configured_meta_adapter(), BaseMetaAdapter) and isinstance(
+        get_configured_meta_adapter(), SQLMetaAdapter
+    )
 
 
 def test_afdb_setup(test_meta_adapter: BaseMetaAdapter, test_db_hook: DbApiHook):
