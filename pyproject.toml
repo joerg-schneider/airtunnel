@@ -11,7 +11,7 @@ build-backend = "flit_core.buildapi"
 module = "airtunnel"
 author = "Jörg Schneider"
 author-email = "joerg@joerg-schneider.org"
-home-page = "http://airtunnel.readthedocs.org"
+home-page = "https://github.com/joerg-schneider/airtunnel"
 
 requires = [
     "pandas >= 0.23",
