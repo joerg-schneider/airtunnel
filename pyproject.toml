@@ -12,7 +12,7 @@ module = "airtunnel"
 author = "Jörg Schneider"
 author-email = "joerg@joerg-schneider.org"
 home-page = "https://github.com/joerg-schneider/airtunnel"
-description-file = "docs/README.rst"
+description-file = "pypi-description.rst"
 
 requires = [
     "pandas >= 0.23",
