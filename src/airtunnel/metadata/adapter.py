@@ -20,6 +20,9 @@ from sqlalchemy.sql.ddl import DDLElement
 from airtunnel.data_asset import BaseDataAsset, ShellDataAsset
 from airtunnel.metadata.entities import IngestedFileMetadata, LoadStatus, Lineage
 
+META_ADAPTER_CLASS_ENV_NAME = "AIRFLOW__AIRTUNNEL__META_ADAPTER_CLASS"
+META_ADAPTER_HOOK_FACTORY_ENV_NAME = "AIRFLOW__AIRTUNNEL__META_ADAPTER_HOOK_FACTORY"
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -634,7 +637,7 @@ def get_configured_meta_adapter() -> BaseMetaAdapter:
             f"'meta_adapter_class' for Airtunnel not configured in airflow.cfg – using default"
         )
         # set the default config as part of the environment, to hide future AirflowConfigExceptions:
-        os.environ["AIRFLOW__AIRTUNNEL__META_ADAPTER_CLASS"] = DEFAULT_ADAPTER_CLASS
+        os.environ[META_ADAPTER_CLASS_ENV_NAME] = DEFAULT_ADAPTER_CLASS
         meta_adapter_class = DEFAULT_ADAPTER_CLASS
 
     module, cls = meta_adapter_class.rsplit(".", maxsplit=1)
@@ -666,7 +669,7 @@ def get_configured_meta_adapter_hook() -> Optional[BaseHook]:
         )
         # set the default config as part of the environment, to hide future AirflowConfigExceptions:
         os.environ[
-            "AIRFLOW__AIRTUNNEL__META_ADAPTER_HOOK_FACTORY"
+            META_ADAPTER_HOOK_FACTORY_ENV_NAME
         ] = DEFAULT_HOOK_FACTORY
         meta_hook_factory = DEFAULT_HOOK_FACTORY
 
