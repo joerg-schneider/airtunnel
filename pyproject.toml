@@ -12,6 +12,11 @@ module = "airtunnel"
 author = "Jörg Schneider"
 author-email = "joerg@joerg-schneider.org"
 home-page = "https://github.com/joerg-schneider/airtunnel"
+description-file = "docs/README.rst"
+
+[tool.flit.metadata.urls]
+Documentation = "https://joerg-schneider.github.io/airtunnel/"
+Repository = "https://github.com/joerg-schneider/airtunnel"
 
 requires = [
     "pandas >= 0.23",
