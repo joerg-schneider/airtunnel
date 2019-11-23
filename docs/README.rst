@@ -103,4 +103,4 @@ Airtunnels documentation is `here`_.
    :target: https://pypi.org/project/airtunnel/
 .. |PyPI version| image:: https://badge.fury.io/py/airtunnel.svg
    :target: https://pypi.org/project/airtunnel/
-.. |Test-Coverage| image:: https://github.com/joerg-schneider/airtunnel-dev/blob/gh-pages/assets/coverage.svg
+.. |Test-Coverage| image:: _static/assets/coverage.svg
