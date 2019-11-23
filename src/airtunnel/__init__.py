@@ -20,4 +20,5 @@ __all__ = [
     "BaseDataAssetIO",
     "PandasDataAssetIO",
     "PySparkDataAssetIO",
+    "__version__",
 ]
