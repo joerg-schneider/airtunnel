@@ -1,4 +1,5 @@
 import os
+import shutil
 from os import path
 
 import pandas as pd
@@ -29,6 +30,18 @@ def test_read_write_csv(test_csv_asset: PandasDataAsset, iris: pd.DataFrame) -> 
     # try with additional kwargs:
     PandasDataAssetIO.write_data_asset(
         asset=test_csv_asset, data=iris, header=False, index=False
+    )
+
+    # test retrieval
+    # before we can retrieve, we need to move the data from 'staging' to 'ready'
+    os.makedirs(test_csv_asset.ready_path, exist_ok=True)
+
+    # load the prepared data
+    shutil.rmtree(test_csv_asset.ready_path)
+    shutil.move(test_csv_asset.staging_ready_path, test_csv_asset.ready_path)
+
+    retrieved = PandasDataAssetIO.retrieve_data_asset(
+        test_csv_asset, header=None
     )
 
 

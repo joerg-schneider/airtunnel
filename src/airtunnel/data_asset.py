@@ -12,7 +12,7 @@ from airflow.hooks.dbapi_hook import DbApiHook
 from airflow.models import TaskInstance
 
 from airtunnel.data_store import get_configured_data_store_adapter
-from airtunnel.declaration_store import DataAssetDeclaration, V_COMP_NONE
+from airtunnel.declaration_store import DataAssetDeclaration, V_COMP_NONE, V_COMP_GZIP
 from airtunnel.operators.sql import sqloperator
 from airtunnel.paths import (
     P_DATA_READY,
@@ -534,17 +534,26 @@ class PandasDataAssetIO(BaseDataAssetIO):
         :return: the retrieved data as a Pandas dataframe
         """
 
+        data_store_adapter = get_configured_data_store_adapter()
+
         data = []
-        source_files = [
-            path.join(root, f)
-            for root, dirs, files in os.walk(asset.ready_path)
-            for f in files
-        ]
+        source_files = data_store_adapter.listdir(path=asset.ready_path, recursive=True)
 
         if asset.declarations.is_parquet_output:
-            data = [pd.read_parquet(f, **reader_kwargs) for f in source_files]
+            for fpath in source_files:
+                with data_store_adapter.open(fpath, "rb") as f:
+                    data.append(pd.read_parquet(f, **reader_kwargs))
+
         elif asset.declarations.is_csv_output:
-            data = [pd.read_csv(f, **reader_kwargs) for f in source_files]
+            for fpath in source_files:
+                with data_store_adapter.open(fpath, "rb") as f:
+                    data.append(
+                        pd.read_csv(
+                            f,
+                            compression=asset.declarations.out_comp_codec,
+                            **reader_kwargs,
+                        )
+                    )
 
         if not data:
             return pd.DataFrame()
@@ -581,14 +590,34 @@ class PandasDataAssetIO(BaseDataAssetIO):
                     **writer_kwargs,
                 )
         elif asset.declarations.is_csv_output:
-            with data_store_adapter.open(
-                full_output_filepath, mode="w", newline=""
-            ) as out_file:
-                data.to_csv(
-                    path_or_buf=out_file,
-                    compression=asset.declarations.out_comp_codec,
-                    **writer_kwargs,
+            if asset.declarations.out_comp_codec not in (V_COMP_NONE, V_COMP_GZIP):
+                raise ValueError(
+                    "Only no compression or gzip compression supported with Pandas & CSV"
                 )
+
+            # take care of: https://github.com/pandas-dev/pandas/issues/21227
+            if (
+                pd.__version__ >= "0.24.0"
+                or asset.declarations.out_comp_codec == V_COMP_NONE
+            ):
+                with data_store_adapter.open(
+                    full_output_filepath, mode="w", newline=""
+                ) as out_file:
+                    data.to_csv(
+                        path_or_buf=out_file,
+                        compression=asset.declarations.out_comp_codec,
+                        **writer_kwargs,
+                    )
+            else:
+                import gzip
+
+                with data_store_adapter.open(
+                    full_output_filepath, mode="wb"
+                ) as out_file:
+                    out_file.write(
+                        gzip.compress(data.to_csv(**writer_kwargs).encode("UTF-8"))
+                    )
+
         else:
             raise ValueError(f"Only output formats of csv/parquet are supported!")
 
