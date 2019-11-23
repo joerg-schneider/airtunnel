@@ -66,6 +66,9 @@ steps:
 
 - script: |
     export AIRFLOW_HOME=${CUR_PATH}/test/airflow_home
+    export AIRFLOW__AIRTUNNEL__DATA_STORE_FOLDER=${CUR_PATH}/test/data_store
+    export AIRFLOW__AIRTUNNEL__DECLARATIONS_FOLDER=${CUR_PATH}/test/test_airtunnel/declarations
+    export AIRFLOW__AIRTUNNEL__SCRIPTS_FOLDER=${CUR_PATH}/test/scripts
     tox -e docs
   displayName: 'Tox Sphinx Docs'
 
