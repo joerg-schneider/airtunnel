@@ -14,10 +14,6 @@ author-email = "joerg@joerg-schneider.org"
 home-page = "https://github.com/joerg-schneider/airtunnel"
 description-file = "docs/README.rst"
 
-[tool.flit.metadata.urls]
-Documentation = "https://joerg-schneider.github.io/airtunnel/"
-Repository = "https://github.com/joerg-schneider/airtunnel"
-
 requires = [
     "pandas >= 0.23",
     "schema >= 0.6",
@@ -40,6 +36,10 @@ docs = [
     "sphinx >= 2.0.0, < 3",
     "sphinx_rtd_theme",
 ]
+
+[tool.flit.metadata.urls]
+Documentation = "https://joerg-schneider.github.io/airtunnel/"
+Repository = "https://github.com/joerg-schneider/airtunnel"
 
 [tool.black]
 line-length = 88
