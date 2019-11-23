@@ -15,6 +15,7 @@ from airtunnel.metadata.adapter import (
     get_configured_meta_adapter_hook,
     BaseHookFactory,
     META_ADAPTER_HOOK_FACTORY_ENV_NAME,
+    META_ADAPTER_CLASS_ENV_NAME,
 )
 from airtunnel.metadata.entities import Lineage, LoadStatus
 from test_airtunnel import test_utils
@@ -40,6 +41,12 @@ class TestCustomHookFactory(BaseHookFactory):
         return SqliteHook()
 
 
+class TestCustomMetaAdapter(SQLMetaAdapter):
+    """ Quick way to test new adapters: Simply base the (working) SQLMetaAdapter.."""
+
+    pass
+
+
 def test_get_configured_meta_adapter_hook():
     assert get_configured_meta_adapter_hook() is None
     os.environ[
@@ -51,8 +58,20 @@ def test_get_configured_meta_adapter_hook():
 
 
 def test_get_configured_meta_adapter():
-    assert isinstance(get_configured_meta_adapter(), BaseMetaAdapter) and isinstance(
-        get_configured_meta_adapter(), SQLMetaAdapter
+    configured = get_configured_meta_adapter()
+    assert isinstance(configured, BaseMetaAdapter) and isinstance(
+        configured, SQLMetaAdapter
+    )
+
+    os.environ[
+        META_ADAPTER_CLASS_ENV_NAME
+    ] = "test.test_airtunnel.metadata.test_adapter.TestCustomMetaAdapter"
+
+    configured_new = get_configured_meta_adapter()
+    assert (
+        configured_new is not None
+        and isinstance(configured_new, BaseMetaAdapter)
+        and configured_new.__class__ == TestCustomMetaAdapter().__class__
     )
 
 
