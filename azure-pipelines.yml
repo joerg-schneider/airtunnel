@@ -67,3 +67,24 @@ steps:
 - script: |
     tox -e docs
   displayName: 'Tox Sphinx Docs'
+
+- script: |
+    CUR_PATH=$(pwd)
+
+    mv ${CUR_PATH}/docs/_build/html /tmp/html
+
+    git config --global user.email "joerg@joerg-schneider.org"
+    git config --global user.name "joerg-schneider"
+
+    git checkout gh-pages
+    git ls-files | xargs git rm
+
+    mv /tmp/html/* ${CUR_PATH}/
+    touch .nojekyll
+
+    git add --all
+    git commit -m "AzureDevOps: updated docs"
+    git push https://$(AIRTUNNEL_PAT)@github.com/joerg-schneider/airtunnel-dev.git
+  displayName: 'Publish Docs'
+  variables:
+  - group: airtunnel
