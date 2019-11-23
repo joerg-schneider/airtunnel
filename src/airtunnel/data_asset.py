@@ -174,8 +174,16 @@ class BaseDataAsset:
     def output_filename(self) -> str:
         """
         :return: creates an output filename for this data asset considering the declared storage format
+        and compression codec (if using compression)
         """
-        return self.name + "." + self.declarations.out_storage_format
+        if self.declarations.out_comp_codec == V_COMP_NONE:
+            comp_codec_suffix = ""
+        else:
+            comp_codec_suffix = "." + self.declarations.out_comp_codec
+
+        return (
+            self.name + "." + self.declarations.out_storage_format + comp_codec_suffix
+        )
 
     @abstractmethod
     def rebuild_for_store(self, airflow_context, **kwargs) -> None:
@@ -596,18 +604,11 @@ class PandasDataAssetIO(BaseDataAssetIO):
                 )
 
             # take care of: https://github.com/pandas-dev/pandas/issues/21227
-            if (
-                pd.__version__ >= "0.24.0"
-                or asset.declarations.out_comp_codec == V_COMP_NONE
-            ):
+            if asset.declarations.out_comp_codec == V_COMP_NONE:
                 with data_store_adapter.open(
                     full_output_filepath, mode="w", newline=""
                 ) as out_file:
-                    data.to_csv(
-                        path_or_buf=out_file,
-                        compression=asset.declarations.out_comp_codec,
-                        **writer_kwargs,
-                    )
+                    data.to_csv(path_or_buf=out_file, compression=None, **writer_kwargs)
             else:
                 import gzip
 
@@ -615,7 +616,11 @@ class PandasDataAssetIO(BaseDataAssetIO):
                     full_output_filepath, mode="wb"
                 ) as out_file:
                     out_file.write(
-                        gzip.compress(data.to_csv(**writer_kwargs).encode("UTF-8"))
+                        gzip.compress(
+                            data.to_csv(compression=None, **writer_kwargs).encode(
+                                "UTF-8"
+                            )
+                        )
                     )
 
         else:
