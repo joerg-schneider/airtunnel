@@ -1,6 +1,6 @@
 """ airtunnel – tame your Airflow!"""
 
-__version__ = "1.0rc2"
+__version__ = "1.0.0rc2"
 
 from airtunnel.data_asset import (
     BaseDataAsset,
