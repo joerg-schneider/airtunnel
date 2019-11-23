@@ -1,3 +1,5 @@
+""" Module for Airtunnel's metadata sensors. """
+
 from datetime import timedelta, datetime
 from typing import Optional, Iterable
 
@@ -11,7 +13,7 @@ from airtunnel.metadata.adapter import get_configured_adapter
 
 @apply_defaults
 class AwaitLoadStatusSensor(BaseSensorOperator):
-    """ Checks airtunnel's data asset load status metadata for a given condition."""
+    """ Airtunnel's AwaitLoadStatusSensor – checks the data asset load status metadata for a given condition."""
 
     ui_color = airtunnel.operators.Colours.ingestion
 
@@ -51,6 +53,7 @@ class AwaitLoadStatusSensor(BaseSensorOperator):
         super().__init__(poke_interval=poke_interval, timeout=timeout, **kwargs)
 
     def poke(self, context):
+        """ Perform the poke operation for this sensor from Airflow. """
         if self._meta_adapter is None:
             self._meta_adapter = get_configured_adapter()
 
@@ -79,9 +82,8 @@ class AwaitLoadStatusSensor(BaseSensorOperator):
 
 @apply_defaults
 class AwaitAssetAncestorsUpdatedSensor(BaseSensorOperator):
-
-    """ Using lineage for a given data asset, probes until all ancestors have been updated.
-        (i.e. load status timestamp of all ancestors is more recent)
+    """ Airtunnel's AwaitAssetAncestorsUpdatedSensor – using lineage for a given data asset, probes until all
+        ancestors have been updated. (i.e. load status timestamp of all ancestors is "recent enough")
     """
 
     ui_color = airtunnel.operators.Colours.ingestion
@@ -110,6 +112,7 @@ class AwaitAssetAncestorsUpdatedSensor(BaseSensorOperator):
         super().__init__(poke_interval=poke_interval, timeout=timeout, **kwargs)
 
     def poke(self, context):
+        """ Perform the poke operation for this sensor from Airflow. """
         if self._meta_adapter is None:
             self._meta_adapter = get_configured_adapter()
 
