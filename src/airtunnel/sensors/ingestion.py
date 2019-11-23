@@ -1,3 +1,4 @@
+""" Module for Airtunnel's ingestion sensors. """
 import os
 
 from airflow.models import TaskInstance
@@ -13,6 +14,18 @@ K_DISCOVERED_FILES = "discovered_input_files"
 
 @apply_defaults
 class SourceFileIsReadySensor(BaseSensorOperator):
+    """
+    Airtunnel's SourceFileIsReadySensor – for a given Airtunnel data asset of type ``ingested``, this sensor will
+    leverage the declared input files glob pattern to sense for new input data.
+
+    If files have been discovered, the sensor will capture their names and modification dates. Then it will
+    check that for ``no_of_required_static_pokes`` times, file names and modification dates have not changed, before
+    returning successfully.
+
+    This guards against incomplete larger input files that are still being written into the landing area while this
+    sensor finds them.
+    """
+
     ui_color = airtunnel.operators.Colours.ingestion
 
     @apply_defaults
@@ -39,6 +52,7 @@ class SourceFileIsReadySensor(BaseSensorOperator):
         self._data_store_adapter = airtunnel.data_store.get_configured_adapter()
 
     def poke(self, context):
+        """ Perform the poke operation for this sensor from Airflow. """
         if (
             self._discovered_input_files is not None
             and self._no_of_required_static_pokes <= 1
