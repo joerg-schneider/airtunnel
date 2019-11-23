@@ -1,3 +1,4 @@
+""" Airtunnel operators for ingestion tasks. """
 from datetime import datetime
 from typing import List
 
@@ -14,10 +15,19 @@ from airtunnel.metadata.entities import IngestedFileMetadata
 
 @apply_defaults
 class IngestOperator(BaseOperator):
-    ui_color = airtunnel.operators.Colours.ingestion
+    """ Airtunnel's ingestion operator. First inspects source files (size, create & modification dates)
+     and logs metadata using Airtunnel's MetaAdapter. Then moves ("ingests") these files to the staging/pickedup
+     directory for the data asset at hand.
 
-    # inspects source files and collects metadata such as file format type, columns, etc.
-    # writes to metadata db
+     If the staging/pickedup directory of the data store is not empty (indicating a previous ingestion job has failed),
+     this operator will also fail and report the problem, to avoid data loss.
+
+     The list of files to inspect & ingest is retrieved using Airflow XCOM data,
+     which a ``airtunnel.sensors.ingestion.SourceFileIsReadySensor`` is expected to have provided beforehand.
+
+    """
+
+    ui_color = airtunnel.operators.Colours.ingestion
 
     @apply_defaults
     def __init__(
@@ -43,6 +53,7 @@ class IngestOperator(BaseOperator):
         super().__init__(*args, **kwargs)
 
     def execute(self, context):
+        """ Execute the operator from Airflow. """
         ti: TaskInstance = context["task_instance"]
         self.picked_up_dir = self._asset.staging_pickedup_path(context)
 
@@ -87,6 +98,7 @@ class IngestOperator(BaseOperator):
         self._meta_adapter.write_inspected_files(discovered_files=inspected_files)
 
     def _check_pickedup_dir_is_empty(self):
+        """ We check if the staging/pickedup directory is empty for the data asset at hand, to avoid data loss."""
         return len(self._data_store_adapter.listdir(path=self.picked_up_dir)) == 0
 
     @staticmethod
@@ -98,6 +110,19 @@ class IngestOperator(BaseOperator):
         dag_exec_date: datetime,
         files: List[str],
     ) -> List[IngestedFileMetadata]:
+        """
+        Inspect all previously discovered files paths using the ``inspect()`` method of the Airtunnel data store
+        adapter.
+
+        :param data_store_adapter: the Airtunnel data store adapter to use,
+         i.e. ``airtunnel.data_store.LocalDataStoreAdapter``
+        :param for_asset: data asset for which the data is inspected
+        :param dag_id: Airflow DAG ID to associate the metadata with
+        :param task_id: Airflow task ID to associate the metadata with
+        :param dag_exec_date: Airflow DAG execution date time to associate the metadata with
+        :param files: list of file paths to inspect
+        :return: a list of ingested file metadata entities
+        """
 
         return [
             IngestedFileMetadata(
