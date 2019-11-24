@@ -37,7 +37,7 @@ Spark or PyArrow).
 
 **staging**: Files in staging are not for general consumption because they are incomplete or currently being worked on.
 It is further broken down into **pickedup** (data that was moved there from ingest/landing), **intermediate** (any
-kind of temporary data for intermediate processing temps) and **ready** (where the next version for the ready layer
+kind of temporary data for intermediate processing steps) and **ready** (where the next version for the ready layer
 is produced).
 
 Airtunnel's load operator will use an atomic move operation (or SQL transaction) to push finished data from
