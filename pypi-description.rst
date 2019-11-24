@@ -76,7 +76,7 @@ Installation requirements
 
 Documentation
 -------------
-Airtunnels documentation is `on GitHub pages`_.
+Airtunnel's documentation is `on GitHub pages`_.
 
 .. _Apache Airflow: https://github.com/apache/airflow
 .. _on GitHub pages: https://joerg-schneider.github.io/airtunnel/

@@ -32,7 +32,8 @@ instead
 
 Getting started
 ---------------
-To get started, we warmly recommended to read the `Airtunnel introduction article`_ and the `Airtunnel tutorial`_
+To get started, we warmly recommended to read the `Airtunnel introduction article`_ and the `Airtunnel tutorial`_.
+Also check out the `demo project`_.
 
 Installation
 ------------
@@ -80,20 +81,15 @@ Installation requirements
 
 Documentation
 -------------
-Airtunnels documentation is `here`_.
+Airtunnel's documentation is `on GitHub pages`_.
 
 .. _Apache Airflow: https://github.com/apache/airflow
 .. _in the Airtunnel introduction: https://medium.com
 .. _Airtunnel introduction article: https://medium.com
 .. _here: http://airtunnel.readthedocs.org
-.. _Airtunnel tutorial: #
-.. _Installation requirements: #installation-requirements
-.. _Installation and setup: #installation-and-setup
-.. _`Tutorial: loading the university data model`: #tutorial-loading-the-university-data-model
-.. _Known limitations: #known-limitations
-.. _Design Principles: #design-principles
-.. _`Architecture: modules & classes`: #architecture-modules--classes
-.. _Contributing to Airtunnel: #contributing-to-airtunnel
+.. _Airtunnel tutorial: https://joerg-schneider.github.io/airtunnel/tutorial.html
+.. _on GitHub pages: https://joerg-schneider.github.io/airtunnel
+.. _demo project: https://joerg-schneider.github.io/airtunnel-demo
 
 .. |Build Status| image:: https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel-dev?branchName=master
    :target: https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&branchName=master
