@@ -28,7 +28,8 @@ instead
 
 Getting started
 ---------------
-To get started, we warmly recommended to read the `Airtunnel introduction article`_ and the `Airtunnel tutorial`_
+To get started, we warmly recommended to read the `Airtunnel introduction article`_ and the `Airtunnel tutorial`_.
+Also check out the `demo project`_.
 
 Installation
 ------------
@@ -82,6 +83,7 @@ Airtunnel's documentation is `on GitHub pages`_.
 .. _on GitHub pages: https://joerg-schneider.github.io/airtunnel/
 .. _Airtunnel introduction article: https://medium.com
 .. _Airtunnel tutorial: https://joerg-schneider.github.io/airtunnel/tutorial.html
+.. _demo project: https://github.com/joerg-schneider/airtunnel-demo
 
 .. |Build Status| image:: https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel-dev?branchName=master
    :target: https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&branchName=master

@@ -89,7 +89,7 @@ Airtunnel's documentation is `on GitHub pages`_.
 .. _here: http://airtunnel.readthedocs.org
 .. _Airtunnel tutorial: https://joerg-schneider.github.io/airtunnel/tutorial.html
 .. _on GitHub pages: https://joerg-schneider.github.io/airtunnel
-.. _demo project: https://joerg-schneider.github.io/airtunnel-demo
+.. _demo project: https://github.com/joerg-schneider/airtunnel-demo
 
 .. |Build Status| image:: https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel-dev?branchName=master
    :target: https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&branchName=master
