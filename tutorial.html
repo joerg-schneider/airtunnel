@@ -1,0 +1,515 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tutorial: loading the university data model &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration and Setup" href="configuration.html" />
+    <link rel="prev" title="airtunnel 1.0.0" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial: loading the university data model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#objective-of-the-dag-workflow">Objective of the DAG workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-assets">Data Assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-asset-scripts">Data Asset scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-final-dag">The final DAG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-happened-in-the-background">What happened in the background?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#collected-metadata">Collected metadata</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Tutorial: loading the university data model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorial-loading-the-university-data-model">
+<h1>Tutorial: loading the university data model<a class="headerlink" href="#tutorial-loading-the-university-data-model" title="Permalink to this headline">¶</a></h1>
+<p>In the following section we will show a toy example, on how a very
+simple DAG using Airtunnel can be built.</p>
+<p>If you want to run this tutorial, it is on GitHub as a <a class="reference external" href="https://github.com/joerg-schneider/airtunnel-demo">demo project</a>.</p>
+<div class="section" id="objective-of-the-dag-workflow">
+<h2>Objective of the DAG workflow<a class="headerlink" href="#objective-of-the-dag-workflow" title="Permalink to this headline">¶</a></h2>
+<p>For the ingested data assets, the example DAG will:</p>
+<ul class="simple">
+<li><p>sense for input data for a Data Asset in the form of csv, using a
+glob pattern</p></li>
+<li><p>move the input file(s) to a staging location</p></li>
+<li><p>prepare a new version of the Data Asset by applying the specified
+transformations, which are deduplication and renames</p></li>
+<li><p>store the new version on a staging location</p></li>
+<li><p>atomically load the new data into the physical data store</p></li>
+<li><p>archive the previous version of the data asset, using the DAG’s
+execution date</p></li>
+<li><p>update Airtunnel’s load status, file ingestion and lineage metadata</p></li>
+<li><p>archive the ingested files using the DAG’s execution date</p></li>
+</ul>
+<p>Subsequently, it will update the derived data asset.</p>
+</div>
+<div class="section" id="data-assets">
+<h2>Data Assets<a class="headerlink" href="#data-assets" title="Permalink to this headline">¶</a></h2>
+<p>The four relevant data assets for the university toy example are:
+Student, Programme, Enrollment and Enrollment Summary.</p>
+<p>Student, Programme and Enrollment are ingested assets we receive as a
+flat file csv, “Enrollment summary” is a derived asset we can build by
+joining them together and then counting per student major subject and
+program, how many students are enrolled.</p>
+<p>We start by declaring the three ingested data assets. The first one is
+<code class="docutils literal notranslate"><span class="pre">student</span></code>, therefore let’s place a <code class="docutils literal notranslate"><span class="pre">student.yaml</span></code> in the declaration
+store with the following contents:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ingested</span>
+
+<span class="nt">ingest</span><span class="p">:</span>
+  <span class="nt">in_storage_format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">csv</span>
+  <span class="nt">file_input_glob</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">student*</span>
+  <span class="nt">archive_ingest</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yes</span>
+
+<span class="nt">transformation</span><span class="p">:</span>
+  <span class="nt">in_column_renames</span><span class="p">:</span>
+    <span class="nt">student_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">student_first_name</span>
+
+<span class="nt">load</span><span class="p">:</span>
+  <span class="nt">out_storage_format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">parquet</span>
+  <span class="nt">key_columns</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">student_id</span>
+  <span class="nt">out_compression_codec</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gzip</span>
+  <span class="nt">archive_ready</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yes</span>
+</pre></div>
+</div>
+<p>👍Great! This is a very readable description of important parameters,
+that influence how we process this data asset. Actually, we can leverage
+some of the defaults and can be less explicit when we describe
+<code class="docutils literal notranslate"><span class="pre">programme</span></code> (in its own <code class="docutils literal notranslate"><span class="pre">programme.yaml</span></code>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ingested</span>
+
+<span class="nt">ingest</span><span class="p">:</span>
+  <span class="nt">file_input_glob</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">programme*</span>
+
+<span class="nt">load</span><span class="p">:</span>
+  <span class="nt">key_columns</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">programme_id</span>
+</pre></div>
+</div>
+<p>…and <code class="docutils literal notranslate"><span class="pre">enrollment</span></code> (in its own <code class="docutils literal notranslate"><span class="pre">enrollment.yaml</span></code>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ingested</span>
+
+<span class="nt">ingest</span><span class="p">:</span>
+  <span class="nt">file_input_glob</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">enrollment_*</span>
+
+
+<span class="nt">load</span><span class="p">:</span>
+  <span class="nt">key_columns</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">student_id</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">programme_id</span>
+</pre></div>
+</div>
+<p>Here we have specified some key-columns we want to later use for
+deduplication purposes.</p>
+<p>The last data asset to describe is <code class="docutils literal notranslate"><span class="pre">enrollment_summary</span></code>, a derived
+data asset with the following description:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">derived</span>
+</pre></div>
+</div>
+<p>This description is super compact as we simply inherit all the defaults
+(parquet, gzip and archival) for loading.</p>
+<p>Wonderful, this is it in terms of declarations and we are ready to go to
+write some Pandas scripts! 🚀</p>
+</div>
+<div class="section" id="data-asset-scripts">
+<h2>Data Asset scripts<a class="headerlink" href="#data-asset-scripts" title="Permalink to this headline">¶</a></h2>
+<p>To process data assets, we want to use Pandas. Hence, we will create
+four Python modules - one for each asset. All of these need to implement
+a method of the following signature:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">airtunnel</span> <span class="kn">import</span> <span class="n">PandasDataAsset</span>
+<span class="k">def</span> <span class="nf">rebuild_for_store</span><span class="p">(</span><span class="n">asset</span><span class="p">:</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">airflow_context</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Let’s start by specifying the script for the student asset,
+<code class="docutils literal notranslate"><span class="pre">student.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">airtunnel</span> <span class="kn">import</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">PandasDataAssetIO</span>
+
+
+<span class="k">def</span> <span class="nf">rebuild_for_store</span><span class="p">(</span><span class="n">asset</span><span class="p">:</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">airflow_context</span><span class="p">):</span>
+
+    <span class="n">student_data</span> <span class="o">=</span> <span class="n">PandasDataAssetIO</span><span class="o">.</span><span class="n">read_data_asset</span><span class="p">(</span>
+        <span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span> <span class="n">source_files</span><span class="o">=</span><span class="n">asset</span><span class="o">.</span><span class="n">pickedup_files</span><span class="p">(</span><span class="n">airflow_context</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">student_data</span> <span class="o">=</span> <span class="n">asset</span><span class="o">.</span><span class="n">rename_fields_as_declared</span><span class="p">(</span><span class="n">student_data</span><span class="p">)</span>
+
+    <span class="n">PandasDataAssetIO</span><span class="o">.</span><span class="n">write_data_asset</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">student_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can see, that we make use of the lightweight class
+<code class="docutils literal notranslate"><span class="pre">PandasDataAssetIO</span></code> which helps to translate data asset declarations
+around storage into Pandas commands. Similarly, column renames based
+upon declarations are a one-liner delegated to the PandasDataAsset
+implementation. Don’t worry - in case you need special properties, both
+<code class="docutils literal notranslate"><span class="pre">read_data_asset()</span></code> and <code class="docutils literal notranslate"><span class="pre">write_data_asset()</span></code> optionally except
+additional keyword arguments that will be passed to the Pandas function.
+Or, just do not use <code class="docutils literal notranslate"><span class="pre">PandasDataAssetIO</span></code> at all - <code class="docutils literal notranslate"><span class="pre">rebuild_for_store</span></code>
+can be implemented as you wish.</p>
+<p>Mostly similar, the script <code class="docutils literal notranslate"><span class="pre">programme.py</span></code> looks like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">airtunnel</span> <span class="kn">import</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">PandasDataAssetIO</span>
+
+
+<span class="k">def</span> <span class="nf">rebuild_for_store</span><span class="p">(</span><span class="n">asset</span><span class="p">:</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">airflow_context</span><span class="p">):</span>
+    <span class="n">programme_data</span> <span class="o">=</span> <span class="n">PandasDataAssetIO</span><span class="o">.</span><span class="n">read_data_asset</span><span class="p">(</span>
+        <span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span> <span class="n">source_files</span><span class="o">=</span><span class="n">asset</span><span class="o">.</span><span class="n">pickedup_files</span><span class="p">(</span><span class="n">airflow_context</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">programme_data</span> <span class="o">=</span> <span class="n">programme_data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span>
+        <span class="n">subset</span><span class="o">=</span><span class="n">asset</span><span class="o">.</span><span class="n">declarations</span><span class="o">.</span><span class="n">key_columns</span>
+    <span class="p">)</span>
+    <span class="n">PandasDataAssetIO</span><span class="o">.</span><span class="n">write_data_asset</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">programme_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we can see, that the script makes use of the declared key-columns
+to de-duplicate the inputs.</p>
+<p>The Python script <code class="docutils literal notranslate"><span class="pre">enrollment.py</span></code> looks like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">airtunnel</span> <span class="kn">import</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">PandasDataAssetIO</span>
+
+
+<span class="k">def</span> <span class="nf">rebuild_for_store</span><span class="p">(</span><span class="n">asset</span><span class="p">:</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">airflow_context</span><span class="p">):</span>
+    <span class="n">enrollment_data</span> <span class="o">=</span> <span class="n">PandasDataAssetIO</span><span class="o">.</span><span class="n">read_data_asset</span><span class="p">(</span>
+        <span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span> <span class="n">source_files</span><span class="o">=</span><span class="n">asset</span><span class="o">.</span><span class="n">pickedup_files</span><span class="p">(</span><span class="n">airflow_context</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">PandasDataAssetIO</span><span class="o">.</span><span class="n">write_data_asset</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">enrollment_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is as straight forward as it gets, just reading in input data and
+writing it with the output format.</p>
+<p>More interesting is the script <code class="docutils literal notranslate"><span class="pre">enrollment_summary.py</span></code> that performs
+the aggregation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">airtunnel</span> <span class="kn">import</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">PandasDataAssetIO</span>
+
+
+<span class="k">def</span> <span class="nf">rebuild_for_store</span><span class="p">(</span><span class="n">asset</span><span class="p">:</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">airflow_context</span><span class="p">):</span>
+    <span class="n">student</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;student&quot;</span><span class="p">)</span>
+    <span class="n">programme</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;programme&quot;</span><span class="p">)</span>
+    <span class="n">enrollment</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;enrollment&quot;</span><span class="p">)</span>
+
+    <span class="n">student_df</span> <span class="o">=</span> <span class="n">student</span><span class="o">.</span><span class="n">retrieve_from_store</span><span class="p">(</span><span class="n">airflow_context</span><span class="p">,</span> <span class="n">consuming_asset</span><span class="o">=</span><span class="n">asset</span><span class="p">)</span>
+    <span class="n">programme_df</span> <span class="o">=</span> <span class="n">progr</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-final-dag">
+<h2>The final DAG<a class="headerlink" href="#the-final-dag" title="Permalink to this headline">¶</a></h2>
+<p>Here comes the great part - assembling the scripts we prepared above
+into the final DAG. For this, we leverage the data assets with their
+declarations, in addition to several custom operators (introduced in
+detail below) that Airtunnel provides.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">airflow.models</span> <span class="kn">import</span> <span class="n">DAG</span>
+<span class="kn">from</span> <span class="nn">airtunnel</span> <span class="kn">import</span> <span class="n">PandasDataAsset</span>
+<span class="kn">from</span> <span class="nn">airtunnel.operators.archival</span> <span class="kn">import</span> <span class="n">DataAssetArchiveOperator</span><span class="p">,</span> <span class="n">IngestArchiveOperator</span>
+<span class="kn">from</span> <span class="nn">airtunnel.operators.ingestion</span> <span class="kn">import</span> <span class="n">IngestOperator</span>
+<span class="kn">from</span> <span class="nn">airtunnel.operators.loading</span> <span class="kn">import</span> <span class="n">StagingToReadyOperator</span>
+<span class="kn">from</span> <span class="nn">airtunnel.operators.transformation</span> <span class="kn">import</span> <span class="n">PandasTransformationOperator</span>
+<span class="kn">from</span> <span class="nn">airtunnel.sensors.ingestion</span> <span class="kn">import</span> <span class="n">SourceFileIsReadySensor</span>
+
+<span class="n">student</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="s2">&quot;student&quot;</span><span class="p">)</span>
+<span class="n">programme</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="s2">&quot;programme&quot;</span><span class="p">)</span>
+<span class="n">enrollment</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="s2">&quot;enrollment&quot;</span><span class="p">)</span>
+<span class="n">enrollment_summary</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="s2">&quot;enrollment_summary&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">DAG</span><span class="p">(</span>
+    <span class="n">dag_id</span><span class="o">=</span><span class="s2">&quot;university&quot;</span><span class="p">,</span>
+    <span class="n">schedule_interval</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2019</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">dag</span><span class="p">:</span>
+    <span class="n">ingested_ready_tasks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># a common stream of tasks for all ingested assets:</span>
+    <span class="k">for</span> <span class="n">ingested_asset</span> <span class="ow">in</span> <span class="p">(</span><span class="n">student</span><span class="p">,</span> <span class="n">programme</span><span class="p">,</span> <span class="n">enrollment</span><span class="p">):</span>
+        <span class="n">source_is_ready</span> <span class="o">=</span> <span class="n">SourceFileIsReadySensor</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">ingested_asset</span><span class="p">)</span>
+        <span class="n">ingest</span> <span class="o">=</span> <span class="n">IngestOperator</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">ingested_asset</span><span class="p">)</span>
+        <span class="n">transform</span> <span class="o">=</span> <span class="n">PandasTransformationOperator</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">ingested_asset</span><span class="p">)</span>
+        <span class="n">archive</span> <span class="o">=</span> <span class="n">DataAssetArchiveOperator</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">ingested_asset</span><span class="p">)</span>
+        <span class="n">staging_to_ready</span> <span class="o">=</span> <span class="n">StagingToReadyOperator</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">ingested_asset</span><span class="p">)</span>
+        <span class="n">ingest_archival</span> <span class="o">=</span> <span class="n">IngestArchiveOperator</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">ingested_asset</span><span class="p">)</span>
+
+        <span class="n">dag</span> <span class="o">&gt;&gt;</span> <span class="n">source_is_ready</span> <span class="o">&gt;&gt;</span> <span class="n">ingest</span> <span class="o">&gt;&gt;</span> <span class="n">transform</span> <span class="o">&gt;&gt;</span> <span class="n">archive</span> <span class="o">&gt;&gt;</span> <span class="n">staging_to_ready</span> <span class="o">&gt;&gt;</span> <span class="n">ingest_archival</span>
+
+        <span class="n">ingested_ready_tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">staging_to_ready</span><span class="p">)</span>
+
+    <span class="c1"># upon having loaded the three ingested assets, connect the aggregation downstream to them:</span>
+    <span class="n">build_enrollment_summary</span> <span class="o">=</span> <span class="n">PandasTransformationOperator</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">enrollment_summary</span><span class="p">)</span>
+    <span class="n">build_enrollment_summary</span><span class="o">.</span><span class="n">set_upstream</span><span class="p">(</span><span class="n">ingested_ready_tasks</span><span class="p">)</span>
+
+    <span class="n">staging_to_ready</span> <span class="o">=</span> <span class="n">StagingToReadyOperator</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">enrollment_summary</span><span class="p">)</span>
+
+    <span class="n">dag</span> <span class="o">&gt;&gt;</span> <span class="n">build_enrollment_summary</span> <span class="o">&gt;&gt;</span> <span class="n">staging_to_ready</span>
+</pre></div>
+</div>
+<p><strong>Look how clean this DAG is</strong> - it fully conveys what actually happens
+and with which dependencies.</p>
+<p>Notice something special? Yes - we have never actually defined a
+<code class="docutils literal notranslate"><span class="pre">task_id</span></code> with these custom Airtunnel operators. If we don’t,
+Airtunnel will derive the operator task_ids from the given data asset’s
+name. An easy way that yields consistent naming! 👍</p>
+<p><strong>Graphically the finished DAG looks like this:</strong></p>
+<p><img alt="uni-dag" src="_images/university-dag.png" /></p>
+</div>
+<div class="section" id="what-happened-in-the-background">
+<h2>What happened in the background?<a class="headerlink" href="#what-happened-in-the-background" title="Permalink to this headline">¶</a></h2>
+<p>The four assets have been rebuilt and loaded into the <em>ready</em> layer of
+the physical data store: <img alt="ready-layer" src="_images/ready-data.png" /></p>
+<p>The ingested raw-data has been archived under the DAG execution date:
+<img alt="ingest-archive" src="_images/ingest-archive.png" /></p>
+<p>…as well as the previous versions of the data assets: <img alt="ready-archive" src="_images/ready-archive.png" />
+(<em>note:</em> we did not include an archival operator for
+<code class="docutils literal notranslate"><span class="pre">enrollment_summary</span></code> in the university DAG)</p>
+<div class="section" id="collected-metadata">
+<h3>Collected metadata<a class="headerlink" href="#collected-metadata" title="Permalink to this headline">¶</a></h3>
+<p>One of Airtunnel’s additional benefits is, that it extends Airflow’s
+metadata model with data on load status, ingested raw files and lineage.</p>
+<p>To retrieve load status, simply do this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">airtunnel</span> <span class="kn">import</span> <span class="n">PandasDataAsset</span>
+<span class="kn">from</span> <span class="nn">airtunnel.metadata.adapter</span> <span class="kn">import</span> <span class="n">SQLMetaAdapter</span>
+
+<span class="n">student</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="s2">&quot;student&quot;</span><span class="p">)</span>
+<span class="n">adapter</span> <span class="o">=</span> <span class="n">SQLMetaAdapter</span><span class="p">()</span>
+<span class="n">load_status</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">read_load_status</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">load_status</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>student was loaded at 2019-09-28 18:43:29.306133, from DAG university
+(2019-09-28 16:38:26.880186) and task student_staging_to_ready</p>
+</div></blockquote>
+<p>To retrieve ingested files metadata, simply do this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span>
+    <span class="n">adapter</span><span class="o">.</span><span class="n">read_inspected_files</span><span class="p">(</span>
+        <span class="n">for_asset</span><span class="o">=</span><span class="n">student</span><span class="p">,</span>
+        <span class="n">dag_id</span><span class="o">=</span><span class="n">load_status</span><span class="o">.</span><span class="n">dag_id</span><span class="p">,</span>
+        <span class="n">dag_exec_date</span><span class="o">=</span><span class="n">load_status</span><span class="o">.</span><span class="n">dag_exec_date</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>student has source file: student.csv, of size: 181, created at:
+2019-09-28 18:38:39, collected from: DAG: university (2019-09-28
+16:38:26.880186) and task id student_ingest</p>
+</div></blockquote>
+<p><em>Note, that we pass in the latest execution date that we just pulled
+from the asset’s load status!</em></p>
+<p>To retrieve the lineage, simply do this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">enrollment_summary</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="s2">&quot;enrollment_summary&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">adapter</span><span class="o">.</span><span class="n">read_lineage</span><span class="p">(</span><span class="n">for_target</span><span class="o">=</span><span class="n">enrollment_summary</span><span class="p">))</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>[(student,programme,enrollment) –&gt; enrollment_summary (DAG:
+university [2019-09-28 16:38:26.880186], task:
+enrollment_summary_transform), 0)]</p>
+</div></blockquote>
+<p><em>This gets all recursive known ancestors for enrollment_summary, grouped
+by DAG/task. The ‘0’ from this tuple indicates, that this lineage link
+is at the very first and only level.</em></p>
+<p><strong>Access to the individual metadata fields is possible through instance
+properties; not shown for brevity.</strong></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration and Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="airtunnel 1.0.0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

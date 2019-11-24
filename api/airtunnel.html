@@ -1,0 +1,1808 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>airtunnel package &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="airtunnel.metadata package" href="airtunnel.metadata.html" />
+    <link rel="prev" title="airtunnel" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design.html">Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">airtunnel package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.metadata.html">airtunnel.metadata package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.operators.html">airtunnel.operators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.sensors.html">airtunnel.sensors package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-airtunnel.data_asset">airtunnel.data_asset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-airtunnel.data_store">airtunnel.data_store module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-airtunnel.declaration_store">airtunnel.declaration_store module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-airtunnel.paths">airtunnel.paths module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-airtunnel">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">airtunnel</a> &raquo;</li>
+        
+      <li>airtunnel package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/airtunnel.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="airtunnel-package">
+<h1>airtunnel package<a class="headerlink" href="#airtunnel-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="airtunnel.metadata.html">airtunnel.metadata package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.metadata.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.metadata.html#module-airtunnel.metadata.adapter">airtunnel.metadata.adapter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.metadata.html#module-airtunnel.metadata.entities">airtunnel.metadata.entities module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.metadata.html#module-airtunnel.metadata">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="airtunnel.operators.html">airtunnel.operators package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.operators.sql.html">airtunnel.operators.sql package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.operators.sql.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.operators.sql.html#module-airtunnel.operators.sql.sql_helpers">airtunnel.operators.sql.sql_helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.operators.sql.html#module-airtunnel.operators.sql.sqloperator">airtunnel.operators.sql.sqloperator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.operators.sql.html#module-airtunnel.operators.sql">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.html#module-airtunnel.operators.archival">airtunnel.operators.archival module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.html#module-airtunnel.operators.ingestion">airtunnel.operators.ingestion module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.html#module-airtunnel.operators.loading">airtunnel.operators.loading module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.html#module-airtunnel.operators.transformation">airtunnel.operators.transformation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.html#module-airtunnel.operators">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="airtunnel.sensors.html">airtunnel.sensors package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.sensors.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.sensors.html#module-airtunnel.sensors.ingestion">airtunnel.sensors.ingestion module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.sensors.html#module-airtunnel.sensors.metadata">airtunnel.sensors.metadata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.sensors.html#module-airtunnel.sensors">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-airtunnel.data_asset">
+<span id="airtunnel-data-asset-module"></span><h2>airtunnel.data_asset module<a class="headerlink" href="#module-airtunnel.data_asset" title="Permalink to this headline">¶</a></h2>
+<p>Module for Airtunnel data asset abstractions and data asset io abstractions.</p>
+<dl class="class">
+<dt id="airtunnel.data_asset.BaseDataAsset">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_asset.</code><code class="sig-name descname">BaseDataAsset</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for all Airtunnel data assets.</p>
+<dl class="attribute">
+<dt id="airtunnel.data_asset.BaseDataAsset.declarations">
+<code class="sig-name descname">declarations</code><a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.declarations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declarations of this data asset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.discovered_files_xcom_key">
+<em class="property">property </em><code class="sig-name descname">discovered_files_xcom_key</code><a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.discovered_files_xcom_key" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the XCOM key for discovered files for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.ingest_archive_path">
+<em class="property">property </em><code class="sig-name descname">ingest_archive_path</code><a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.ingest_archive_path" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the ingest/archive path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.landing_path">
+<em class="property">property </em><code class="sig-name descname">landing_path</code><a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.landing_path" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the ingest/landing path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.make_ready_temp_path">
+<code class="sig-name descname">make_ready_temp_path</code><span class="sig-paren">(</span><em class="sig-param">airflow_context: Dict</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.make_ready_temp_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a temporary path under ready for staging purposes.</p>
+<p>It points to a hidden (prefixed by “.”) folder as the last component,
+so that this path is ignored by frameworks like Spark.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>airflow_context</strong> – a live Airflow context, used to get the exec timestamp</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the temporary staging path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.data_asset.BaseDataAsset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of this data asset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.output_filename">
+<em class="property">property </em><code class="sig-name descname">output_filename</code><a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.output_filename" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>creates an output filename for this data asset considering the declared storage format
+and compression codec (if using compression)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.pickedup_files">
+<code class="sig-name descname">pickedup_files</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.pickedup_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using Airflow XCOM based on the given Airflow context with its
+DAG id, fetch the list of previously discovered files for ingestion.</p>
+<p>Then, considering the files have been picked-up by the ingestion operator,
+adjust the path prefix for the picked-up folder and return the list of file
+paths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>airflow_context</strong> – a live Airflow context</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of picked-up file paths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.ready_archive_path">
+<code class="sig-name descname">ready_archive_path</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.ready_archive_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the versioned archive path for this data asset, based on the
+Airflow execution date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>airflow_context</strong> – a live Airflow context</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the versioned archived path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.ready_path">
+<em class="property">property </em><code class="sig-name descname">ready_path</code><a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.ready_path" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the ready (folder) path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.rebuild_for_store">
+<em class="property">abstract </em><code class="sig-name descname">rebuild_for_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.rebuild_for_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild this data asset for the data store’s ready folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments to be passed along the downstream scripts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.retrieve_from_store">
+<em class="property">abstract </em><code class="sig-name descname">retrieve_from_store</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Union[pandas.core.frame.DataFrame, pyspark.sql.dataframe.DataFrame]<a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.retrieve_from_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve this data asset from the ready layer of the data store.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A pandas or PySpark dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.staging_pickedup_path">
+<code class="sig-name descname">staging_pickedup_path</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.staging_pickedup_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the pickedup path under staging for this data asset, versioned by
+the Airflow execution date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>airflow_context</strong> – a live Airflow context</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the versioned staging/pickedup path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAsset.staging_ready_path">
+<em class="property">property </em><code class="sig-name descname">staging_ready_path</code><a class="headerlink" href="#airtunnel.data_asset.BaseDataAsset.staging_ready_path" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the staging/ready path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.data_asset.BaseDataAssetIO">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_asset.</code><code class="sig-name descname">BaseDataAssetIO</code><a class="headerlink" href="#airtunnel.data_asset.BaseDataAssetIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for all Airtunnel DataAssetIO.</p>
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAssetIO.prepare_staging_ready_path">
+<em class="property">static </em><code class="sig-name descname">prepare_staging_ready_path</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_asset.BaseDataAssetIO.prepare_staging_ready_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given data asset, prepare the staging/ready path for it, i.e. ensure it exists if this is the
+first ever run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>asset</strong> – the data asset for which to prepare the staging/ready path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAssetIO.read_data_asset">
+<em class="property">abstract static </em><code class="sig-name descname">read_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset, source_files: Iterable[str], **reader_kwargs</em><span class="sig-paren">)</span> &#x2192; Union[pandas.core.frame.DataFrame, pyspark.sql.dataframe.DataFrame]<a class="headerlink" href="#airtunnel.data_asset.BaseDataAssetIO.read_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to read</p></li>
+<li><p><strong>source_files</strong> – input source file(s) to read</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the read in data as a dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAssetIO.retrieve_data_asset">
+<em class="property">abstract static </em><code class="sig-name descname">retrieve_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">**reader_kwargs</em><span class="sig-paren">)</span> &#x2192; Union[pandas.core.frame.DataFrame, pyspark.sql.dataframe.DataFrame]<a class="headerlink" href="#airtunnel.data_asset.BaseDataAssetIO.retrieve_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a data asset from the Airtunnel data store.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to retrieve</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the retrieved data as a dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.BaseDataAssetIO.write_data_asset">
+<em class="property">abstract static </em><code class="sig-name descname">write_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset, data: Union[pandas.core.frame.DataFrame, pyspark.sql.DataFrame], **writer_kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_asset.BaseDataAssetIO.write_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to write</p></li>
+<li><p><strong>data</strong> – date to write for the data asset</p></li>
+<li><p><strong>writer_kwargs</strong> – additional keyword arguments to pass into the writer function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.data_asset.PandasDataAsset">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_asset.</code><code class="sig-name descname">PandasDataAsset</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.data_asset.PandasDataAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAsset" title="airtunnel.data_asset.BaseDataAsset"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAsset</span></code></a></p>
+<p>Implements a Pandas enabled Airtunnel data asset.</p>
+<dl class="attribute">
+<dt id="airtunnel.data_asset.PandasDataAsset.declarations">
+<code class="sig-name descname">declarations</code><a class="headerlink" href="#airtunnel.data_asset.PandasDataAsset.declarations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.data_asset.PandasDataAsset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#airtunnel.data_asset.PandasDataAsset.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PandasDataAsset.rebuild_for_store">
+<code class="sig-name descname">rebuild_for_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_asset.PandasDataAsset.rebuild_for_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild this data asset for the data store’s ready folder (using Pandas).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments to be passed along the downstream scripts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PandasDataAsset.rename_fields_as_declared">
+<code class="sig-name descname">rename_fields_as_declared</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.data_asset.PandasDataAsset.rename_fields_as_declared" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename the columns as declared for this data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the input Pandas dataframe to perform the rename on</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the dataframe with the columns renamed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PandasDataAsset.retrieve_from_store">
+<code class="sig-name descname">retrieve_from_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context=None</em>, <em class="sig-param">consuming_asset: Optional[airtunnel.data_asset.BaseDataAsset] = None</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.data_asset.PandasDataAsset.retrieve_from_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve this data asset from the ready layer of the data store (using Pandas).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context (optional)</p></li>
+<li><p><strong>consuming_asset</strong> – the consuming data asset for lineage collection (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the data asset as a Pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.data_asset.PandasDataAssetIO">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_asset.</code><code class="sig-name descname">PandasDataAssetIO</code><a class="headerlink" href="#airtunnel.data_asset.PandasDataAssetIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAssetIO" title="airtunnel.data_asset.BaseDataAssetIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAssetIO</span></code></a></p>
+<p>IO interface for the Airtunnel PandasDataAsset.</p>
+<dl class="method">
+<dt id="airtunnel.data_asset.PandasDataAssetIO.read_data_asset">
+<em class="property">static </em><code class="sig-name descname">read_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PandasDataAsset, source_files: Iterable[str], **reader_kwargs</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.data_asset.PandasDataAssetIO.read_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a PandasDataAsset using Pandas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the PandasDataAsset to read</p></li>
+<li><p><strong>source_files</strong> – input source file(s) to read</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the read in data as a dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PandasDataAssetIO.retrieve_data_asset">
+<em class="property">static </em><code class="sig-name descname">retrieve_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PandasDataAsset</em>, <em class="sig-param">**reader_kwargs</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.data_asset.PandasDataAssetIO.retrieve_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a PandasDataAsset from the Airtunnel data store (using Pandas).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to retrieve</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the Pandas reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the retrieved data as a Pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PandasDataAssetIO.write_data_asset">
+<em class="property">static </em><code class="sig-name descname">write_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PandasDataAsset</em>, <em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">**writer_kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_asset.PandasDataAssetIO.write_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a PandasDataAsset using Pandas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to write</p></li>
+<li><p><strong>data</strong> – date to write for the data asset</p></li>
+<li><p><strong>writer_kwargs</strong> – additional keyword arguments to pass into the Pandas writer function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.data_asset.PySparkDataAsset">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_asset.</code><code class="sig-name descname">PySparkDataAsset</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.data_asset.PySparkDataAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAsset" title="airtunnel.data_asset.BaseDataAsset"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAsset</span></code></a></p>
+<p>A PySpark enabled Airtunnel data asset.</p>
+<dl class="attribute">
+<dt id="airtunnel.data_asset.PySparkDataAsset.declarations">
+<code class="sig-name descname">declarations</code><a class="headerlink" href="#airtunnel.data_asset.PySparkDataAsset.declarations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.data_asset.PySparkDataAsset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#airtunnel.data_asset.PySparkDataAsset.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PySparkDataAsset.rebuild_for_store">
+<code class="sig-name descname">rebuild_for_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.data_asset.PySparkDataAsset.rebuild_for_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild this data asset for the data store’s ready folder (using PySpark).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments to be passed along the downstream scripts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PySparkDataAsset.rename_fields_as_declared">
+<code class="sig-name descname">rename_fields_as_declared</code><span class="sig-paren">(</span><em class="sig-param">data: pyspark.sql.dataframe.DataFrame</em><span class="sig-paren">)</span> &#x2192; pyspark.sql.dataframe.DataFrame<a class="headerlink" href="#airtunnel.data_asset.PySparkDataAsset.rename_fields_as_declared" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename the columns as declared for this data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the input PySpark dataframe to perform the rename on</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the PySpark dataframe with the columns renamed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PySparkDataAsset.retrieve_from_store">
+<code class="sig-name descname">retrieve_from_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context=None</em>, <em class="sig-param">consuming_asset: Optional[airtunnel.data_asset.BaseDataAsset] = None</em>, <em class="sig-param">spark_session: Optional[pyspark.sql.session.SparkSession] = None</em><span class="sig-paren">)</span> &#x2192; pyspark.sql.dataframe.DataFrame<a class="headerlink" href="#airtunnel.data_asset.PySparkDataAsset.retrieve_from_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve this data asset from the ready layer of the data store (using Pandas).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context (optional)</p></li>
+<li><p><strong>consuming_asset</strong> – the consuming data asset for lineage collection (optional)</p></li>
+<li><p><strong>spark_session</strong> – a live Spark session to use (required)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the data asset as a Pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.data_asset.PySparkDataAssetIO">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_asset.</code><code class="sig-name descname">PySparkDataAssetIO</code><a class="headerlink" href="#airtunnel.data_asset.PySparkDataAssetIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAssetIO" title="airtunnel.data_asset.BaseDataAssetIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAssetIO</span></code></a></p>
+<p>IO interface for the Airtunnel PySparkDataAsset.</p>
+<dl class="method">
+<dt id="airtunnel.data_asset.PySparkDataAssetIO.read_data_asset">
+<em class="property">static </em><code class="sig-name descname">read_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PySparkDataAsset, source_files: Iterable[str], spark_session: Optional[pyspark.sql.session.SparkSession] = None, **reader_kwargs</em><span class="sig-paren">)</span> &#x2192; pyspark.sql.dataframe.DataFrame<a class="headerlink" href="#airtunnel.data_asset.PySparkDataAssetIO.read_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a PandasDataAsset using PySpark.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the PySparkDataAsset to read</p></li>
+<li><p><strong>source_files</strong> – input source file(s) to read</p></li>
+<li><p><strong>spark_session</strong> – a live PySpark session to use (required)</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the PySpark reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the read in data as a dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PySparkDataAssetIO.retrieve_data_asset">
+<em class="property">static </em><code class="sig-name descname">retrieve_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PySparkDataAsset</em>, <em class="sig-param">spark_session: Optional[pyspark.sql.session.SparkSession] = None</em>, <em class="sig-param">**reader_kwargs</em><span class="sig-paren">)</span> &#x2192; pyspark.sql.dataframe.DataFrame<a class="headerlink" href="#airtunnel.data_asset.PySparkDataAssetIO.retrieve_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a PySparkDataAsset from the Airtunnel data store (using PySpark).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to retrieve</p></li>
+<li><p><strong>spark_session</strong> – a live PySpark session to use (required)</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the PySpark reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the retrieved data as a PySpark dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.PySparkDataAssetIO.write_data_asset">
+<em class="property">static </em><code class="sig-name descname">write_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PySparkDataAsset</em>, <em class="sig-param">data: pyspark.sql.dataframe.DataFrame</em>, <em class="sig-param">**writer_kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_asset.PySparkDataAssetIO.write_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a PySparkDataAsset using PySpark.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to write</p></li>
+<li><p><strong>data</strong> – date to write for the data asset</p></li>
+<li><p><strong>writer_kwargs</strong> – additional keyword arguments to pass into the PySpark writer function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.data_asset.SQLDataAsset">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_asset.</code><code class="sig-name descname">SQLDataAsset</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">sql_hook: airflow.hooks.dbapi_hook.DbApiHook</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.data_asset.SQLDataAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAsset" title="airtunnel.data_asset.BaseDataAsset"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAsset</span></code></a></p>
+<p>A SQL enabled Airtunnel data asset.</p>
+<dl class="attribute">
+<dt id="airtunnel.data_asset.SQLDataAsset.declarations">
+<code class="sig-name descname">declarations</code><a class="headerlink" href="#airtunnel.data_asset.SQLDataAsset.declarations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.SQLDataAsset.formatted_sql_script">
+<code class="sig-name descname">formatted_sql_script</code><span class="sig-paren">(</span><em class="sig-param">parameters: Dict</em>, <em class="sig-param">script_type: str = 'dml'</em>, <em class="sig-param">dynamic_parameters: Callable = None</em>, <em class="sig-param">airflow_context=None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.data_asset.SQLDataAsset.formatted_sql_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the formatted SQL script for this data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> – dictionary of parameters to inject into the script (i.e. to format the raw string with)</p></li>
+<li><p><strong>script_type</strong> – i.e. dml, ddl – translates to a subfolder in the script-store/sql/ folder</p></li>
+<li><p><strong>dynamic_parameters</strong> – a callable that is dynamically executed to compute SQL script parameters at runtime</p></li>
+<li><p><strong>airflow_context</strong> – a live Airflow context – passed into the function to compute dynamic parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the formatted SQL script for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.SQLDataAsset.get_raw_sql_script">
+<code class="sig-name descname">get_raw_sql_script</code><span class="sig-paren">(</span><em class="sig-param">script_type: str = 'dml'</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.data_asset.SQLDataAsset.get_raw_sql_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the raw SQL script for this data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>script_type</strong> – i.e. dml, ddl – translates to a subfolder in the script-store/sql/ folder</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the raw SQL script as a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.data_asset.SQLDataAsset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#airtunnel.data_asset.SQLDataAsset.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.SQLDataAsset.rebuild_for_store">
+<code class="sig-name descname">rebuild_for_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em>, <em class="sig-param">parameters: Dict = None</em>, <em class="sig-param">dynamic_parameters: Callable = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.data_asset.SQLDataAsset.rebuild_for_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild this data asset for the data store’s ready folder (using SQL).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context</p></li>
+<li><p><strong>parameters</strong> – dictionary of parameters to inject into the script (i.e. to format the raw string with)</p></li>
+<li><p><strong>dynamic_parameters</strong> – a callable that is dynamically executed to compute SQL script parameters at runtime</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments to be passed along the downstream scripts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.SQLDataAsset.retrieve_from_store">
+<code class="sig-name descname">retrieve_from_store</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.data_asset.SQLDataAsset.retrieve_from_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve this data asset from the ready layer of the data store (using SQL).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the data asset as a Pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.data_asset.ShellDataAsset">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_asset.</code><code class="sig-name descname">ShellDataAsset</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.data_asset.ShellDataAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAsset" title="airtunnel.data_asset.BaseDataAsset"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAsset</span></code></a></p>
+<p>A shell DataAsset, acting merely as a container - i.e. for lineage.</p>
+<dl class="attribute">
+<dt id="airtunnel.data_asset.ShellDataAsset.declarations">
+<code class="sig-name descname">declarations</code><a class="headerlink" href="#airtunnel.data_asset.ShellDataAsset.declarations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.ShellDataAsset.from_names">
+<em class="property">static </em><code class="sig-name descname">from_names</code><span class="sig-paren">(</span><em class="sig-param">names: Iterable[str]</em><span class="sig-paren">)</span> &#x2192; List[airtunnel.data_asset.ShellDataAsset]<a class="headerlink" href="#airtunnel.data_asset.ShellDataAsset.from_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create several ShellDataAssets from a list of names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>names</strong> – the names for which to create ShellDataAssets for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of created ShellDataAssets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.data_asset.ShellDataAsset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#airtunnel.data_asset.ShellDataAsset.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.ShellDataAsset.rebuild_for_store">
+<code class="sig-name descname">rebuild_for_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_asset.ShellDataAsset.rebuild_for_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unimplemented method of the BaseDataAsset interface – do not use!</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.ShellDataAsset.retrieve_from_store">
+<code class="sig-name descname">retrieve_from_store</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.data_asset.ShellDataAsset.retrieve_from_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unimplemented method of the BaseDataAsset interface – do not use!</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_asset.ShellDataAsset.to_full_data_asset">
+<code class="sig-name descname">to_full_data_asset</code><span class="sig-paren">(</span><em class="sig-param">target_type: type</em><span class="sig-paren">)</span> &#x2192; Union[airtunnel.data_asset.PySparkDataAsset, airtunnel.data_asset.PandasDataAsset]<a class="headerlink" href="#airtunnel.data_asset.ShellDataAsset.to_full_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this ShellDataAsset to a full Airtunnel data asset of a given type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>target_type</strong> – the target class to convert this ShellDataAsset to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the full data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.data_store">
+<span id="airtunnel-data-store-module"></span><h2>airtunnel.data_store module<a class="headerlink" href="#module-airtunnel.data_store" title="Permalink to this headline">¶</a></h2>
+<p>Module for Airtunnel DataStore abstractions.</p>
+<dl class="class">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_store.</code><code class="sig-name descname">BaseDataStoreAdapter</code><a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for all Airtunnel DataStoreAdapters.</p>
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.copy">
+<em class="property">abstract static </em><code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">source: str</em>, <em class="sig-param">destination: str</em>, <em class="sig-param">recursive: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy file(s) from source to destination.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.delete">
+<em class="property">abstract static </em><code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">recursive: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete file(s) at a given path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.exists">
+<em class="property">abstract static </em><code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the given path exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.glob">
+<em class="property">abstract static </em><code class="sig-name descname">glob</code><span class="sig-paren">(</span><em class="sig-param">pattern: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.glob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch file list using the provided glob pattern.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.inspect">
+<em class="property">abstract static </em><code class="sig-name descname">inspect</code><span class="sig-paren">(</span><em class="sig-param">files: List[str]</em><span class="sig-paren">)</span> &#x2192; Dict[str, Tuple[datetime.datetime, datetime.datetime, int]]<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.inspect" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given file list, fetch create &amp; modification datetime and byte size.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.listdir">
+<em class="property">abstract static </em><code class="sig-name descname">listdir</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">recursive: bool = False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.listdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>List entries of a given path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.makedirs">
+<em class="property">abstract static </em><code class="sig-name descname">makedirs</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">exist_ok: bool = False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.makedirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make directories along the given path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.modification_times">
+<em class="property">abstract static </em><code class="sig-name descname">modification_times</code><span class="sig-paren">(</span><em class="sig-param">files: List[str]</em><span class="sig-paren">)</span> &#x2192; Dict[str, int]<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.modification_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given file list, fetch modification times as int Unix timestamps.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.move">
+<em class="property">abstract static </em><code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param">source: str</em>, <em class="sig-param">destination: str</em>, <em class="sig-param">recursive: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move file(s) from source to destination.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.BaseDataStoreAdapter.open">
+<em class="property">abstract static </em><code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">file: str</em>, <em class="sig-param">mode: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; TextIO<a class="headerlink" href="#airtunnel.data_store.BaseDataStoreAdapter.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a file-handle with the given path &amp; mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.data_store.</code><code class="sig-name descname">LocalDataStoreAdapter</code><a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_store.BaseDataStoreAdapter" title="airtunnel.data_store.BaseDataStoreAdapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_store.BaseDataStoreAdapter</span></code></a></p>
+<p>DataStoreAdapter implementation targeting the local filesystem.</p>
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.copy">
+<em class="property">static </em><code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">source: str</em>, <em class="sig-param">destination: str</em>, <em class="sig-param">recursive: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy file(s) from source to destination.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.delete">
+<em class="property">static </em><code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">recursive: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete file(s) at a given path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.exists">
+<em class="property">static </em><code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the given path exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.glob">
+<em class="property">static </em><code class="sig-name descname">glob</code><span class="sig-paren">(</span><em class="sig-param">pattern: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.glob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch file list using the provided glob pattern.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.inspect">
+<em class="property">abstract static </em><code class="sig-name descname">inspect</code><span class="sig-paren">(</span><em class="sig-param">files: List[str]</em><span class="sig-paren">)</span> &#x2192; Dict[str, Tuple[datetime.datetime, datetime.datetime, int]]<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.inspect" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given file list, fetch create &amp; modification datetime and byte size.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.listdir">
+<em class="property">static </em><code class="sig-name descname">listdir</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">recursive: bool = False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.listdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>List entries of a given path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.makedirs">
+<em class="property">static </em><code class="sig-name descname">makedirs</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">exist_ok: bool = False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.makedirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make directories along the given path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.modification_times">
+<em class="property">static </em><code class="sig-name descname">modification_times</code><span class="sig-paren">(</span><em class="sig-param">files: List[str]</em><span class="sig-paren">)</span> &#x2192; Dict[str, int]<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.modification_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given file list, fetch modification times as int Unix timestamps.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.move">
+<em class="property">static </em><code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param">source: str</em>, <em class="sig-param">destination: str</em>, <em class="sig-param">recursive: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move file(s) from source to destination.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.data_store.LocalDataStoreAdapter.open">
+<em class="property">static </em><code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">file: str</em>, <em class="sig-param">mode: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; TextIO<a class="headerlink" href="#airtunnel.data_store.LocalDataStoreAdapter.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a file-handle with the given path &amp; mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="airtunnel.data_store.get_configured_data_store_adapter">
+<code class="sig-prename descclassname">airtunnel.data_store.</code><code class="sig-name descname">get_configured_data_store_adapter</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; airtunnel.data_store.BaseDataStoreAdapter<a class="headerlink" href="#airtunnel.data_store.get_configured_data_store_adapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the configured DataStoreAdapter.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.declaration_store">
+<span id="airtunnel-declaration-store-module"></span><h2>airtunnel.declaration_store module<a class="headerlink" href="#module-airtunnel.declaration_store" title="Permalink to this headline">¶</a></h2>
+<p>Module for Airtunnel Declaration Store abstractions.</p>
+<dl class="class">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.declaration_store.</code><code class="sig-name descname">DataAssetDeclaration</code><span class="sig-paren">(</span><em class="sig-param">data_asset: str</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstraction around declarations for an Airtunnel data asset.</p>
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.all">
+<em class="property">property </em><code class="sig-name descname">all</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all declarations</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.archive_ingest">
+<em class="property">property </em><code class="sig-name descname">archive_ingest</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.archive_ingest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to archive the ingested files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.archive_ready">
+<em class="property">property </em><code class="sig-name descname">archive_ready</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.archive_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to archive the ready layer data of this data asset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.asset_name">
+<em class="property">property </em><code class="sig-name descname">asset_name</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.asset_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the declared asset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.extra_declarations">
+<em class="property">property </em><code class="sig-name descname">extra_declarations</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.extra_declarations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return extra declarations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.in_storage_format">
+<em class="property">property </em><code class="sig-name descname">in_storage_format</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.in_storage_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>The declared input storage format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.ingest_file_glob">
+<em class="property">property </em><code class="sig-name descname">ingest_file_glob</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.ingest_file_glob" title="Permalink to this definition">¶</a></dt>
+<dd><p>The declared file glob for ingestion.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.is_csv_input">
+<em class="property">property </em><code class="sig-name descname">is_csv_input</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.is_csv_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the input for this data asset is CSV.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.is_csv_output">
+<em class="property">property </em><code class="sig-name descname">is_csv_output</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.is_csv_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the output for this data asset is CSV.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.is_parquet_input">
+<em class="property">property </em><code class="sig-name descname">is_parquet_input</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.is_parquet_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the input for this data asset is Parquet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.is_parquet_output">
+<em class="property">property </em><code class="sig-name descname">is_parquet_output</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.is_parquet_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the output for this data asset is Parquet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.is_xls_input">
+<em class="property">property </em><code class="sig-name descname">is_xls_input</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.is_xls_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the input for this data asset is Excel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.key_columns">
+<em class="property">property </em><code class="sig-name descname">key_columns</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.key_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of declared key columns.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.out_comp_codec">
+<em class="property">property </em><code class="sig-name descname">out_comp_codec</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.out_comp_codec" title="Permalink to this definition">¶</a></dt>
+<dd><p>The declared output compression codec.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.out_storage_format">
+<em class="property">property </em><code class="sig-name descname">out_storage_format</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.out_storage_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>The declared output storage format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.run_ddl">
+<em class="property">property </em><code class="sig-name descname">run_ddl</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.run_ddl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to run DDL for this data asset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.staging_assets">
+<em class="property">property </em><code class="sig-name descname">staging_assets</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.staging_assets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of declared staging assets.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.transform_date_formats">
+<em class="property">property </em><code class="sig-name descname">transform_date_formats</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.transform_date_formats" title="Permalink to this definition">¶</a></dt>
+<dd><p>The declared data formats.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.declaration_store.DataAssetDeclaration.transform_renames">
+<em class="property">property </em><code class="sig-name descname">transform_renames</code><a class="headerlink" href="#airtunnel.declaration_store.DataAssetDeclaration.transform_renames" title="Permalink to this definition">¶</a></dt>
+<dd><p>The declared rename transformations.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.declaration_store.DeclarationSchemas">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.declaration_store.</code><code class="sig-name descname">DeclarationSchemas</code><a class="headerlink" href="#airtunnel.declaration_store.DeclarationSchemas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper to hold all our YAML schemas to validate declaration files.</p>
+<dl class="attribute">
+<dt id="airtunnel.declaration_store.DeclarationSchemas.DERIVED_DATA_ASSET">
+<code class="sig-name descname">DERIVED_DATA_ASSET</code><em class="property"> = Schema({'type': And(&lt;class 'str'&gt;, &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;), Optional('load'): Schema({Optional('out_storage_format'): And(&lt;function DeclarationSchemas.&lt;lambda&gt;&gt;), Optional('out_compression_codec'): And(&lt;function DeclarationSchemas.&lt;lambda&gt;&gt;), Optional('archive_ready'): &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;, Optional('run_ddl'): &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;, Optional('key_columns'): Schema([Schema(&lt;class 'str'&gt;)])}), Optional('staging_assets'): Schema([Schema(&lt;class 'str'&gt;)]), Optional('extra'): Schema({&lt;class 'object'&gt;: &lt;class 'object'&gt;})})</em><a class="headerlink" href="#airtunnel.declaration_store.DeclarationSchemas.DERIVED_DATA_ASSET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.declaration_store.DeclarationSchemas.INGESTED_DATA_ASSET">
+<code class="sig-name descname">INGESTED_DATA_ASSET</code><em class="property"> = Schema({'type': And(&lt;class 'str'&gt;, &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;), 'ingest': Schema({Optional('in_storage_format'): &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;, 'file_input_glob': And(&lt;class 'str'&gt;, &lt;built-in function len&gt;), Optional('archive_ingest'): &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;}), Optional('transformation'): Schema({Optional('in_column_renames'): And(&lt;class 'dict'&gt;, &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;, &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;), Optional('in_date_formats'): And(&lt;class 'dict'&gt;, &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;)}), Optional('load'): Schema({Optional('out_storage_format'): And(&lt;function DeclarationSchemas.&lt;lambda&gt;&gt;), Optional('out_compression_codec'): And(&lt;function DeclarationSchemas.&lt;lambda&gt;&gt;), Optional('archive_ready'): &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;, Optional('run_ddl'): &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;, Optional('key_columns'): Schema([Schema(&lt;class 'str'&gt;)])}), Optional('staging_assets'): Schema([Schema(&lt;class 'str'&gt;)]), Optional('extra'): Schema(&lt;class 'object'&gt;)})</em><a class="headerlink" href="#airtunnel.declaration_store.DeclarationSchemas.INGESTED_DATA_ASSET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.declaration_store.DeclarationSchemas.LOAD_SCHEMA">
+<code class="sig-name descname">LOAD_SCHEMA</code><em class="property"> = Schema({Optional('out_storage_format'): And(&lt;function DeclarationSchemas.&lt;lambda&gt;&gt;), Optional('out_compression_codec'): And(&lt;function DeclarationSchemas.&lt;lambda&gt;&gt;), Optional('archive_ready'): &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;, Optional('run_ddl'): &lt;function DeclarationSchemas.&lt;lambda&gt;&gt;, Optional('key_columns'): Schema([Schema(&lt;class 'str'&gt;)])})</em><a class="headerlink" href="#airtunnel.declaration_store.DeclarationSchemas.LOAD_SCHEMA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.declaration_store.DeclarationSchemas.STAGING_ASSETS">
+<code class="sig-name descname">STAGING_ASSETS</code><em class="property"> = Schema([Schema(&lt;class 'str'&gt;)])</em><a class="headerlink" href="#airtunnel.declaration_store.DeclarationSchemas.STAGING_ASSETS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="airtunnel.declaration_store.fetch_all_declarations">
+<code class="sig-prename descclassname">airtunnel.declaration_store.</code><code class="sig-name descname">fetch_all_declarations</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Iterable[airtunnel.declaration_store.DataAssetDeclaration]<a class="headerlink" href="#airtunnel.declaration_store.fetch_all_declarations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch declarations for all data assets that exist.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.paths">
+<span id="airtunnel-paths-module"></span><h2>airtunnel.paths module<a class="headerlink" href="#module-airtunnel.paths" title="Permalink to this headline">¶</a></h2>
+<p>Module for Airtunnel’s paths, i.e. to the declaration, data and scripts store folders.</p>
+</div>
+<div class="section" id="module-airtunnel">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-airtunnel" title="Permalink to this headline">¶</a></h2>
+<p>airtunnel – tame your Airflow!</p>
+<dl class="class">
+<dt id="airtunnel.BaseDataAsset">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.</code><code class="sig-name descname">BaseDataAsset</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.BaseDataAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for all Airtunnel data assets.</p>
+<dl class="attribute">
+<dt id="airtunnel.BaseDataAsset.declarations">
+<code class="sig-name descname">declarations</code><a class="headerlink" href="#airtunnel.BaseDataAsset.declarations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declarations of this data asset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.discovered_files_xcom_key">
+<em class="property">property </em><code class="sig-name descname">discovered_files_xcom_key</code><a class="headerlink" href="#airtunnel.BaseDataAsset.discovered_files_xcom_key" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the XCOM key for discovered files for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.ingest_archive_path">
+<em class="property">property </em><code class="sig-name descname">ingest_archive_path</code><a class="headerlink" href="#airtunnel.BaseDataAsset.ingest_archive_path" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the ingest/archive path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.landing_path">
+<em class="property">property </em><code class="sig-name descname">landing_path</code><a class="headerlink" href="#airtunnel.BaseDataAsset.landing_path" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the ingest/landing path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.make_ready_temp_path">
+<code class="sig-name descname">make_ready_temp_path</code><span class="sig-paren">(</span><em class="sig-param">airflow_context: Dict</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.BaseDataAsset.make_ready_temp_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a temporary path under ready for staging purposes.</p>
+<p>It points to a hidden (prefixed by “.”) folder as the last component,
+so that this path is ignored by frameworks like Spark.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>airflow_context</strong> – a live Airflow context, used to get the exec timestamp</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the temporary staging path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.BaseDataAsset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#airtunnel.BaseDataAsset.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of this data asset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.output_filename">
+<em class="property">property </em><code class="sig-name descname">output_filename</code><a class="headerlink" href="#airtunnel.BaseDataAsset.output_filename" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>creates an output filename for this data asset considering the declared storage format
+and compression codec (if using compression)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.pickedup_files">
+<code class="sig-name descname">pickedup_files</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#airtunnel.BaseDataAsset.pickedup_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using Airflow XCOM based on the given Airflow context with its
+DAG id, fetch the list of previously discovered files for ingestion.</p>
+<p>Then, considering the files have been picked-up by the ingestion operator,
+adjust the path prefix for the picked-up folder and return the list of file
+paths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>airflow_context</strong> – a live Airflow context</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of picked-up file paths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.ready_archive_path">
+<code class="sig-name descname">ready_archive_path</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.BaseDataAsset.ready_archive_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the versioned archive path for this data asset, based on the
+Airflow execution date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>airflow_context</strong> – a live Airflow context</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the versioned archived path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.ready_path">
+<em class="property">property </em><code class="sig-name descname">ready_path</code><a class="headerlink" href="#airtunnel.BaseDataAsset.ready_path" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the ready (folder) path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.rebuild_for_store">
+<em class="property">abstract </em><code class="sig-name descname">rebuild_for_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.BaseDataAsset.rebuild_for_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild this data asset for the data store’s ready folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments to be passed along the downstream scripts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.retrieve_from_store">
+<em class="property">abstract </em><code class="sig-name descname">retrieve_from_store</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Union[pandas.core.frame.DataFrame, pyspark.sql.dataframe.DataFrame]<a class="headerlink" href="#airtunnel.BaseDataAsset.retrieve_from_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve this data asset from the ready layer of the data store.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A pandas or PySpark dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.staging_pickedup_path">
+<code class="sig-name descname">staging_pickedup_path</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.BaseDataAsset.staging_pickedup_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the pickedup path under staging for this data asset, versioned by
+the Airflow execution date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>airflow_context</strong> – a live Airflow context</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the versioned staging/pickedup path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAsset.staging_ready_path">
+<em class="property">property </em><code class="sig-name descname">staging_ready_path</code><a class="headerlink" href="#airtunnel.BaseDataAsset.staging_ready_path" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the staging/ready path for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.SQLDataAsset">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.</code><code class="sig-name descname">SQLDataAsset</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">sql_hook: airflow.hooks.dbapi_hook.DbApiHook</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.SQLDataAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAsset" title="airtunnel.data_asset.BaseDataAsset"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAsset</span></code></a></p>
+<p>A SQL enabled Airtunnel data asset.</p>
+<dl class="attribute">
+<dt id="airtunnel.SQLDataAsset.declarations">
+<code class="sig-name descname">declarations</code><a class="headerlink" href="#airtunnel.SQLDataAsset.declarations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.SQLDataAsset.formatted_sql_script">
+<code class="sig-name descname">formatted_sql_script</code><span class="sig-paren">(</span><em class="sig-param">parameters: Dict</em>, <em class="sig-param">script_type: str = 'dml'</em>, <em class="sig-param">dynamic_parameters: Callable = None</em>, <em class="sig-param">airflow_context=None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.SQLDataAsset.formatted_sql_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the formatted SQL script for this data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> – dictionary of parameters to inject into the script (i.e. to format the raw string with)</p></li>
+<li><p><strong>script_type</strong> – i.e. dml, ddl – translates to a subfolder in the script-store/sql/ folder</p></li>
+<li><p><strong>dynamic_parameters</strong> – a callable that is dynamically executed to compute SQL script parameters at runtime</p></li>
+<li><p><strong>airflow_context</strong> – a live Airflow context – passed into the function to compute dynamic parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the formatted SQL script for this data asset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.SQLDataAsset.get_raw_sql_script">
+<code class="sig-name descname">get_raw_sql_script</code><span class="sig-paren">(</span><em class="sig-param">script_type: str = 'dml'</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#airtunnel.SQLDataAsset.get_raw_sql_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the raw SQL script for this data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>script_type</strong> – i.e. dml, ddl – translates to a subfolder in the script-store/sql/ folder</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the raw SQL script as a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.SQLDataAsset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#airtunnel.SQLDataAsset.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.SQLDataAsset.rebuild_for_store">
+<code class="sig-name descname">rebuild_for_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em>, <em class="sig-param">parameters: Dict = None</em>, <em class="sig-param">dynamic_parameters: Callable = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.SQLDataAsset.rebuild_for_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild this data asset for the data store’s ready folder (using SQL).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context</p></li>
+<li><p><strong>parameters</strong> – dictionary of parameters to inject into the script (i.e. to format the raw string with)</p></li>
+<li><p><strong>dynamic_parameters</strong> – a callable that is dynamically executed to compute SQL script parameters at runtime</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments to be passed along the downstream scripts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.SQLDataAsset.retrieve_from_store">
+<code class="sig-name descname">retrieve_from_store</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.SQLDataAsset.retrieve_from_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve this data asset from the ready layer of the data store (using SQL).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the data asset as a Pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.PandasDataAsset">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.</code><code class="sig-name descname">PandasDataAsset</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.PandasDataAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAsset" title="airtunnel.data_asset.BaseDataAsset"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAsset</span></code></a></p>
+<p>Implements a Pandas enabled Airtunnel data asset.</p>
+<dl class="attribute">
+<dt id="airtunnel.PandasDataAsset.declarations">
+<code class="sig-name descname">declarations</code><a class="headerlink" href="#airtunnel.PandasDataAsset.declarations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.PandasDataAsset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#airtunnel.PandasDataAsset.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PandasDataAsset.rebuild_for_store">
+<code class="sig-name descname">rebuild_for_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.PandasDataAsset.rebuild_for_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild this data asset for the data store’s ready folder (using Pandas).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments to be passed along the downstream scripts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PandasDataAsset.rename_fields_as_declared">
+<code class="sig-name descname">rename_fields_as_declared</code><span class="sig-paren">(</span><em class="sig-param">data: pandas.core.frame.DataFrame</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.PandasDataAsset.rename_fields_as_declared" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename the columns as declared for this data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the input Pandas dataframe to perform the rename on</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the dataframe with the columns renamed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PandasDataAsset.retrieve_from_store">
+<code class="sig-name descname">retrieve_from_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context=None</em>, <em class="sig-param">consuming_asset: Optional[airtunnel.data_asset.BaseDataAsset] = None</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.PandasDataAsset.retrieve_from_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve this data asset from the ready layer of the data store (using Pandas).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context (optional)</p></li>
+<li><p><strong>consuming_asset</strong> – the consuming data asset for lineage collection (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the data asset as a Pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.PySparkDataAsset">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.</code><code class="sig-name descname">PySparkDataAsset</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.PySparkDataAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAsset" title="airtunnel.data_asset.BaseDataAsset"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAsset</span></code></a></p>
+<p>A PySpark enabled Airtunnel data asset.</p>
+<dl class="attribute">
+<dt id="airtunnel.PySparkDataAsset.declarations">
+<code class="sig-name descname">declarations</code><a class="headerlink" href="#airtunnel.PySparkDataAsset.declarations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.PySparkDataAsset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#airtunnel.PySparkDataAsset.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PySparkDataAsset.rebuild_for_store">
+<code class="sig-name descname">rebuild_for_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.PySparkDataAsset.rebuild_for_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild this data asset for the data store’s ready folder (using PySpark).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments to be passed along the downstream scripts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PySparkDataAsset.rename_fields_as_declared">
+<code class="sig-name descname">rename_fields_as_declared</code><span class="sig-paren">(</span><em class="sig-param">data: pyspark.sql.dataframe.DataFrame</em><span class="sig-paren">)</span> &#x2192; pyspark.sql.dataframe.DataFrame<a class="headerlink" href="#airtunnel.PySparkDataAsset.rename_fields_as_declared" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename the columns as declared for this data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the input PySpark dataframe to perform the rename on</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the PySpark dataframe with the columns renamed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PySparkDataAsset.retrieve_from_store">
+<code class="sig-name descname">retrieve_from_store</code><span class="sig-paren">(</span><em class="sig-param">airflow_context=None</em>, <em class="sig-param">consuming_asset: Optional[airtunnel.data_asset.BaseDataAsset] = None</em>, <em class="sig-param">spark_session: Optional[pyspark.sql.session.SparkSession] = None</em><span class="sig-paren">)</span> &#x2192; pyspark.sql.dataframe.DataFrame<a class="headerlink" href="#airtunnel.PySparkDataAsset.retrieve_from_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve this data asset from the ready layer of the data store (using Pandas).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>airflow_context</strong> – a live Airflow context (optional)</p></li>
+<li><p><strong>consuming_asset</strong> – the consuming data asset for lineage collection (optional)</p></li>
+<li><p><strong>spark_session</strong> – a live Spark session to use (required)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the data asset as a Pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.BaseDataAssetIO">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.</code><code class="sig-name descname">BaseDataAssetIO</code><a class="headerlink" href="#airtunnel.BaseDataAssetIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for all Airtunnel DataAssetIO.</p>
+<dl class="method">
+<dt id="airtunnel.BaseDataAssetIO.prepare_staging_ready_path">
+<em class="property">static </em><code class="sig-name descname">prepare_staging_ready_path</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.BaseDataAssetIO.prepare_staging_ready_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given data asset, prepare the staging/ready path for it, i.e. ensure it exists if this is the
+first ever run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>asset</strong> – the data asset for which to prepare the staging/ready path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAssetIO.read_data_asset">
+<em class="property">abstract static </em><code class="sig-name descname">read_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset, source_files: Iterable[str], **reader_kwargs</em><span class="sig-paren">)</span> &#x2192; Union[pandas.core.frame.DataFrame, pyspark.sql.dataframe.DataFrame]<a class="headerlink" href="#airtunnel.BaseDataAssetIO.read_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to read</p></li>
+<li><p><strong>source_files</strong> – input source file(s) to read</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the read in data as a dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAssetIO.retrieve_data_asset">
+<em class="property">abstract static </em><code class="sig-name descname">retrieve_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">**reader_kwargs</em><span class="sig-paren">)</span> &#x2192; Union[pandas.core.frame.DataFrame, pyspark.sql.dataframe.DataFrame]<a class="headerlink" href="#airtunnel.BaseDataAssetIO.retrieve_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a data asset from the Airtunnel data store.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to retrieve</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the retrieved data as a dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.BaseDataAssetIO.write_data_asset">
+<em class="property">abstract static </em><code class="sig-name descname">write_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset, data: Union[pandas.core.frame.DataFrame, pyspark.sql.DataFrame], **writer_kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.BaseDataAssetIO.write_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to write</p></li>
+<li><p><strong>data</strong> – date to write for the data asset</p></li>
+<li><p><strong>writer_kwargs</strong> – additional keyword arguments to pass into the writer function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.PandasDataAssetIO">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.</code><code class="sig-name descname">PandasDataAssetIO</code><a class="headerlink" href="#airtunnel.PandasDataAssetIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAssetIO" title="airtunnel.data_asset.BaseDataAssetIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAssetIO</span></code></a></p>
+<p>IO interface for the Airtunnel PandasDataAsset.</p>
+<dl class="method">
+<dt id="airtunnel.PandasDataAssetIO.read_data_asset">
+<em class="property">static </em><code class="sig-name descname">read_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PandasDataAsset, source_files: Iterable[str], **reader_kwargs</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.PandasDataAssetIO.read_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a PandasDataAsset using Pandas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the PandasDataAsset to read</p></li>
+<li><p><strong>source_files</strong> – input source file(s) to read</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the read in data as a dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PandasDataAssetIO.retrieve_data_asset">
+<em class="property">static </em><code class="sig-name descname">retrieve_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PandasDataAsset</em>, <em class="sig-param">**reader_kwargs</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#airtunnel.PandasDataAssetIO.retrieve_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a PandasDataAsset from the Airtunnel data store (using Pandas).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to retrieve</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the Pandas reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the retrieved data as a Pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PandasDataAssetIO.write_data_asset">
+<em class="property">static </em><code class="sig-name descname">write_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PandasDataAsset</em>, <em class="sig-param">data: pandas.core.frame.DataFrame</em>, <em class="sig-param">**writer_kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.PandasDataAssetIO.write_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a PandasDataAsset using Pandas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to write</p></li>
+<li><p><strong>data</strong> – date to write for the data asset</p></li>
+<li><p><strong>writer_kwargs</strong> – additional keyword arguments to pass into the Pandas writer function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.PySparkDataAssetIO">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.</code><code class="sig-name descname">PySparkDataAssetIO</code><a class="headerlink" href="#airtunnel.PySparkDataAssetIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.data_asset.BaseDataAssetIO" title="airtunnel.data_asset.BaseDataAssetIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.data_asset.BaseDataAssetIO</span></code></a></p>
+<p>IO interface for the Airtunnel PySparkDataAsset.</p>
+<dl class="method">
+<dt id="airtunnel.PySparkDataAssetIO.read_data_asset">
+<em class="property">static </em><code class="sig-name descname">read_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PySparkDataAsset, source_files: Iterable[str], spark_session: Optional[pyspark.sql.session.SparkSession] = None, **reader_kwargs</em><span class="sig-paren">)</span> &#x2192; pyspark.sql.dataframe.DataFrame<a class="headerlink" href="#airtunnel.PySparkDataAssetIO.read_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a PandasDataAsset using PySpark.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the PySparkDataAsset to read</p></li>
+<li><p><strong>source_files</strong> – input source file(s) to read</p></li>
+<li><p><strong>spark_session</strong> – a live PySpark session to use (required)</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the PySpark reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the read in data as a dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PySparkDataAssetIO.retrieve_data_asset">
+<em class="property">static </em><code class="sig-name descname">retrieve_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PySparkDataAsset</em>, <em class="sig-param">spark_session: Optional[pyspark.sql.session.SparkSession] = None</em>, <em class="sig-param">**reader_kwargs</em><span class="sig-paren">)</span> &#x2192; pyspark.sql.dataframe.DataFrame<a class="headerlink" href="#airtunnel.PySparkDataAssetIO.retrieve_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a PySparkDataAsset from the Airtunnel data store (using PySpark).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to retrieve</p></li>
+<li><p><strong>spark_session</strong> – a live PySpark session to use (required)</p></li>
+<li><p><strong>reader_kwargs</strong> – additional keyword arguments to pass into the PySpark reader function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the retrieved data as a PySpark dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.PySparkDataAssetIO.write_data_asset">
+<em class="property">static </em><code class="sig-name descname">write_data_asset</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PySparkDataAsset</em>, <em class="sig-param">data: pyspark.sql.dataframe.DataFrame</em>, <em class="sig-param">**writer_kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.PySparkDataAssetIO.write_data_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a PySparkDataAsset using PySpark.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – the data asset to write</p></li>
+<li><p><strong>data</strong> – date to write for the data asset</p></li>
+<li><p><strong>writer_kwargs</strong> – additional keyword arguments to pass into the PySpark writer function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="airtunnel.metadata.html" class="btn btn-neutral float-right" title="airtunnel.metadata package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="airtunnel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

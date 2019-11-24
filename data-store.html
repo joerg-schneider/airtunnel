@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Physical data store setup &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Architecture &amp; classes" href="architecture.html" />
+    <link rel="prev" title="Design Principles" href="design.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design Principles</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Physical data store setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#folder-setup">Folder setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#folder-meanings-and-motivation">Folder meanings and motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#physical-data-store-adapters">Physical data store adapters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Physical data store setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/data-store.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="physical-data-store-setup">
+<h1>Physical data store setup<a class="headerlink" href="#physical-data-store-setup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="folder-setup">
+<h2>Folder setup<a class="headerlink" href="#folder-setup" title="Permalink to this headline">¶</a></h2>
+<p>In plain terms of a folder hierarchy, please lay out your physical data store as follows (read section below on why):</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>├── archive
+├── ingest
+│   ├── archive
+│   └── landing
+├── ready
+└── staging
+    ├── intermediate
+    ├── pickedup
+    └── ready
+</pre></div>
+</div>
+</div>
+<div class="section" id="folder-meanings-and-motivation">
+<h2>Folder meanings and motivation<a class="headerlink" href="#folder-meanings-and-motivation" title="Permalink to this headline">¶</a></h2>
+<p>Each data layer must store data persistently and efficiently. This is why the physical data store - be it a SQL system,
+an S3 bucket or cloud-enabled data lake service - is a key building block, worthy of a rigorous structure.
+In a scalable, filesystem-like storage medium, for example, a common approach to structure includes:</p>
+<p><strong>ingest</strong>: Raw files as received from sources</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>landing</strong>: Incoming data files will be 1:1 loaded in here and suffixed with a timestamp of arrival</p></li>
+<li><p><strong>archive</strong>: Files from landing that have been consumed by a pipeline will be moved in here</p></li>
+</ul>
+</div></blockquote>
+<p><strong>ready</strong>: Processed data assets that are ready to be read from, each one being in its own folder.
+Ready assets may possibly be further partitioned using a Hive/Spark style folder convention, according to which
+each subfolder is named using the partition predicate (useful to seamlessly read data assets using Hive,
+Spark or PyArrow).</p>
+<p><strong>staging</strong>: Files in staging are not for general consumption because they are incomplete or currently being worked on.
+It is further broken down into <strong>pickedup</strong> (data that was moved there from ingest/landing), <strong>intermediate</strong> (any
+kind of temporary data for intermediate processing temps) and <strong>ready</strong> (where the next version for the ready layer
+is produced).</p>
+<p>Airtunnel’s load operator will use an atomic move operation (or SQL transaction) to push finished data from
+<em>staging/ready</em> to <em>ready</em>, so consumers will never run into access issues or tap into half-finished files.</p>
+<p><strong>archive</strong>: Whenever a new version of an asset in ready has been computed and it is valuable to keep a copy of
+the previous run, move it here under [asset-name]/[load-time]/.</p>
+<p><strong>export</strong> (optional): This is for files to be exported to other consumers and that will never be re-introduced
+into data assets contained in the folders above. Examples include final csv-exports, front-end specific
+data and reports.</p>
+</div>
+<div class="section" id="physical-data-store-adapters">
+<h2>Physical data store adapters<a class="headerlink" href="#physical-data-store-adapters" title="Permalink to this headline">¶</a></h2>
+<p>By default Airtunnel currently uses the local filesystem as the physical data store, it can be however extended to use
+for example cloud storage providers, see <a class="reference internal" href="extending.html"><span class="doc">Extending Airtunnel</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="architecture.html" class="btn btn-neutral float-right" title="Architecture &amp; classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="design.html" class="btn btn-neutral float-left" title="Design Principles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

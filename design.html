@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Design Principles &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Physical data store setup" href="data-store.html" />
+    <link rel="prev" title="Configuration and Setup" href="configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Design Principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#uncompromised-consistency">Uncompromised Consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#declarative-first-and-low-code-redundancy">Declarative first and low-code redundancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#metadata-driven">Metadata driven</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Design Principles</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/design.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="design-principles">
+<h1>Design Principles<a class="headerlink" href="#design-principles" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="uncompromised-consistency">
+<h2>Uncompromised Consistency<a class="headerlink" href="#uncompromised-consistency" title="Permalink to this headline">¶</a></h2>
+<p>Consistency is at the heart of any successful software project. In data processing, consistency is achieved primarily
+by strict naming conventions and a clear codebase structure. Such consistency enables new team members to quickly
+onboard, and has the added benefit of highlighting inconsistencies. Unit tests are a good way to
+actually ensure consistency.</p>
+<p>Given that the data asset is at the center of the project, consistency should span:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>naming (&amp; placement) of data assets</p></li>
+<li><p>naming of script file(s) to process said data asset</p></li>
+<li><p>naming of workflows; as in Airflow DAG &amp; operator IDs</p></li>
+<li><p>a strict 1:1 relationship between data scripts/tasks and data assets. In other words, do not load three
+tables using one script, rather use three scripts</p></li>
+</ul>
+</div></blockquote>
+<p>Consistency will help team members form a complete mental image of how aspects of the project are connected.
+Ideally, it also yields a structure, such that no one has to do time-consuming searches for scripts or
+perform similar actions. Instead, developers are enabled to quickly infer names and locations
+just from a data asset name at hand.</p>
+</div>
+<div class="section" id="declarative-first-and-low-code-redundancy">
+<h2>Declarative first and low-code redundancy<a class="headerlink" href="#declarative-first-and-low-code-redundancy" title="Permalink to this headline">¶</a></h2>
+<p>Airflow is a “workflows as code” type framework. While we absolutely love this flexibility, it may lead developers
+to write redundant code and/or bury configuration properties in it. There is no need to write DAGs and processing
+scripts completely from scratch. In fact, doing so can cause problems - especially if you have hundreds of such DAGs
+and scripts.</p>
+<p>As is the nature of data pipelining, process-oriented task types such as ingesting, loading, and moving data are
+constantly recurring along the data asset lifecycle. The only difference per instance is what a particular data asset
+requires: Ingest from where and using which mechanism? Load delta or in batch? Etc.
+This is why we postulate to have a central declaration file (as in YAML or JSON) per data asset, capturing all these
+properties required to run a generalized task (carried out by a custom operator). In other words, operators are designed
+in a generic way and receive the name of a data asset, from which they can grab its declaration file and learn how to
+parameterize and carry out the specific task.</p>
+<p>Key benefits of this approach are that it:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Enables standardization of basic data pipelining tasks, which makes it possible for even novice developers to build workflows simply by providing the correct declaration.</p></li>
+<li><p>Leads to the creation of a “single source of truth” through extraction of data asset properties into declaration.</p></li>
+<li><p>Allows easy declaration-testing for consistency and validity using unit tests.</p></li>
+<li><p>Enables cross-programming language use of declaration files.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="metadata-driven">
+<h2>Metadata driven<a class="headerlink" href="#metadata-driven" title="Permalink to this headline">¶</a></h2>
+<p>Metadata is knowledge, and knowledge is power. In this case, “power” refers to how to best execute a workflow,
+analyze it later and maybe even optimize it. We propose a low-overhead metadata interface that should extend upon
+Airflow’s internal data model.</p>
+<p>In particular, we need to add the dimension of the data asset, since Airflow’s data model is based only on its own
+objects such as DAGs, Tasks, and others. Here, a link between data assets and operators or DAGs needs to be
+established because a stakeholder will probably never ask you: “&lt;Your Name&gt;, when did DAG load_all_the_data(fast)
+finish today?” Instead, they have a particular data asset in mind.</p>
+<p>To be truly metadata driven, one should also collect information on input files (such as sizes and modification times)
+as well as on internally constructed data assets (such as which partitions were updated and at what time).</p>
+<p>Downstream jobs then can easily leverage this information to construct efficient delta mechanisms such as recalculating
+and replacing a partition whose input data has changed, or running efficient data-quality
+checks based on updated data.</p>
+<p>It is worth considering how much developer time needs to be invested in a framework like this.
+If, for example, all imaginable jobs on a given day can work as a full load since data volumes are low,
+there is no need to optimize delta updates based on metadata.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data-store.html" class="btn btn-neutral float-right" title="Physical data store setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="configuration.html" class="btn btn-neutral float-left" title="Configuration and Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

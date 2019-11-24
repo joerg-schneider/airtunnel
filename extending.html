@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Extending Airtunnel &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Known Limitations" href="limitations.html" />
+    <link rel="prev" title="Architecture &amp; classes" href="architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Extending Airtunnel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#extra-declaration-properties">Extra Declaration Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-metaadapter">Custom MetaAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-datastoreadapter">Custom DataStoreAdapter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Extending Airtunnel</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/extending.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="extending-airtunnel">
+<h1>Extending Airtunnel<a class="headerlink" href="#extending-airtunnel" title="Permalink to this headline">¶</a></h1>
+<p>Airtunnel was built to be easily extendable. To give some inspiration of
+what can be done and how, this section shows some common use-cases.</p>
+<div class="section" id="extra-declaration-properties">
+<h2>Extra Declaration Properties<a class="headerlink" href="#extra-declaration-properties" title="Permalink to this headline">¶</a></h2>
+<p>As noted, data asset declaration options are still a (too) small set of sensible defaults.</p>
+<p>To still enable the use of the declaration store for any properties you like, we created the
+(schemaless) <code class="docutils literal notranslate"><span class="pre">extra</span></code> section.</p>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>An example use case for this would be that one would like to additionally declare maintainers alongside
+with their data asset declaration.</p>
+<p>We can easily define this in a <code class="docutils literal notranslate"><span class="pre">my_asset.yaml</span></code> using extra declarations:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">derived</span>
+
+<span class="nt">extra</span><span class="p">:</span>
+      <span class="nt">maintainer</span><span class="p">:</span>
+         <span class="l l-Scalar l-Scalar-Plain">Tom</span>
+</pre></div>
+</div>
+<p>And the usage of this value is as simple as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">airtunnel.declaration_store</span> <span class="kn">import</span> <span class="n">DataAssetDeclaration</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">DataAssetDeclaration</span><span class="p">(</span><span class="s2">&quot;my_asset&quot;</span><span class="p">)</span>
+<span class="c1"># access the declared extra section:</span>
+<span class="n">d</span><span class="o">.</span><span class="n">extra_declarations</span>
+</pre></div>
+</div>
+<p>…where the value of <code class="docutils literal notranslate"><span class="pre">d.extra_declarations</span></code> will simply be: <code class="docutils literal notranslate"><span class="pre">{'maintainer':</span> <span class="pre">'Tom'}</span></code></p>
+</div>
+</div>
+<div class="section" id="custom-metaadapter">
+<h2>Custom MetaAdapter<a class="headerlink" href="#custom-metaadapter" title="Permalink to this headline">¶</a></h2>
+<p>As introduced in the <a class="reference internal" href="architecture.html"><span class="doc">architecture section</span></a>, Airtunnel’s metadata is stored using
+so called metadata adapters – the default being <code class="docutils literal notranslate"><span class="pre">SQLMetaAdapter</span></code> which uses SQLAlchemy to interact with an
+Airflow connection. To use your custom adapter, implement it by basing <code class="docutils literal notranslate"><span class="pre">airtunnel.metadata.adapter.BaseMetaAdapter</span></code>
+and specify this new class in the airtunnel section of your <code class="docutils literal notranslate"><span class="pre">airflow.cfg</span></code> using the full reference, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">metadata_store_adapter_class</span> <span class="o">=</span> <span class="n">yourpackage</span><span class="o">.</span><span class="n">yoursubpackage</span><span class="o">.</span><span class="n">RedisMetaAdapter</span>
+</pre></div>
+</div>
+<p>You can verify it is being properly loaded, by running:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">airtunnel.metadata.adapter</span> <span class="kn">import</span> <span class="n">get_configured_meta_adapter</span>
+<span class="n">get_configured_meta_adapter</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>…which should then return: <em>&lt;class ‘yourpackage.yoursubpackage.RedisMetaAdapter’&gt;</em></p>
+</div>
+<div class="section" id="custom-datastoreadapter">
+<h2>Custom DataStoreAdapter<a class="headerlink" href="#custom-datastoreadapter" title="Permalink to this headline">¶</a></h2>
+<p>Airtunnel’s physical data store is by default on the local filesystem, for which <cite>LocalDataStoreAdapter</cite> is a bridge
+to carry out all commands like move, copy or list files.</p>
+<p>Since we expect a large number of users wanting to have their data store located on i.e. cloud storage, Airtunnel
+can be easily extended to support it.</p>
+<p>To use a custom DataStoreAdapter, implement it by basing <code class="docutils literal notranslate"><span class="pre">airtunnel.data_store.BaseDataStoreAdapter</span></code> and
+specify this new class in the airtunnel section of your <code class="docutils literal notranslate"><span class="pre">airflow.cfg</span></code> using the full reference, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_store_adapter_class</span> <span class="o">=</span> <span class="n">yourpackage</span><span class="o">.</span><span class="n">yoursubpackage</span><span class="o">.</span><span class="n">S3DataStoreAdapter</span>
+</pre></div>
+</div>
+<p>You can verify it is being properly loaded, by running:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">airtunnel.data_store</span> <span class="kn">import</span> <span class="n">get_configured_data_store_adapter</span>
+<span class="n">get_configured_data_store_adapter</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>…which should then return: <em>&lt;class ‘yourpackage.yoursubpackage.S3DataStoreAdapter’&gt;</em></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="limitations.html" class="btn btn-neutral float-right" title="Known Limitations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="architecture.html" class="btn btn-neutral float-left" title="Architecture &amp; classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

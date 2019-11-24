@@ -1,0 +1,30 @@
+airtunnel.metadata package
+==========================
+
+Submodules
+----------
+
+airtunnel.metadata.adapter module
+---------------------------------
+
+.. automodule:: airtunnel.metadata.adapter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+airtunnel.metadata.entities module
+----------------------------------
+
+.. automodule:: airtunnel.metadata.entities
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: airtunnel.metadata
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,30 @@
+airtunnel.sensors package
+=========================
+
+Submodules
+----------
+
+airtunnel.sensors.ingestion module
+----------------------------------
+
+.. automodule:: airtunnel.sensors.ingestion
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+airtunnel.sensors.metadata module
+---------------------------------
+
+.. automodule:: airtunnel.sensors.metadata
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: airtunnel.sensors
+   :members:
+   :undoc-members:
+   :show-inheritance:

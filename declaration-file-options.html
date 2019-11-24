@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data Asset Declaration Files &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="airtunnel" href="api/modules.html" />
+    <link rel="prev" title="Development &amp; testing" href="development.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development &amp; testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Asset Declaration Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#type">type</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#type-derived">type: derived</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#type-ingested">type: ingested</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sections">sections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ingest">ingest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load">load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transformation">transformation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extra">extra</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Data Asset Declaration Files</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/declaration-file-options.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="data-asset-declaration-files">
+<h1>Data Asset Declaration Files<a class="headerlink" href="#data-asset-declaration-files" title="Permalink to this headline">¶</a></h1>
+<p>This page aims to give a short reference on the options for Airtunnel’s data asset declaration files. Most importantly,
+the name of each declaration file has to exactly reflect to the name we want to call each individual data asset.</p>
+<p>The <a class="reference internal" href="tutorial.html"><span class="doc">tutorial</span></a> will also walk through the usage of these declarations in a more interactive approach.</p>
+<div class="section" id="type">
+<h2>type<a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h2>
+<p>With any data asset declaration a type definition is mandatory.</p>
+<p>Allowed values for the <code class="docutils literal notranslate"><span class="pre">type</span></code> property are: <strong>ingested</strong> and <strong>derived</strong></p>
+<div class="section" id="type-derived">
+<h3>type: derived<a class="headerlink" href="#type-derived" title="Permalink to this headline">¶</a></h3>
+<p>A declaration for a data asset of type <em>derived</em> does not need any further sections, i.e. a declaration file with
+only</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">derived</span>
+</pre></div>
+</div>
+<p>will be valid.</p>
+<p>However, for <em>derived</em> data assets the sections <em>load</em> and <em>extra</em> can be optionally used:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">derived</span>
+
+<span class="nt">load</span><span class="p">:</span>
+      <span class="nt">out_storage_format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">csv</span>
+      <span class="nt">out_compression_codec</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gzip</span>
+
+<span class="nt">extra</span><span class="p">:</span>
+      <span class="nt">maintainer</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Tom</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="type-ingested">
+<h3>type: ingested<a class="headerlink" href="#type-ingested" title="Permalink to this headline">¶</a></h3>
+<p>For ingested data assets, the section <strong>ingest</strong> is required. Additionally, the sections <em>load</em>, <em>transformation</em> and
+<em>extra</em> are optional. Refer to the following chapters that explain these sections and give examples.</p>
+</div>
+</div>
+<div class="section" id="sections">
+<h2>sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
+<p>This chapter will give a reference on the declaration file sections with their properties and defaults.</p>
+<div class="section" id="ingest">
+<h3>ingest<a class="headerlink" href="#ingest" title="Permalink to this headline">¶</a></h3>
+<p>Required declarations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>file_input_glob</em>: a string with a glob pattern to retrieve matching input files from the landing directory</p></li>
+</ul>
+</div></blockquote>
+<p>Optional declarations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>in_storage_format</em>: The storage format of the input files. <strong>csv|xls|parquet</strong> , will default to: csv</p></li>
+<li><p><em>archive_ingest</em>: Should the ingested data be archived? <strong>True|False</strong>, will default to: True</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="load">
+<h3>load<a class="headerlink" href="#load" title="Permalink to this headline">¶</a></h3>
+<p>Optional declarations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>out_storage_format</em>: The storage format to use when writing into the ready layer. <strong>csv|parquet</strong>, will default to:
+parquet</p></li>
+<li><p><em>out_compression_codec</em>: The compression codec to use when writing into the ready layer. <strong>gzip|snappy|none</strong>,
+will default to: gzip</p></li>
+<li><p><em>archive_ready</em>: Whether the pre-existing ready data should be archived on loaded. <strong>True|False</strong>, will default
+to: True</p></li>
+<li><p><em>run_ddl</em>: Only for SQLDataAssets, and used by the SQLTransformationOperator. Indicates if a DDL file should
+always be run before running a DML script. <strong>True|False</strong>, will default to True</p></li>
+<li><p><em>key_columns</em>: A list of key columns for this data asset. No default value.</p></li>
+</ul>
+</div></blockquote>
+<p>Consider this example of a load section:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">load</span><span class="p">:</span>
+  <span class="nt">out_storage_format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">parquet</span>
+  <span class="nt">key_columns</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">student_id</span>
+  <span class="nt">out_compression_codec</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gzip</span>
+  <span class="nt">archive_ready</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yes</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="transformation">
+<h3>transformation<a class="headerlink" href="#transformation" title="Permalink to this headline">¶</a></h3>
+<p>Optional declarations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>in_column_renames</em>: Can be used to specify a rename map from source column names to target column names.</p></li>
+<li><p><em>in_date_formats</em>: Can be used to specify a map of input data format strings per source column.</p></li>
+</ul>
+</div></blockquote>
+<p>Consider this example of a transformation section to define a column rename from <em>student</em> to <em>student_first_name</em>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">transformation</span><span class="p">:</span>
+  <span class="nt">in_column_renames</span><span class="p">:</span>
+    <span class="nt">student_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">student_first_name</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="extra">
+<h3>extra<a class="headerlink" href="#extra" title="Permalink to this headline">¶</a></h3>
+<p>Schemaless, non verified additional properties one wants to declare.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api/modules.html" class="btn btn-neutral float-right" title="airtunnel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="development.html" class="btn btn-neutral float-left" title="Development &amp; testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

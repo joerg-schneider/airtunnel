@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>airtunnel.operators package &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="airtunnel.operators.sql package" href="airtunnel.operators.sql.html" />
+    <link rel="prev" title="airtunnel.metadata package" href="airtunnel.metadata.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design.html">Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="airtunnel.html">airtunnel package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="airtunnel.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.metadata.html">airtunnel.metadata package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">airtunnel.operators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.sensors.html">airtunnel.sensors package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.data_asset">airtunnel.data_asset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.data_store">airtunnel.data_store module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.declaration_store">airtunnel.declaration_store module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.paths">airtunnel.paths module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">airtunnel</a> &raquo;</li>
+        
+          <li><a href="airtunnel.html">airtunnel package</a> &raquo;</li>
+        
+      <li>airtunnel.operators package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/airtunnel.operators.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="airtunnel-operators-package">
+<h1>airtunnel.operators package<a class="headerlink" href="#airtunnel-operators-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="airtunnel.operators.sql.html">airtunnel.operators.sql package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.sql.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.sql.html#module-airtunnel.operators.sql.sql_helpers">airtunnel.operators.sql.sql_helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.sql.html#module-airtunnel.operators.sql.sqloperator">airtunnel.operators.sql.sqloperator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airtunnel.operators.sql.html#module-airtunnel.operators.sql">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-airtunnel.operators.archival">
+<span id="airtunnel-operators-archival-module"></span><h2>airtunnel.operators.archival module<a class="headerlink" href="#module-airtunnel.operators.archival" title="Permalink to this headline">¶</a></h2>
+<p>Airtunnel operators for archival tasks.</p>
+<dl class="function">
+<dt id="airtunnel.operators.archival.DataAssetArchiveOperator">
+<code class="sig-prename descclassname">airtunnel.operators.archival.</code><code class="sig-name descname">DataAssetArchiveOperator</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.archival.DataAssetArchiveOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares a new archive for a data asset and returns the name of the folder.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="airtunnel.operators.archival.IngestArchiveOperator">
+<code class="sig-prename descclassname">airtunnel.operators.archival.</code><code class="sig-name descname">IngestArchiveOperator</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.archival.IngestArchiveOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simply move from ingest/landing to ingest/archive</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.operators.ingestion">
+<span id="airtunnel-operators-ingestion-module"></span><h2>airtunnel.operators.ingestion module<a class="headerlink" href="#module-airtunnel.operators.ingestion" title="Permalink to this headline">¶</a></h2>
+<p>Airtunnel operators for ingestion tasks.</p>
+<dl class="function">
+<dt id="airtunnel.operators.ingestion.IngestOperator">
+<code class="sig-prename descclassname">airtunnel.operators.ingestion.</code><code class="sig-name descname">IngestOperator</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">metadata_adapter: airtunnel.metadata.adapter.BaseMetaAdapter = None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.ingestion.IngestOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Airtunnel’s ingestion operator. First inspects source files (size, create &amp; modification dates)
+and logs metadata using Airtunnel’s MetaAdapter. Then moves (“ingests”) these files to the staging/pickedup
+directory for the data asset at hand.</p>
+<p>If the staging/pickedup directory of the data store is not empty (indicating a previous ingestion job has failed),
+this operator will also fail and report the problem, to avoid data loss.</p>
+<p>The list of files to inspect &amp; ingest is retrieved using Airflow XCOM data,
+which a <code class="docutils literal notranslate"><span class="pre">airtunnel.sensors.ingestion.SourceFileIsReadySensor</span></code> is expected to have provided beforehand.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.operators.loading">
+<span id="airtunnel-operators-loading-module"></span><h2>airtunnel.operators.loading module<a class="headerlink" href="#module-airtunnel.operators.loading" title="Permalink to this headline">¶</a></h2>
+<p>Airtunnel operators for loading (i.e. getting from staging/ready to ready in the data store) tasks.</p>
+<dl class="function">
+<dt id="airtunnel.operators.loading.StagingToReadyOperator">
+<code class="sig-prename descclassname">airtunnel.operators.loading.</code><code class="sig-name descname">StagingToReadyOperator</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.loading.StagingToReadyOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Airtunnel’s StagingToReadyOperator – moves staged files (from staging/read) to ready for a data asset and
+write load status metadata.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.operators.transformation">
+<span id="airtunnel-operators-transformation-module"></span><h2>airtunnel.operators.transformation module<a class="headerlink" href="#module-airtunnel.operators.transformation" title="Permalink to this headline">¶</a></h2>
+<p>Airtunnel operators for transformation tasks.</p>
+<dl class="class">
+<dt id="airtunnel.operators.transformation.PandasTransformationOperator">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.operators.transformation.</code><code class="sig-name descname">PandasTransformationOperator</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PandasDataAsset</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.transformation.PandasTransformationOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">airflow.models.baseoperator.BaseOperator</span></code></p>
+<p>Airtunnel’s transformation operator for PandasDataAssets, calling <code class="docutils literal notranslate"><span class="pre">rebuild_for_store()</span></code> on them.</p>
+<dl class="method">
+<dt id="airtunnel.operators.transformation.PandasTransformationOperator.execute">
+<code class="sig-name descname">execute</code><span class="sig-paren">(</span><em class="sig-param">context</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.transformation.PandasTransformationOperator.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute this operator using Airflow.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.operators.transformation.PandasTransformationOperator.ui_color">
+<code class="sig-name descname">ui_color</code><em class="property"> = '#ffff00'</em><a class="headerlink" href="#airtunnel.operators.transformation.PandasTransformationOperator.ui_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.operators.transformation.PySparkTransformationOperator">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.operators.transformation.</code><code class="sig-name descname">PySparkTransformationOperator</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.PySparkDataAsset</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.transformation.PySparkTransformationOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">airflow.models.baseoperator.BaseOperator</span></code></p>
+<p>Airtunnel’s transformation operator for PySparkDataAssets, calling <code class="docutils literal notranslate"><span class="pre">rebuild_for_store()</span></code> on them.</p>
+<dl class="method">
+<dt id="airtunnel.operators.transformation.PySparkTransformationOperator.execute">
+<code class="sig-name descname">execute</code><span class="sig-paren">(</span><em class="sig-param">context</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.transformation.PySparkTransformationOperator.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute this operator using Airflow.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.operators.transformation.PySparkTransformationOperator.ui_color">
+<code class="sig-name descname">ui_color</code><em class="property"> = '#ffff00'</em><a class="headerlink" href="#airtunnel.operators.transformation.PySparkTransformationOperator.ui_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.operators.transformation.SQLTransformationOperator">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.operators.transformation.</code><code class="sig-name descname">SQLTransformationOperator</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.SQLDataAsset</em>, <em class="sig-param">parameters: dict = None</em>, <em class="sig-param">dynamic_parameters: False = None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.transformation.SQLTransformationOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">airflow.models.baseoperator.BaseOperator</span></code></p>
+<p>Airtunnel’s transformation operator for SQLDataAssets, calling <code class="docutils literal notranslate"><span class="pre">rebuild_for_store()</span></code> on them.</p>
+<p>Can be customized with static and dynamic parameters from the DAG definition/creation time, i.e. using the
+operator’s constructor.</p>
+<dl class="method">
+<dt id="airtunnel.operators.transformation.SQLTransformationOperator.execute">
+<code class="sig-name descname">execute</code><span class="sig-paren">(</span><em class="sig-param">context</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.operators.transformation.SQLTransformationOperator.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute this operator using Airflow.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.operators.transformation.SQLTransformationOperator.ui_color">
+<code class="sig-name descname">ui_color</code><em class="property"> = '#ffff00'</em><a class="headerlink" href="#airtunnel.operators.transformation.SQLTransformationOperator.ui_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.operators">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-airtunnel.operators" title="Permalink to this headline">¶</a></h2>
+<p>Package for Airtunnel’s custom operators.</p>
+<dl class="class">
+<dt id="airtunnel.operators.Colours">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.operators.</code><code class="sig-name descname">Colours</code><a class="headerlink" href="#airtunnel.operators.Colours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Custom colours used for the Airtunnel operators.</p>
+<dl class="attribute">
+<dt id="airtunnel.operators.Colours.archival">
+<code class="sig-name descname">archival</code><em class="property"> = '#85d8ff'</em><a class="headerlink" href="#airtunnel.operators.Colours.archival" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.operators.Colours.ingestion">
+<code class="sig-name descname">ingestion</code><em class="property"> = '#aeffae'</em><a class="headerlink" href="#airtunnel.operators.Colours.ingestion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.operators.Colours.loading">
+<code class="sig-name descname">loading</code><em class="property"> = '#ffb3b1'</em><a class="headerlink" href="#airtunnel.operators.Colours.loading" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.operators.Colours.transformation">
+<code class="sig-name descname">transformation</code><em class="property"> = '#ffff00'</em><a class="headerlink" href="#airtunnel.operators.Colours.transformation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="airtunnel.operators.sql.html" class="btn btn-neutral float-right" title="airtunnel.operators.sql package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="airtunnel.metadata.html" class="btn btn-neutral float-left" title="airtunnel.metadata package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

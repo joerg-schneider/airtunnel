@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Architecture &amp; classes &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Extending Airtunnel" href="extending.html" />
+    <link rel="prev" title="Physical data store setup" href="data-store.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture &amp; classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-assets">Data Assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-asset-declarations">Data Asset Declarations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#metadata-entities-adapter">Metadata Entities &amp; Adapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-operators">Custom Operators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Architecture &amp; classes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/architecture.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="architecture-classes">
+<h1>Architecture &amp; classes<a class="headerlink" href="#architecture-classes" title="Permalink to this headline">¶</a></h1>
+<p>The airtunnel architecture in terms of Python modules and classes is as
+follows: <img alt="airtunnel-arch" src="_images/airtunnel-arch.png" /></p>
+<p>(<a class="reference external" href="_static/assets/airtunnel-arch.png">click to enlarge architecture</a>)</p>
+<div class="section" id="data-assets">
+<h2>Data Assets<a class="headerlink" href="#data-assets" title="Permalink to this headline">¶</a></h2>
+<p>The data asset abstraction is at the heart of
+airtunnel - its base class bundles several common operations, like
+finding data asset paths (by strictly inferring them from data asset
+names, and DAG-execution dates, if versioned). Therefor by following
+the convention, the unique data asset name suffices to instantiate a
+data asset. The BaseDataAsset is subclassed by: <em>Pandas Data Asset</em>,
+<em>SQL Data Asset</em> and <em>PySpark Data Asset</em>. The striking difference
+there being obviously the means of accessing/processing the data
+asset instance at hand. For that the core abstract functions
+<code class="docutils literal notranslate"><span class="pre">rebuild_for_store</span></code> and <code class="docutils literal notranslate"><span class="pre">retrieve_from_store</span></code> are implemented
+differently.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>PandasDataAsset</em>: To rebuild from store, this class will check in
+the Airtunnel scripts store in the subfolder <code class="docutils literal notranslate"><span class="pre">py</span></code> for a Python
+module named <code class="docutils literal notranslate"><span class="pre">[data_asset_name].py</span></code>. It will dynamically import
+this module and will expect and call the function
+<code class="docutils literal notranslate"><span class="pre">rebuild_for_store(asset:</span> <span class="pre">PandasDataAsset,</span> <span class="pre">airflow_context)</span></code> to
+perform the rebuilding. As we want this to be mostly run by
+Airflow DAGs, we pass in the Airflow context to be able to
+leverage that.</p></li>
+<li><p><em>SQLDataAsset</em>: This data asset class will take an Airflow
+<code class="docutils literal notranslate"><span class="pre">DbApiHook</span></code> instance in its constructor in addition to the data
+asset name. It will leverage this hook for all operations in
+interaction with the database where this data asset resides. To
+rebuild from store, it will dynamically fetch SQL scripts from the
+scripts store under the subfolder SQL in each <code class="docutils literal notranslate"><span class="pre">ddl</span></code> and <code class="docutils literal notranslate"><span class="pre">dml</span></code>
+respectively, that are named as <code class="docutils literal notranslate"><span class="pre">[data_asset_name].sql</span></code>.</p></li>
+<li><p><em>PySparkDataAsset</em>: Similar to PandasDataAsset, but would work
+with <code class="docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame</span></code> - to be developed</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="data-asset-declarations">
+<h2>Data Asset Declarations<a class="headerlink" href="#data-asset-declarations" title="Permalink to this headline">¶</a></h2>
+<p>To safely interact with the declaration
+store made up of YAML files, the class <code class="docutils literal notranslate"><span class="pre">DataAssetDeclaration</span></code> wraps
+all operations. The entrypoint to it is simply by calling the
+constructor with the name of the data asset one would like to
+retrieve declarations for. Then, the YAML file is fetched and
+validated using several defined <code class="docutils literal notranslate"><span class="pre">DeclarationSchemas</span></code>, which make
+use of the helper library <a class="reference external" href="https://github.com/keleshev/schema">schema</a>.</p>
+</div>
+<div class="section" id="metadata-entities-adapter">
+<h2>Metadata Entities &amp; Adapter<a class="headerlink" href="#metadata-entities-adapter" title="Permalink to this headline">¶</a></h2>
+<p>Airtunnel attempts to make Airflow
+metadata-driven. To accomplish this, we add two concepts: metadata
+entities (the types of metadata information we want to interact with)
+and metadata adapters (means of persistently storing and retrieving
+metadata entities). As of now, Airtunnel adds metadata entities
+<code class="docutils literal notranslate"><span class="pre">Lineage</span></code>, <code class="docutils literal notranslate"><span class="pre">LoadStatus</span></code> and <code class="docutils literal notranslate"><span class="pre">IngestedFileMetadata</span></code> which should
+be self-explanatory. The current sole implementation of
+<code class="docutils literal notranslate"><span class="pre">BaseMetaAdapter</span></code> is <code class="docutils literal notranslate"><span class="pre">SQLMetaAdapter</span></code>, which takes an Airflow
+<code class="docutils literal notranslate"><span class="pre">DbApiHook</span></code> and uses SQLAlchemy to read/write metadata. We believe
+it makes a lot of sense to simply store this metadata on the Airflow
+DB, to have everything in one place. This class model though is
+intended to, by subclassing, to read/write metadata using other
+means.</p>
+</div>
+<div class="section" id="custom-operators">
+<h2>Custom Operators<a class="headerlink" href="#custom-operators" title="Permalink to this headline">¶</a></h2>
+<p>Airtunnel ships various custom operators; the
+most important ones for you to know being:
+<code class="docutils literal notranslate"><span class="pre">PandasTransformationOperator</span></code>, <code class="docutils literal notranslate"><span class="pre">SQLTransformationOperator</span></code> and
+<code class="docutils literal notranslate"><span class="pre">PySparkTransformationOperator</span></code> that relate one-by-one to the
+corresponding data asset types introduced earlier. They are very
+lightweight and do what you can guess from their name: each one is
+instantiated (as part of a DAG) with an Data Asset instance of their
+type and on operator execute, will call the <code class="docutils literal notranslate"><span class="pre">rebuild_for_store</span></code>
+function, with the current Airflow context as a parameter. <em>Other
+custom operators Airtunnel provides</em>, that interact with the
+file-based local physical data store, are:</p>
+<ul class="simple">
+<li><p>SourceFileIsReadySensor</p></li>
+<li><p>IngestOperator</p></li>
+<li><p>StagingToReadyOperator</p></li>
+<li><p>IngestArchiveOperator</p></li>
+<li><p>DataAssetArchiveOperator</p></li>
+</ul>
+<p>To interact with Airtunnel’s metadata model, there are sensors
+<code class="docutils literal notranslate"><span class="pre">AwaitLoadStatusSensor</span></code> (pokes for an data asset to be updated in a
+recent specified timedelta) and <code class="docutils literal notranslate"><span class="pre">AwaitAssetAncestorsUpdatedSensor</span></code>
+(using lineage, pokes for updates on a Data Asset’s ancestors). These
+can help build out more pull-based workflows, if you do not want/or
+can’t leverage Airflow’s push-based approaches, like DAG triggering.</p>
+<p>Additionally there is <code class="docutils literal notranslate"><span class="pre">SQLOperator</span></code>, which allows you to run
+generic SQL scripts from the scripts store using an Airflow
+<code class="docutils literal notranslate"><span class="pre">DbApiHook</span></code> – good for maintenance scripts that are not Data Asset
+centered.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="extending.html" class="btn btn-neutral float-right" title="Extending Airtunnel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="data-store.html" class="btn btn-neutral float-left" title="Physical data store setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

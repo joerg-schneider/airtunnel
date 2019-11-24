@@ -1,0 +1,825 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>airtunnel.metadata package &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="airtunnel.operators package" href="airtunnel.operators.html" />
+    <link rel="prev" title="airtunnel package" href="airtunnel.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design.html">Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="airtunnel.html">airtunnel package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="airtunnel.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">airtunnel.metadata package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.operators.html">airtunnel.operators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.sensors.html">airtunnel.sensors package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.data_asset">airtunnel.data_asset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.data_store">airtunnel.data_store module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.declaration_store">airtunnel.declaration_store module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.paths">airtunnel.paths module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">airtunnel</a> &raquo;</li>
+        
+          <li><a href="airtunnel.html">airtunnel package</a> &raquo;</li>
+        
+      <li>airtunnel.metadata package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/airtunnel.metadata.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="airtunnel-metadata-package">
+<h1>airtunnel.metadata package<a class="headerlink" href="#airtunnel-metadata-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-airtunnel.metadata.adapter">
+<span id="airtunnel-metadata-adapter-module"></span><h2>airtunnel.metadata.adapter module<a class="headerlink" href="#module-airtunnel.metadata.adapter" title="Permalink to this headline">¶</a></h2>
+<p>Module defining Airtunnel metadata adapters.</p>
+<dl class="class">
+<dt id="airtunnel.metadata.adapter.BaseHookFactory">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.metadata.adapter.</code><code class="sig-name descname">BaseHookFactory</code><a class="headerlink" href="#airtunnel.metadata.adapter.BaseHookFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class to define the interface we expect for a custom hook factory.</p>
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.BaseHookFactory.make_hook">
+<em class="property">abstract static </em><code class="sig-name descname">make_hook</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Optional[airflow.hooks.base_hook.BaseHook]<a class="headerlink" href="#airtunnel.metadata.adapter.BaseHookFactory.make_hook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns an Airflow hook that should be used to log metadata.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.metadata.adapter.BaseMetaAdapter">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.metadata.adapter.</code><code class="sig-name descname">BaseMetaAdapter</code><a class="headerlink" href="#airtunnel.metadata.adapter.BaseMetaAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for all Airtunnel MetaAdapters.</p>
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.BaseMetaAdapter.read_inspected_files">
+<em class="property">abstract </em><code class="sig-name descname">read_inspected_files</code><span class="sig-paren">(</span><em class="sig-param">for_asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">dag_id: str</em>, <em class="sig-param">dag_exec_date: datetime.datetime</em><span class="sig-paren">)</span> &#x2192; List[airtunnel.metadata.entities.IngestedFileMetadata]<a class="headerlink" href="#airtunnel.metadata.adapter.BaseMetaAdapter.read_inspected_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read existing metadata of previously inspected files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>for_asset</strong> – a data asset for which to retrieve the metadata for</p></li>
+<li><p><strong>dag_id</strong> – an Airflow DAG ID for which to retrieve the metadata for</p></li>
+<li><p><strong>dag_exec_date</strong> – an Airflow DAG execution date for which to retrieve the metadata for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of metadata entities</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.BaseMetaAdapter.read_lineage">
+<em class="property">abstract </em><code class="sig-name descname">read_lineage</code><span class="sig-paren">(</span><em class="sig-param">for_target: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">dag_id: Optional[str] = None</em>, <em class="sig-param">dag_exec_date: Optional[datetime.datetime] = None</em><span class="sig-paren">)</span> &#x2192; List[Tuple[airtunnel.metadata.entities.Lineage, int]]<a class="headerlink" href="#airtunnel.metadata.adapter.BaseMetaAdapter.read_lineage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read previously logged lineage metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>for_target</strong> – the data asset for which to retrieve lineage information for, here the data target</p></li>
+<li><p><strong>dag_id</strong> – the DAG ID for which to restrict the lineage search on (optional)</p></li>
+<li><p><strong>dag_exec_date</strong> – the DAG execution datetime for which to restrict the lineage search on (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the lineage information captured as a list of tuples, in which the first element is a lineage metadata
+entity and the second an int of the upstream level in the lineage chain</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.BaseMetaAdapter.read_load_status">
+<em class="property">abstract </em><code class="sig-name descname">read_load_status</code><span class="sig-paren">(</span><em class="sig-param">for_asset: airtunnel.data_asset.BaseDataAsset</em><span class="sig-paren">)</span> &#x2192; airtunnel.metadata.entities.LoadStatus<a class="headerlink" href="#airtunnel.metadata.adapter.BaseMetaAdapter.read_load_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read previously logged load status for a data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>for_asset</strong> – data asset for which to retrieve the load status information</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the load status metadata entity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.BaseMetaAdapter.write_generic_metadata">
+<em class="property">abstract </em><code class="sig-name descname">write_generic_metadata</code><span class="sig-paren">(</span><em class="sig-param">for_asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">payload: Dict</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.metadata.adapter.BaseMetaAdapter.write_generic_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log generic metadata in JSON format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>for_asset</strong> – a data asset for which to retrieve the metadata for</p></li>
+<li><p><strong>payload</strong> – the generic metadata to log – needs to be serializable as JSON</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.BaseMetaAdapter.write_inspected_files">
+<em class="property">abstract </em><code class="sig-name descname">write_inspected_files</code><span class="sig-paren">(</span><em class="sig-param">discovered_files: Iterable[airtunnel.metadata.entities.IngestedFileMetadata]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.metadata.adapter.BaseMetaAdapter.write_inspected_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log metadata of discovered files of the ingestion process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>discovered_files</strong> – iterable of metadata entities for all discovered files</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.BaseMetaAdapter.write_lineage">
+<em class="property">abstract </em><code class="sig-name descname">write_lineage</code><span class="sig-paren">(</span><em class="sig-param">lineage: airtunnel.metadata.entities.Lineage</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.metadata.adapter.BaseMetaAdapter.write_lineage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log lineage information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lineage</strong> – the lineage entity to log.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.BaseMetaAdapter.write_load_status">
+<em class="property">abstract </em><code class="sig-name descname">write_load_status</code><span class="sig-paren">(</span><em class="sig-param">load_status: airtunnel.metadata.entities.LoadStatus</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.metadata.adapter.BaseMetaAdapter.write_load_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log load status metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>load_status</strong> – the load status entity to log.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.metadata.adapter.DefaultSQLHookFactory">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.metadata.adapter.</code><code class="sig-name descname">DefaultSQLHookFactory</code><a class="headerlink" href="#airtunnel.metadata.adapter.DefaultSQLHookFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.metadata.adapter.BaseHookFactory" title="airtunnel.metadata.adapter.BaseHookFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.metadata.adapter.BaseHookFactory</span></code></a></p>
+<p>Default (dummy) hook factory used with the SQLMetaAdapter if nothing custom is defined.</p>
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.DefaultSQLHookFactory.make_hook">
+<em class="property">static </em><code class="sig-name descname">make_hook</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Optional[airflow.hooks.base_hook.BaseHook]<a class="headerlink" href="#airtunnel.metadata.adapter.DefaultSQLHookFactory.make_hook" title="Permalink to this definition">¶</a></dt>
+<dd><p>This implementation does not create a hook, but returns ‘None’ so that the SQLMetaAdapter falls back to
+simply creating a SQLAlchemy engine based on Airflow’s configured SQLAlchemy connection string.
+We do not attempt to create a hook in this scenario, as we can not know for certain the type of database backend
+one uses with their Airflow setup, and therefor we can not safely chose and instantiate the hook of the right
+type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.metadata.adapter.</code><code class="sig-name descname">SQLMetaAdapter</code><span class="sig-paren">(</span><em class="sig-param">sql_hook: airflow.hooks.dbapi_hook.DbApiHook = None</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#airtunnel.metadata.adapter.BaseMetaAdapter" title="airtunnel.metadata.adapter.BaseMetaAdapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">airtunnel.metadata.adapter.BaseMetaAdapter</span></code></a></p>
+<p>BaseMetaAdapter implementation using SQLAlchemy, hence compatible with relational databases that SQLAlchemy
+supports. The database connection that is used for metadata logging (=SQLAlchemy engine) can be customized through
+an Airflow DbApiHook that is either explicitly given as part of the constructor, or configured using the Airtunnel
+configuration parameter: <code class="docutils literal notranslate"><span class="pre">meta_adapter_hook_factory</span></code>.</p>
+<p>If neither of these two define a DbApiHook to use, SQLMetaAdapter will use Airflow’s backend database by leveraging
+the configured SQLAlchemy connection string and creating the engine based on it.</p>
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_DAG_ID">
+<code class="sig-name descname">FN_DAG_ID</code><em class="property"> = 'dag_id'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_DAG_ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_DATA_ASSET">
+<code class="sig-name descname">FN_DATA_ASSET</code><em class="property"> = 'data_asset'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_DATA_ASSET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_DATA_ASSET_SRC">
+<code class="sig-name descname">FN_DATA_ASSET_SRC</code><em class="property"> = 'data_asset_source'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_DATA_ASSET_SRC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_DATA_ASSET_TRG">
+<code class="sig-name descname">FN_DATA_ASSET_TRG</code><em class="property"> = 'data_asset_target'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_DATA_ASSET_TRG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_EXEC_DATE">
+<code class="sig-name descname">FN_EXEC_DATE</code><em class="property"> = 'dag_exec_datetime'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_EXEC_DATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_FILE_CREATE_TIME">
+<code class="sig-name descname">FN_FILE_CREATE_TIME</code><em class="property"> = 'createtime'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_FILE_CREATE_TIME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_FILE_MOD_TIME">
+<code class="sig-name descname">FN_FILE_MOD_TIME</code><em class="property"> = 'modtime'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_FILE_MOD_TIME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_FILE_PATH">
+<code class="sig-name descname">FN_FILE_PATH</code><em class="property"> = 'path'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_FILE_PATH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_FILE_SIZE">
+<code class="sig-name descname">FN_FILE_SIZE</code><em class="property"> = 'size'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_FILE_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_LOAD_TIME">
+<code class="sig-name descname">FN_LOAD_TIME</code><em class="property"> = 'load_time'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_LOAD_TIME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_METADATA_JSON">
+<code class="sig-name descname">FN_METADATA_JSON</code><em class="property"> = 'metadata_json'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_METADATA_JSON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_METADATA_TIME">
+<code class="sig-name descname">FN_METADATA_TIME</code><em class="property"> = 'metadata_time'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_METADATA_TIME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_METADATA_TYPE">
+<code class="sig-name descname">FN_METADATA_TYPE</code><em class="property"> = 'metadata_type'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_METADATA_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.FN_TASK_ID">
+<code class="sig-name descname">FN_TASK_ID</code><em class="property"> = 'task_id'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.FN_TASK_ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.TABLES">
+<code class="sig-name descname">TABLES</code><em class="property"> = ('airtunnel_load_status', 'airtunnel_lineage', 'airtunnel_metadata', 'airtunnel_load_status_hist', 'airtunnel_ingested_files')</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.TABLES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.TN_GENERIC_METADATA">
+<code class="sig-name descname">TN_GENERIC_METADATA</code><em class="property"> = 'airtunnel_metadata'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.TN_GENERIC_METADATA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.TN_INFILE_METADATA">
+<code class="sig-name descname">TN_INFILE_METADATA</code><em class="property"> = 'airtunnel_ingested_files'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.TN_INFILE_METADATA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.TN_LINEAGE">
+<code class="sig-name descname">TN_LINEAGE</code><em class="property"> = 'airtunnel_lineage'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.TN_LINEAGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.TN_LOAD_STATUS">
+<code class="sig-name descname">TN_LOAD_STATUS</code><em class="property"> = 'airtunnel_load_status'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.TN_LOAD_STATUS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.TN_LOAD_STATUS_HIST">
+<code class="sig-name descname">TN_LOAD_STATUS_HIST</code><em class="property"> = 'airtunnel_load_status_hist'</em><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.TN_LOAD_STATUS_HIST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.read_inspected_files">
+<code class="sig-name descname">read_inspected_files</code><span class="sig-paren">(</span><em class="sig-param">for_asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">dag_id: str</em>, <em class="sig-param">dag_exec_date: datetime.datetime</em><span class="sig-paren">)</span> &#x2192; List[airtunnel.metadata.entities.IngestedFileMetadata]<a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.read_inspected_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read existing metadata of previously inspected files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>for_asset</strong> – a data asset for which to retrieve the metadata for</p></li>
+<li><p><strong>dag_id</strong> – an Airflow DAG ID for which to retrieve the metadata for</p></li>
+<li><p><strong>dag_exec_date</strong> – an Airflow DAG execution date for which to retrieve the metadata for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of metadata entities</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.read_lineage">
+<code class="sig-name descname">read_lineage</code><span class="sig-paren">(</span><em class="sig-param">for_target: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">dag_id: Optional[str] = None</em>, <em class="sig-param">dag_exec_date: Optional[datetime.datetime] = None</em><span class="sig-paren">)</span> &#x2192; List[Tuple[airtunnel.metadata.entities.Lineage, int]]<a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.read_lineage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read previously logged lineage metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>for_target</strong> – the data asset for which to retrieve lineage information for, here the data target.</p></li>
+<li><p><strong>dag_id</strong> – the DAG ID for which to restrict the lineage search on (optional)</p></li>
+<li><p><strong>dag_exec_date</strong> – the DAG execution datetime for which to restrict the lineage search on (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the lineage information captured as a list of tuples, in which the first element is a lineage metadata
+entity and the second an int of the upstream level in the lineage chain</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.read_load_status">
+<code class="sig-name descname">read_load_status</code><span class="sig-paren">(</span><em class="sig-param">for_asset: airtunnel.data_asset.BaseDataAsset</em><span class="sig-paren">)</span> &#x2192; airtunnel.metadata.entities.LoadStatus<a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.read_load_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read previously logged load status for a data asset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>for_asset</strong> – data asset for which to retrieve the load status information</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the load status metadata entity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.write_generic_metadata">
+<code class="sig-name descname">write_generic_metadata</code><span class="sig-paren">(</span><em class="sig-param">for_asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">payload: Dict</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.write_generic_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log generic metadata in JSON format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>for_asset</strong> – a data asset for which to retrieve the metadata for</p></li>
+<li><p><strong>payload</strong> – the generic metadata to log – needs to be serializable as JSON</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.write_inspected_files">
+<code class="sig-name descname">write_inspected_files</code><span class="sig-paren">(</span><em class="sig-param">discovered_files: Iterable[airtunnel.metadata.entities.IngestedFileMetadata]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.write_inspected_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log metadata of discovered files of the ingestion process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>discovered_files</strong> – iterable of metadata entities for all discovered files</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.write_lineage">
+<code class="sig-name descname">write_lineage</code><span class="sig-paren">(</span><em class="sig-param">lineage: airtunnel.metadata.entities.Lineage</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.write_lineage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log lineage information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lineage</strong> – the lineage entity to log.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.adapter.SQLMetaAdapter.write_load_status">
+<code class="sig-name descname">write_load_status</code><span class="sig-paren">(</span><em class="sig-param">load_status: airtunnel.metadata.entities.LoadStatus</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.metadata.adapter.SQLMetaAdapter.write_load_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log load status metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>load_status</strong> – the load status entity to log.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="airtunnel.metadata.adapter.get_configured_meta_adapter">
+<code class="sig-prename descclassname">airtunnel.metadata.adapter.</code><code class="sig-name descname">get_configured_meta_adapter</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; airtunnel.metadata.adapter.BaseMetaAdapter<a class="headerlink" href="#airtunnel.metadata.adapter.get_configured_meta_adapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the configured (or default) BaseMetaAdapter to use for metadata operations.</p>
+<p>It can be defined using the config key <code class="docutils literal notranslate"><span class="pre">meta_adapter_class</span></code> with a value that
+points to a class implementing <code class="docutils literal notranslate"><span class="pre">airtunnel.metadata.adapter.BaseMetaAdapter</span></code>. This class
+will then be retrieved and used as the metadata adapter in Airtunnel’s Airflow operators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the configured (or default) BaseMetaAdapter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="airtunnel.metadata.adapter.get_configured_meta_adapter_hook">
+<code class="sig-prename descclassname">airtunnel.metadata.adapter.</code><code class="sig-name descname">get_configured_meta_adapter_hook</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Optional[airflow.hooks.base_hook.BaseHook]<a class="headerlink" href="#airtunnel.metadata.adapter.get_configured_meta_adapter_hook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the configured hook to use for metadata operations.</p>
+<p>It can be defined using the config key <code class="docutils literal notranslate"><span class="pre">meta_adapter_hook_factory</span></code> with a value that
+points to a class implementing <code class="docutils literal notranslate"><span class="pre">airtunnel.metadata.adapter.BaseHookFactory</span></code>. This class
+will then be retrieved and the method <code class="docutils literal notranslate"><span class="pre">make_hook()</span></code> will be called to get the hook.</p>
+<p>If nothing defined, <code class="docutils literal notranslate"><span class="pre">airtunnel.metadata.adapter.DefaultSQLHookFactory</span></code> is used, which returns ‘None’
+for a hook – letting an implemented metadata adapter proceed to create their own default hook/connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a BaseHook to use for metadata operations or ‘None’ if not defined</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.metadata.entities">
+<span id="airtunnel-metadata-entities-module"></span><h2>airtunnel.metadata.entities module<a class="headerlink" href="#module-airtunnel.metadata.entities" title="Permalink to this headline">¶</a></h2>
+<p>Module defining Airtunnel metadata entities.</p>
+<dl class="class">
+<dt id="airtunnel.metadata.entities.IngestedFileMetadata">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.metadata.entities.</code><code class="sig-name descname">IngestedFileMetadata</code><span class="sig-paren">(</span><em class="sig-param">for_asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">filepath: str</em>, <em class="sig-param">filesize: int</em>, <em class="sig-param">file_mod_time: datetime.datetime</em>, <em class="sig-param">file_create_time: datetime.datetime</em>, <em class="sig-param">dag_id: str</em>, <em class="sig-param">dag_exec_date: datetime.datetime</em>, <em class="sig-param">task_id: str</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.metadata.entities.IngestedFileMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Metadata entity that holds information on a single file ingested for an Airtunnel data asset.</p>
+<dl class="method">
+<dt id="airtunnel.metadata.entities.IngestedFileMetadata.dag_exec_date">
+<em class="property">property </em><code class="sig-name descname">dag_exec_date</code><a class="headerlink" href="#airtunnel.metadata.entities.IngestedFileMetadata.dag_exec_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Airflow dag execution datetime that ingested the file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.IngestedFileMetadata.dag_id">
+<em class="property">property </em><code class="sig-name descname">dag_id</code><a class="headerlink" href="#airtunnel.metadata.entities.IngestedFileMetadata.dag_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Airflow DAG ID that ingested the file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.IngestedFileMetadata.file_create_time">
+<em class="property">property </em><code class="sig-name descname">file_create_time</code><a class="headerlink" href="#airtunnel.metadata.entities.IngestedFileMetadata.file_create_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>The datetime of creation of the ingested file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.IngestedFileMetadata.file_mod_time">
+<em class="property">property </em><code class="sig-name descname">file_mod_time</code><a class="headerlink" href="#airtunnel.metadata.entities.IngestedFileMetadata.file_mod_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>The datetime of last modification of the ingested file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.IngestedFileMetadata.filepath">
+<em class="property">property </em><code class="sig-name descname">filepath</code><a class="headerlink" href="#airtunnel.metadata.entities.IngestedFileMetadata.filepath" title="Permalink to this definition">¶</a></dt>
+<dd><p>The path of the ingested file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.IngestedFileMetadata.filesize">
+<em class="property">property </em><code class="sig-name descname">filesize</code><a class="headerlink" href="#airtunnel.metadata.entities.IngestedFileMetadata.filesize" title="Permalink to this definition">¶</a></dt>
+<dd><p>The size in byte of the ingested file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.IngestedFileMetadata.for_asset">
+<em class="property">property </em><code class="sig-name descname">for_asset</code><a class="headerlink" href="#airtunnel.metadata.entities.IngestedFileMetadata.for_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Airtunnel data asset for which the file was ingested for.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.IngestedFileMetadata.task_id">
+<em class="property">property </em><code class="sig-name descname">task_id</code><a class="headerlink" href="#airtunnel.metadata.entities.IngestedFileMetadata.task_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Airflow task ID that ingested the file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.metadata.entities.Lineage">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.metadata.entities.</code><code class="sig-name descname">Lineage</code><span class="sig-paren">(</span><em class="sig-param">data_sources: Iterable[airtunnel.data_asset.BaseDataAsset], data_target: airtunnel.data_asset.BaseDataAsset, dag_id: Optional[str] = None, dag_exec_date: Optional[datetime.datetime] = None, task_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.metadata.entities.Lineage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Metadata entity that holds lineage information between Airtunnel data assets. Comprised of a single
+Airtunnel data asset – the data target – and one or multiple of its data sources.</p>
+<p>Optionally an Airflow DAG ID, task ID and DAG execution datetime can be given to further specify the lineage
+context.</p>
+<dl class="method">
+<dt id="airtunnel.metadata.entities.Lineage.dag_exec_date">
+<em class="property">property </em><code class="sig-name descname">dag_exec_date</code><a class="headerlink" href="#airtunnel.metadata.entities.Lineage.dag_exec_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>The DAG execution datetime when this lineage occurred.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.Lineage.dag_id">
+<em class="property">property </em><code class="sig-name descname">dag_id</code><a class="headerlink" href="#airtunnel.metadata.entities.Lineage.dag_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The DAG ID where this lineage occurred.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.Lineage.data_sources">
+<em class="property">property </em><code class="sig-name descname">data_sources</code><a class="headerlink" href="#airtunnel.metadata.entities.Lineage.data_sources" title="Permalink to this definition">¶</a></dt>
+<dd><p>An iterable of data sources as part of this lineage entity.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.Lineage.data_target">
+<em class="property">property </em><code class="sig-name descname">data_target</code><a class="headerlink" href="#airtunnel.metadata.entities.Lineage.data_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>The single data target as part of this lineage entity.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.Lineage.lineage_from_sql_script">
+<em class="property">static </em><code class="sig-name descname">lineage_from_sql_script</code><span class="sig-paren">(</span><em class="sig-param">script_file_relative_path: str = None</em><span class="sig-paren">)</span> &#x2192; Iterable[airtunnel.metadata.entities.Lineage]<a class="headerlink" href="#airtunnel.metadata.entities.Lineage.lineage_from_sql_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the lineage information from a SQL script.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>script_file_relative_path</strong> – the relative path to the SQL script from the Airtunnel SQL scripts folder</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>iterable with Lineage entities</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.Lineage.lineage_from_sql_statement">
+<em class="property">static </em><code class="sig-name descname">lineage_from_sql_statement</code><span class="sig-paren">(</span><em class="sig-param">statement: str</em>, <em class="sig-param">known_data_assets: Optional[Iterable[str]] = None</em><span class="sig-paren">)</span> &#x2192; airtunnel.metadata.entities.Lineage<a class="headerlink" href="#airtunnel.metadata.entities.Lineage.lineage_from_sql_statement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the lineage metadata from a (simple) SQL statement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>statement</strong> – the string with the SQL statement</p></li>
+<li><p><strong>known_data_assets</strong> – iterable of known data asset names to restrict the search space of lineage sources and
+targets to it - if not given, all known data assets will be fetched from the
+declaration store</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the lineage entity with ShellDataAssets as data source(s) and data target and without
+additional context (DAG ID, task ID, DAG execution datetime)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.Lineage.task_id">
+<em class="property">property </em><code class="sig-name descname">task_id</code><a class="headerlink" href="#airtunnel.metadata.entities.Lineage.task_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The task ID where this lineage occurred.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airtunnel.metadata.entities.LoadStatus">
+<em class="property">class </em><code class="sig-prename descclassname">airtunnel.metadata.entities.</code><code class="sig-name descname">LoadStatus</code><span class="sig-paren">(</span><em class="sig-param">for_asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">load_time: Optional[datetime.datetime] = None</em>, <em class="sig-param">dag_id: Optional[str] = None</em>, <em class="sig-param">task_id: Optional[str] = None</em>, <em class="sig-param">dag_exec_date: Optional[datetime.datetime] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.metadata.entities.LoadStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines the load status metadata information of an Airtunnel DataAsset.</p>
+<dl class="method">
+<dt id="airtunnel.metadata.entities.LoadStatus.dag_exec_date">
+<em class="property">property </em><code class="sig-name descname">dag_exec_date</code><a class="headerlink" href="#airtunnel.metadata.entities.LoadStatus.dag_exec_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Airflow DAG execution datetime of this LoadStatus.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.LoadStatus.dag_id">
+<em class="property">property </em><code class="sig-name descname">dag_id</code><a class="headerlink" href="#airtunnel.metadata.entities.LoadStatus.dag_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Airflow DAG ID of this LoadStatus.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.LoadStatus.is_within">
+<code class="sig-name descname">is_within</code><span class="sig-paren">(</span><em class="sig-param">frame: datetime.timedelta</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#airtunnel.metadata.entities.LoadStatus.is_within" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the LoadStatus entity at hand is within a time frame, i.e. is it
+within the last 6 hours?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame</strong> – the time frame (timedelta) to use for the check, from the current datetime as the reference point</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean value whether within time frame or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.LoadStatus.load_time">
+<em class="property">property </em><code class="sig-name descname">load_time</code><a class="headerlink" href="#airtunnel.metadata.entities.LoadStatus.load_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>The load time of this LoadStatus.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airtunnel.metadata.entities.LoadStatus.task_id">
+<em class="property">property </em><code class="sig-name descname">task_id</code><a class="headerlink" href="#airtunnel.metadata.entities.LoadStatus.task_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Airflow task ID of this LoadStatus.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.metadata">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-airtunnel.metadata" title="Permalink to this headline">¶</a></h2>
+<p>Package containing Airtunnel’s extensions to the Airflow metadata model.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="airtunnel.operators.html" class="btn btn-neutral float-right" title="airtunnel.operators package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="airtunnel.html" class="btn btn-neutral float-left" title="airtunnel package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

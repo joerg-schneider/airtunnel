@@ -1,0 +1,53 @@
+airtunnel.operators package
+===========================
+
+Subpackages
+-----------
+
+.. toctree::
+
+   airtunnel.operators.sql
+
+Submodules
+----------
+
+airtunnel.operators.archival module
+-----------------------------------
+
+.. automodule:: airtunnel.operators.archival
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+airtunnel.operators.ingestion module
+------------------------------------
+
+.. automodule:: airtunnel.operators.ingestion
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+airtunnel.operators.loading module
+----------------------------------
+
+.. automodule:: airtunnel.operators.loading
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+airtunnel.operators.transformation module
+-----------------------------------------
+
+.. automodule:: airtunnel.operators.transformation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: airtunnel.operators
+   :members:
+   :undoc-members:
+   :show-inheritance:

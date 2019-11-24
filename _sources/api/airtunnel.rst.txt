@@ -1,0 +1,55 @@
+airtunnel package
+=================
+
+Subpackages
+-----------
+
+.. toctree::
+
+   airtunnel.metadata
+   airtunnel.operators
+   airtunnel.sensors
+
+Submodules
+----------
+
+airtunnel.data\_asset module
+----------------------------
+
+.. automodule:: airtunnel.data_asset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+airtunnel.data\_store module
+----------------------------
+
+.. automodule:: airtunnel.data_store
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+airtunnel.declaration\_store module
+-----------------------------------
+
+.. automodule:: airtunnel.declaration_store
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+airtunnel.paths module
+----------------------
+
+.. automodule:: airtunnel.paths
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: airtunnel
+   :members:
+   :undoc-members:
+   :show-inheritance:

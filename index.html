@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>airtunnel 1.0.0 &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorial: loading the university data model" href="tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>airtunnel 1.0.0</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="airtunnel-version">
+<h1>airtunnel 1.0.0<a class="headerlink" href="#airtunnel-version" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&amp;branchName=master"><img alt="Build Status" src="https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel?branchName=master" /></a> <a class="reference external" href="https://github.com/ambv/black"><img alt="Code Style: Black" src="https://img.shields.io/badge/code%20style-black-black.svg" /></a> <a class="reference external" href="https://pypi.org/project/airtunnel/"><img alt="Python Version" src="https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg" /></a> <a class="reference external" href="https://pypi.org/project/airtunnel/"><img alt="PyPI version" src="https://badge.fury.io/py/airtunnel.svg" /></a> <img alt="Test-Coverage" src="_images/coverage.svg" /></p>
+<img src="_static/assets/airtunnel-logo.jpg" width="120px" align="right"/><p><strong>Airtunnel</strong> is a means of supplementing <a class="reference external" href="https://github.com/apache/airflow">Apache Airflow</a>, a platform for
+workflow automation in Python which is angled at analytics/data
+pipelining. It was born out of years of project experience in data
+science, and the hardships of running large data platforms in real life
+businesses. Hence, Airtunnel is both a set of principles (read more on
+them <a class="reference external" href="https://medium.com/&#64;schneider.joerg">in the Airtunnel introduction</a>) and a lightweight Python
+library <em>to tame your airflow</em>!</p>
+<div class="section" id="why-choose-airtunnel">
+<h2>Why choose airtunnel?<a class="headerlink" href="#why-choose-airtunnel" title="Permalink to this headline">¶</a></h2>
+<p><strong>Because you will…</strong></p>
+<p>❤️ …stop worrying and love the uncompromised consistency</p>
+<p>🚀 …need a clean codebase with separated concerns to be scalable</p>
+<p>📝 …get metadata for ingested files, load status and lineage
+out-of-the-box</p>
+<p>🏃 …have it up and running in minutes</p>
+<p>🍺 …spend less time debugging Airflow DAGs doing worthwhile things
+instead</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>To get started, we warmly recommended to read the <a class="reference external" href="https://medium.com/&#64;schneider.joerg">Airtunnel introduction article</a> and the <a class="reference external" href="https://joerg-schneider.github.io/airtunnel/tutorial.html">Airtunnel tutorial</a>.
+Also check out the <a class="reference external" href="https://github.com/joerg-schneider/airtunnel-demo">demo project</a>.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>We suppose you have installed Apache Airflow in some kind of Python virtual
+environment. From there, simply do a <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">airtunnel</span></code> to get
+the package.</p></li>
+<li><p>Configure your codebase according to the Airtunnel principles: You
+need to add three folders for a declaration store, a scripts store
+and finally the data store:</p>
+<p>2.1) The <em>declaration store</em> folder has no subfolders. It is where your
+data asset declarations (YAML files) will reside</p>
+<p>2.2) The <em>scripts store</em> folder is where all your Python &amp; SQL scripts to process data assets will reside.
+It should be broken down by subfolders <code class="docutils literal notranslate"><span class="pre">py</span></code> for Python scripts and <code class="docutils literal notranslate"><span class="pre">sql</span></code> for SQL scripts. Please further add
+subfolders <code class="docutils literal notranslate"><span class="pre">dml</span></code> and <code class="docutils literal notranslate"><span class="pre">ddl</span></code> into the <code class="docutils literal notranslate"><span class="pre">sql</span></code> script folder.</p>
+<p>2.3) The <em>data store</em> folder follows a convention as well.</p>
+</li>
+<li><p>Configure Airtunnel by extending your existing <code class="docutils literal notranslate"><span class="pre">airflow.cfg</span></code></p>
+<p>3.1) Add the configuration section <code class="docutils literal notranslate"><span class="pre">[airtunnel]</span></code> in which,
+you need to add three configuration keys.</p>
+<p>3.2) add <code class="docutils literal notranslate"><span class="pre">declarations_folder</span></code> which takes the absolute path to the folder you set up in 2.1</p>
+<p>3.3) add <code class="docutils literal notranslate"><span class="pre">scripts_folder</span></code> which takes the absolute path to the folder you set up in 2.2</p>
+<p>3.4) add <code class="docutils literal notranslate"><span class="pre">data_store_folder</span></code>, which takes the absolute path to the folder you set up in 2.3
+for your data store</p>
+</li>
+</ol>
+<div class="section" id="installation-requirements">
+<h3>Installation requirements<a class="headerlink" href="#installation-requirements" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p><strong>Python &gt;= 3.6</strong>, <strong>Airflow &gt;=1.10</strong> and <strong>Pandas &gt;= 0.23</strong></p>
+<p>We assume Airtunnel is implemented best early on in a project, which is why going with a
+recent Python and Airflow version makes the most sense. In the future
+we might do more tests and include coverage for older Airflow
+versions.</p>
+</li>
+<li><p><strong>PySpark</strong> is supported from <strong>2.3+</strong></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>Airtunnel’s documentation is <a class="reference external" href="https://joerg-schneider.github.io/airtunnel">on GitHub pages</a>.</p>
+</div>
+</div>
+<div class="section" id="documentation-content">
+<h1>Documentation content<a class="headerlink" href="#documentation-content" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial: loading the university data model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#objective-of-the-dag-workflow">Objective of the DAG workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#data-assets">Data Assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#data-asset-scripts">Data Asset scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#the-final-dag">The final DAG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#what-happened-in-the-background">What happened in the background?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design Principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="design.html#uncompromised-consistency">Uncompromised Consistency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html#declarative-first-and-low-code-redundancy">Declarative first and low-code redundancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html#metadata-driven">Metadata driven</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data-store.html">Physical data store setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data-store.html#folder-setup">Folder setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-store.html#folder-meanings-and-motivation">Folder meanings and motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-store.html#physical-data-store-adapters">Physical data store adapters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture &amp; classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#data-assets">Data Assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#data-asset-declarations">Data Asset Declarations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#metadata-entities-adapter">Metadata Entities &amp; Adapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#custom-operators">Custom Operators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending Airtunnel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#extra-declaration-properties">Extra Declaration Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#custom-metaadapter">Custom MetaAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#custom-datastoreadapter">Custom DataStoreAdapter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declaration-file-options.html">Data Asset Declaration Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="declaration-file-options.html#type">type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="declaration-file-options.html#sections">sections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/airtunnel.html">airtunnel package</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial.html" class="btn btn-neutral float-right" title="Tutorial: loading the university data model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

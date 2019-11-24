@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>airtunnel.sensors package &mdash; Airtunnel 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/airtunnel.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="airtunnel.operators.sql package" href="airtunnel.operators.sql.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Airtunnel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial: loading the university data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design.html">Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-store.html">Physical data store setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture &amp; classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extending.html">Extending Airtunnel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limitations.html">Known Limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development &amp; testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../declaration-file-options.html">Data Asset Declaration Files</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="airtunnel.html">airtunnel package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="airtunnel.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.metadata.html">airtunnel.metadata package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="airtunnel.operators.html">airtunnel.operators package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">airtunnel.sensors package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.data_asset">airtunnel.data_asset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.data_store">airtunnel.data_store module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.declaration_store">airtunnel.declaration_store module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel.paths">airtunnel.paths module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="airtunnel.html#module-airtunnel">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Airtunnel</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">airtunnel</a> &raquo;</li>
+        
+          <li><a href="airtunnel.html">airtunnel package</a> &raquo;</li>
+        
+      <li>airtunnel.sensors package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/airtunnel.sensors.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="airtunnel-sensors-package">
+<h1>airtunnel.sensors package<a class="headerlink" href="#airtunnel-sensors-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-airtunnel.sensors.ingestion">
+<span id="airtunnel-sensors-ingestion-module"></span><h2>airtunnel.sensors.ingestion module<a class="headerlink" href="#module-airtunnel.sensors.ingestion" title="Permalink to this headline">¶</a></h2>
+<p>Module for Airtunnel’s ingestion sensors.</p>
+<dl class="function">
+<dt id="airtunnel.sensors.ingestion.SourceFileIsReadySensor">
+<code class="sig-prename descclassname">airtunnel.sensors.ingestion.</code><code class="sig-name descname">SourceFileIsReadySensor</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">no_of_required_static_pokes: int = 2</em>, <em class="sig-param">poke_interval: int = 30</em>, <em class="sig-param">timeout: int = 900</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.sensors.ingestion.SourceFileIsReadySensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Airtunnel’s SourceFileIsReadySensor – for a given Airtunnel data asset of type <code class="docutils literal notranslate"><span class="pre">ingested</span></code>, this sensor will
+leverage the declared input files glob pattern to sense for new input data.</p>
+<p>If files have been discovered, the sensor will capture their names and modification dates. Then it will
+check that for <code class="docutils literal notranslate"><span class="pre">no_of_required_static_pokes</span></code> times, file names and modification dates have not changed, before
+returning successfully.</p>
+<p>This guards against incomplete larger input files that are still being written into the landing area while this
+sensor finds them.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.sensors.metadata">
+<span id="airtunnel-sensors-metadata-module"></span><h2>airtunnel.sensors.metadata module<a class="headerlink" href="#module-airtunnel.sensors.metadata" title="Permalink to this headline">¶</a></h2>
+<p>Module for Airtunnel’s metadata sensors.</p>
+<dl class="function">
+<dt id="airtunnel.sensors.metadata.AwaitAssetAncestorsUpdatedSensor">
+<code class="sig-prename descclassname">airtunnel.sensors.metadata.</code><code class="sig-name descname">AwaitAssetAncestorsUpdatedSensor</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">ignore_ancestors: Optional[Iterable[airtunnel.data_asset.BaseDataAsset]] = ()</em>, <em class="sig-param">ancestors_refreshed_within: datetime.timedelta = None</em>, <em class="sig-param">include_upstream_levels: Iterable[int] = (0</em>, <em class="sig-param">)</em>, <em class="sig-param">poke_interval: int = 30</em>, <em class="sig-param">timeout: int = 900</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.sensors.metadata.AwaitAssetAncestorsUpdatedSensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Airtunnel’s AwaitAssetAncestorsUpdatedSensor – using lineage for a given data asset, probes until all
+ancestors have been updated. (i.e. load status timestamp of all ancestors is “recent enough”)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="airtunnel.sensors.metadata.AwaitLoadStatusSensor">
+<code class="sig-prename descclassname">airtunnel.sensors.metadata.</code><code class="sig-name descname">AwaitLoadStatusSensor</code><span class="sig-paren">(</span><em class="sig-param">asset: airtunnel.data_asset.BaseDataAsset</em>, <em class="sig-param">poke_interval: int = 30</em>, <em class="sig-param">timeout: int = 900</em>, <em class="sig-param">refreshed_within: datetime.timedelta = None</em>, <em class="sig-param">refreshed_after: datetime.datetime = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#airtunnel.sensors.metadata.AwaitLoadStatusSensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Airtunnel’s AwaitLoadStatusSensor – checks the data asset load status metadata for a given condition.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-airtunnel.sensors">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-airtunnel.sensors" title="Permalink to this headline">¶</a></h2>
+<p>Package for Airtunnel’s sensors.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="airtunnel.operators.sql.html" class="btn btn-neutral float-left" title="airtunnel.operators.sql package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Jörg Schneider
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
