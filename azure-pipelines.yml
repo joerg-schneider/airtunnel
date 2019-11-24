@@ -80,6 +80,8 @@ steps:
 - script: |
     flit publish
   displayName: 'Run flit publish to PyPi'
+  env:
+    FLIT_PASSWORD: $(FLIT_PASSWORD)
 
 - script: |
     CUR_PATH=$(pwd)
