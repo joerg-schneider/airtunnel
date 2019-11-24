@@ -99,4 +99,4 @@ Airtunnel's documentation is `on GitHub pages`_.
    :target: https://pypi.org/project/airtunnel/
 .. |PyPI version| image:: https://badge.fury.io/py/airtunnel.svg
    :target: https://pypi.org/project/airtunnel/
-.. |Test-Coverage| image:: _static/assets/coverage.svg
+.. |Test-Coverage| image:: https://img.shields.io/azure-devops/coverage/joerg4805/Airtunnel/2/master
