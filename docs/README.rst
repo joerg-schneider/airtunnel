@@ -55,7 +55,7 @@ Installation
 
    2.3) The *data store* folder follows a convention as well, `refer to the docs`_ on how to structure it.
 
-3) Configure Airtunnel by extending your existing ``airflow.cfg`` (`as documented here`_)
+3) Configure Airtunnel by extending your existing ``airflow.cfg`` (`as documented here`_):
 
    3.1) Add the configuration section ``[airtunnel]`` in which,
    you need to add three configuration keys.
