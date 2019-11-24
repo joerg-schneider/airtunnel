@@ -80,6 +80,7 @@ steps:
 - script: |
     flit publish
   displayName: 'Run flit publish to PyPi'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   env:
     FLIT_PASSWORD: $(FLIT_PASSWORD)
 
