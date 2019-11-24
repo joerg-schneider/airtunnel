@@ -4,6 +4,10 @@ Tutorial: loading the university data model
 In the following section we will show a toy example, on how a very
 simple DAG using Airtunnel can be built.
 
+If you want to run this tutorial, it is on GitHub as a `demo project`_.
+
+.. _demo project: https://github.com/joerg-schneider/airtunnel-demo
+
 Objective of the DAG workflow
 -----------------------------
 

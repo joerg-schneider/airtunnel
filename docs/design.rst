@@ -1,8 +1,6 @@
 Design Principles
 =================
 
-Taken from the `the airtunnel introduction article`_.
-
 Uncompromised Consistency
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -12,6 +10,7 @@ onboard, and has the added benefit of highlighting inconsistencies. Unit tests a
 actually ensure consistency.
 
 Given that the data asset is at the center of the project, consistency should span:
+
  - naming (& placement) of data assets
  - naming of script file(s) to process said data asset
  - naming of workflows; as in Airflow DAG & operator IDs
@@ -40,6 +39,7 @@ in a generic way and receive the name of a data asset, from which they can grab 
 parameterize and carry out the specific task.
 
 Key benefits of this approach are that it:
+
  - Enables standardization of basic data pipelining tasks, which makes it possible for even novice developers to build workflows simply by providing the correct declaration.
  - Leads to the creation of a "single source of truth" through extraction of data asset properties into declaration.
  - Allows easy declaration-testing for consistency and validity using unit tests.
@@ -67,5 +67,3 @@ checks based on updated data.
 It is worth considering how much developer time needs to be invested in a framework like this.
 If, for example, all imaginable jobs on a given day can work as a full load since data volumes are low,
 there is no need to optimize delta updates based on metadata.
-
-.. _the airtunnel introduction article: https://medium.com
