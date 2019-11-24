@@ -1,7 +1,7 @@
 Architecture & classes
 ======================
 
-The airtunnel architecture in terms of Python modules and classes is as
+The Airtunnel architecture in terms of Python modules and classes is as
 follows: |airtunnel-arch|
 
 (`click to enlarge architecture`_)
@@ -9,7 +9,7 @@ follows: |airtunnel-arch|
 Data Assets
 ~~~~~~~~~~~
 The data asset abstraction is at the heart of
-airtunnel - its base class bundles several common operations, like
+Airtunnel - its base class bundles several common operations, like
 finding data asset paths (by strictly inferring them from data asset
 names, and DAG-execution dates, if versioned). Therefor by following
 the convention, the unique data asset name suffices to instantiate a

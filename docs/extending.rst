@@ -45,7 +45,7 @@ Custom MetaAdapter
 As introduced in the :doc:`architecture section <architecture>`, Airtunnel's metadata is stored using
 so called metadata adapters – the default being ``SQLMetaAdapter`` which uses SQLAlchemy to interact with an
 Airflow connection. To use your custom adapter, implement it by basing ``airtunnel.metadata.adapter.BaseMetaAdapter``
-and specify this new class in the airtunnel section of your ``airflow.cfg`` using the full reference, like this:
+and specify this new class in the [airtunnel] section of your ``airflow.cfg`` using the full reference, like this:
 
 .. code::
 
@@ -69,7 +69,7 @@ Since we expect a large number of users wanting to have their data store located
 can be easily extended to support it.
 
 To use a custom DataStoreAdapter, implement it by basing ``airtunnel.data_store.BaseDataStoreAdapter`` and
-specify this new class in the airtunnel section of your ``airflow.cfg`` using the full reference, like this:
+specify this new class in the [airtunnel] section of your ``airflow.cfg`` using the full reference, like this:
 
 .. code::
 
