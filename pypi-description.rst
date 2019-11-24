@@ -81,7 +81,7 @@ Airtunnel's documentation is `on GitHub pages`_.
 
 .. _Apache Airflow: https://github.com/apache/airflow
 .. _on GitHub pages: https://joerg-schneider.github.io/airtunnel/
-.. _Airtunnel introduction article: https://medium.com
+.. _Airtunnel introduction article: https://medium.com/@schneider.joerg
 .. _Airtunnel tutorial: https://joerg-schneider.github.io/airtunnel/tutorial.html
 .. _demo project: https://github.com/joerg-schneider/airtunnel-demo
 
