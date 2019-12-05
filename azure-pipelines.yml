@@ -73,6 +73,18 @@ steps:
   displayName: 'Tox Sphinx Docs'
 
 - script: |
+    pip install flit
+    flit build
+  displayName: 'Run flit build'
+
+- script: |
+    flit publish
+  displayName: 'Run flit publish to PyPi'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  env:
+    FLIT_PASSWORD: $(FLIT_PASSWORD)
+
+- script: |
     CUR_PATH=$(pwd)
 
     mv ${CUR_PATH}/docs/_build/html /tmp/html
