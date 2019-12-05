@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Extending Airtunnel &mdash; Airtunnel 1.0.0 documentation</title>
+  <title>Extending Airtunnel &mdash; Airtunnel 1.0.1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.1
               </div>
             
           
@@ -203,7 +203,7 @@ with their data asset declaration.</p>
 <p>As introduced in the <a class="reference internal" href="architecture.html"><span class="doc">architecture section</span></a>, Airtunnel’s metadata is stored using
 so called metadata adapters – the default being <code class="docutils literal notranslate"><span class="pre">SQLMetaAdapter</span></code> which uses SQLAlchemy to interact with an
 Airflow connection. To use your custom adapter, implement it by basing <code class="docutils literal notranslate"><span class="pre">airtunnel.metadata.adapter.BaseMetaAdapter</span></code>
-and specify this new class in the airtunnel section of your <code class="docutils literal notranslate"><span class="pre">airflow.cfg</span></code> using the full reference, like this:</p>
+and specify this new class in the [airtunnel] section of your <code class="docutils literal notranslate"><span class="pre">airflow.cfg</span></code> using the full reference, like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">metadata_store_adapter_class</span> <span class="o">=</span> <span class="n">yourpackage</span><span class="o">.</span><span class="n">yoursubpackage</span><span class="o">.</span><span class="n">RedisMetaAdapter</span>
 </pre></div>
 </div>
@@ -221,7 +221,7 @@ to carry out all commands like move, copy or list files.</p>
 <p>Since we expect a large number of users wanting to have their data store located on i.e. cloud storage, Airtunnel
 can be easily extended to support it.</p>
 <p>To use a custom DataStoreAdapter, implement it by basing <code class="docutils literal notranslate"><span class="pre">airtunnel.data_store.BaseDataStoreAdapter</span></code> and
-specify this new class in the airtunnel section of your <code class="docutils literal notranslate"><span class="pre">airflow.cfg</span></code> using the full reference, like this:</p>
+specify this new class in the [airtunnel] section of your <code class="docutils literal notranslate"><span class="pre">airflow.cfg</span></code> using the full reference, like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_store_adapter_class</span> <span class="o">=</span> <span class="n">yourpackage</span><span class="o">.</span><span class="n">yoursubpackage</span><span class="o">.</span><span class="n">S3DataStoreAdapter</span>
 </pre></div>
 </div>

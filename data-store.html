@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Physical data store setup &mdash; Airtunnel 1.0.0 documentation</title>
+  <title>Physical data store setup &mdash; Airtunnel 1.0.1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.1
               </div>
             
           
@@ -199,7 +199,7 @@ each subfolder is named using the partition predicate (useful to seamlessly read
 Spark or PyArrow).</p>
 <p><strong>staging</strong>: Files in staging are not for general consumption because they are incomplete or currently being worked on.
 It is further broken down into <strong>pickedup</strong> (data that was moved there from ingest/landing), <strong>intermediate</strong> (any
-kind of temporary data for intermediate processing temps) and <strong>ready</strong> (where the next version for the ready layer
+kind of temporary data for intermediate processing steps) and <strong>ready</strong> (where the next version for the ready layer
 is produced).</p>
 <p>Airtunnel’s load operator will use an atomic move operation (or SQL transaction) to push finished data from
 <em>staging/ready</em> to <em>ready</em>, so consumers will never run into access issues or tap into half-finished files.</p>

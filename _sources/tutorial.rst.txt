@@ -201,7 +201,30 @@ the aggregation:
        enrollment = PandasDataAsset(name="enrollment")
 
        student_df = student.retrieve_from_store(airflow_context, consuming_asset=asset)
-       programme_df = progr
+       programme_df = programme.retrieve_from_store(airflow_context, consuming_asset=asset)
+       enrollment_df = enrollment.retrieve_from_store(
+           airflow_context, consuming_asset=asset
+       )
+
+       enrollment_summary: pd.DataFrame = enrollment_df.merge(
+           right=student_df, on=student.declarations.key_columns
+       ).merge(right=programme_df, on=programme.declarations.key_columns)
+
+       enrollment_summary = (
+           enrollment_summary.loc[:, ["student_major", "programme_name", "student_id"]]
+           .groupby(by=["student_major", "programme_name"])
+           .count()
+       )
+
+       PandasDataAssetIO.write_data_asset(asset=asset, data=enrollment_summary)
+
+Several things happen there:
+
+- we can see how easy it is, to actually retrieve data from the *ready* layer of the data store: we define the data
+  asset instance and call the ``retrieve_from_store()`` method.
+- additionally, when doing the above, we pass in the consuming asset - this will trigger a lineage collection and record
+  data source, data target, dag id and task id.
+- finally we do the aggregation by joining (on the keys that we can retrieve from the declaration) and store the data
 
 The final DAG
 -------------

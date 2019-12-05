@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tutorial: loading the university data model &mdash; Airtunnel 1.0.0 documentation</title>
+  <title>Tutorial: loading the university data model &mdash; Airtunnel 1.0.1 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Configuration and Setup" href="configuration.html" />
-    <link rel="prev" title="airtunnel 1.0.0" href="index.html" /> 
+    <link rel="prev" title="airtunnel 1.0.1" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.1
               </div>
             
           
@@ -328,7 +328,7 @@ to de-duplicate the inputs.</p>
 writing it with the output format.</p>
 <p>More interesting is the script <code class="docutils literal notranslate"><span class="pre">enrollment_summary.py</span></code> that performs
 the aggregation:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">airtunnel</span> <span class="kn">import</span> <span class="n">PandasDataAsset</span><span class="p">,</span> <span class="n">PandasDataAssetIO</span>
 
 
@@ -338,9 +338,32 @@ the aggregation:</p>
     <span class="n">enrollment</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;enrollment&quot;</span><span class="p">)</span>
 
     <span class="n">student_df</span> <span class="o">=</span> <span class="n">student</span><span class="o">.</span><span class="n">retrieve_from_store</span><span class="p">(</span><span class="n">airflow_context</span><span class="p">,</span> <span class="n">consuming_asset</span><span class="o">=</span><span class="n">asset</span><span class="p">)</span>
-    <span class="n">programme_df</span> <span class="o">=</span> <span class="n">progr</span>
+    <span class="n">programme_df</span> <span class="o">=</span> <span class="n">programme</span><span class="o">.</span><span class="n">retrieve_from_store</span><span class="p">(</span><span class="n">airflow_context</span><span class="p">,</span> <span class="n">consuming_asset</span><span class="o">=</span><span class="n">asset</span><span class="p">)</span>
+    <span class="n">enrollment_df</span> <span class="o">=</span> <span class="n">enrollment</span><span class="o">.</span><span class="n">retrieve_from_store</span><span class="p">(</span>
+        <span class="n">airflow_context</span><span class="p">,</span> <span class="n">consuming_asset</span><span class="o">=</span><span class="n">asset</span>
+    <span class="p">)</span>
+
+    <span class="n">enrollment_summary</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">enrollment_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">right</span><span class="o">=</span><span class="n">student_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">student</span><span class="o">.</span><span class="n">declarations</span><span class="o">.</span><span class="n">key_columns</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">right</span><span class="o">=</span><span class="n">programme_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">programme</span><span class="o">.</span><span class="n">declarations</span><span class="o">.</span><span class="n">key_columns</span><span class="p">)</span>
+
+    <span class="n">enrollment_summary</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">enrollment_summary</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s2">&quot;student_major&quot;</span><span class="p">,</span> <span class="s2">&quot;programme_name&quot;</span><span class="p">,</span> <span class="s2">&quot;student_id&quot;</span><span class="p">]]</span>
+        <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;student_major&quot;</span><span class="p">,</span> <span class="s2">&quot;programme_name&quot;</span><span class="p">])</span>
+        <span class="o">.</span><span class="n">count</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">PandasDataAssetIO</span><span class="o">.</span><span class="n">write_data_asset</span><span class="p">(</span><span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">enrollment_summary</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Several things happen there:</p>
+<ul class="simple">
+<li><p>we can see how easy it is, to actually retrieve data from the <em>ready</em> layer of the data store: we define the data
+asset instance and call the <code class="docutils literal notranslate"><span class="pre">retrieve_from_store()</span></code> method.</p></li>
+<li><p>additionally, when doing the above, we pass in the consuming asset - this will trigger a lineage collection and record
+data source, data target, dag id and task id.</p></li>
+<li><p>finally we do the aggregation by joining (on the keys that we can retrieve from the declaration) and store the data</p></li>
+</ul>
 </div>
 <div class="section" id="the-final-dag">
 <h2>The final DAG<a class="headerlink" href="#the-final-dag" title="Permalink to this headline">¶</a></h2>
@@ -364,7 +387,7 @@ detail below) that Airtunnel provides.</p>
 
 <span class="k">with</span> <span class="n">DAG</span><span class="p">(</span>
     <span class="n">dag_id</span><span class="o">=</span><span class="s2">&quot;university&quot;</span><span class="p">,</span>
-    <span class="n">schedule_interval</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">schedule_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">start_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2019</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
 <span class="p">)</span> <span class="k">as</span> <span class="n">dag</span><span class="p">:</span>
     <span class="n">ingested_ready_tasks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -420,7 +443,7 @@ metadata model with data on load status, ingested raw files and lineage.</p>
 <span class="n">student</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="s2">&quot;student&quot;</span><span class="p">)</span>
 <span class="n">adapter</span> <span class="o">=</span> <span class="n">SQLMetaAdapter</span><span class="p">()</span>
 <span class="n">load_status</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">read_load_status</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">load_status</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">load_status</span><span class="p">)</span>
 </pre></div>
 </div>
 <blockquote>
@@ -428,7 +451,7 @@ metadata model with data on load status, ingested raw files and lineage.</p>
 (2019-09-28 16:38:26.880186) and task student_staging_to_ready</p>
 </div></blockquote>
 <p>To retrieve ingested files metadata, simply do this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
     <span class="n">adapter</span><span class="o">.</span><span class="n">read_inspected_files</span><span class="p">(</span>
         <span class="n">for_asset</span><span class="o">=</span><span class="n">student</span><span class="p">,</span>
         <span class="n">dag_id</span><span class="o">=</span><span class="n">load_status</span><span class="o">.</span><span class="n">dag_id</span><span class="p">,</span>
@@ -446,7 +469,7 @@ metadata model with data on load status, ingested raw files and lineage.</p>
 from the asset’s load status!</em></p>
 <p>To retrieve the lineage, simply do this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">enrollment_summary</span> <span class="o">=</span> <span class="n">PandasDataAsset</span><span class="p">(</span><span class="s2">&quot;enrollment_summary&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">adapter</span><span class="o">.</span><span class="n">read_lineage</span><span class="p">(</span><span class="n">for_target</span><span class="o">=</span><span class="n">enrollment_summary</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adapter</span><span class="o">.</span><span class="n">read_lineage</span><span class="p">(</span><span class="n">for_target</span><span class="o">=</span><span class="n">enrollment_summary</span><span class="p">))</span>
 </pre></div>
 </div>
 <blockquote>
@@ -474,7 +497,7 @@ properties; not shown for brevity.</strong></p>
         <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration and Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="airtunnel 1.0.0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="airtunnel 1.0.1" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

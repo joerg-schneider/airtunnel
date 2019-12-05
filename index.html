@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>airtunnel 1.0.0 &mdash; Airtunnel 1.0.0 documentation</title>
+  <title>airtunnel 1.0.1 &mdash; Airtunnel 1.0.1 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.1
               </div>
             
           
@@ -139,7 +139,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>airtunnel 1.0.0</li>
+      <li>airtunnel 1.0.1</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -159,14 +159,14 @@
            <div itemprop="articleBody">
             
   <div class="section" id="airtunnel-version">
-<h1>airtunnel 1.0.0<a class="headerlink" href="#airtunnel-version" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&amp;branchName=master"><img alt="Build Status" src="https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel?branchName=master" /></a> <a class="reference external" href="https://github.com/ambv/black"><img alt="Code Style: Black" src="https://img.shields.io/badge/code%20style-black-black.svg" /></a> <a class="reference external" href="https://pypi.org/project/airtunnel/"><img alt="Python Version" src="https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg" /></a> <a class="reference external" href="https://pypi.org/project/airtunnel/"><img alt="PyPI version" src="https://badge.fury.io/py/airtunnel.svg" /></a> <img alt="Test-Coverage" src="_images/coverage.svg" /></p>
+<h1>airtunnel 1.0.1<a class="headerlink" href="#airtunnel-version" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&amp;branchName=master"><img alt="Build Status" src="https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel?branchName=master" /></a> <a class="reference external" href="https://github.com/ambv/black"><img alt="Code Style: Black" src="https://img.shields.io/badge/code%20style-black-black.svg" /></a> <a class="reference external" href="https://pypi.org/project/airtunnel/"><img alt="Python Version" src="https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg" /></a> <a class="reference external" href="https://pypi.org/project/airtunnel/"><img alt="PyPI version" src="https://badge.fury.io/py/airtunnel.svg" /></a> <img alt="Test-Coverage" src="https://img.shields.io/azure-devops/coverage/joerg4805/Airtunnel/2/master" /></p>
 <img src="_static/assets/airtunnel-logo.jpg" width="120px" align="right"/><p><strong>Airtunnel</strong> is a means of supplementing <a class="reference external" href="https://github.com/apache/airflow">Apache Airflow</a>, a platform for
 workflow automation in Python which is angled at analytics/data
 pipelining. It was born out of years of project experience in data
 science, and the hardships of running large data platforms in real life
 businesses. Hence, Airtunnel is both a set of principles (read more on
-them <a class="reference external" href="https://medium.com/&#64;schneider.joerg">in the Airtunnel introduction</a>) and a lightweight Python
+them <a class="reference external" href="https://medium.com/bcggamma/airtunnel-a-blueprint-for-workflow-orchestration-using-airflow-173054b458c3">in the Airtunnel introduction</a>) and a lightweight Python
 library <em>to tame your airflow</em>!</p>
 <div class="section" id="why-choose-airtunnel">
 <h2>Why choose airtunnel?<a class="headerlink" href="#why-choose-airtunnel" title="Permalink to this headline">¶</a></h2>
@@ -181,7 +181,7 @@ instead</p>
 </div>
 <div class="section" id="getting-started">
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>To get started, we warmly recommended to read the <a class="reference external" href="https://medium.com/&#64;schneider.joerg">Airtunnel introduction article</a> and the <a class="reference external" href="https://joerg-schneider.github.io/airtunnel/tutorial.html">Airtunnel tutorial</a>.
+<p>To get started, we warmly recommended to read the <a class="reference external" href="https://medium.com/bcggamma/airtunnel-a-blueprint-for-workflow-orchestration-using-airflow-173054b458c3">Airtunnel introduction article</a> and the <a class="reference external" href="https://joerg-schneider.github.io/airtunnel/tutorial.html">Airtunnel tutorial</a>.
 Also check out the <a class="reference external" href="https://github.com/joerg-schneider/airtunnel-demo">demo project</a>.</p>
 </div>
 <div class="section" id="installation">
@@ -198,9 +198,9 @@ data asset declarations (YAML files) will reside</p>
 <p>2.2) The <em>scripts store</em> folder is where all your Python &amp; SQL scripts to process data assets will reside.
 It should be broken down by subfolders <code class="docutils literal notranslate"><span class="pre">py</span></code> for Python scripts and <code class="docutils literal notranslate"><span class="pre">sql</span></code> for SQL scripts. Please further add
 subfolders <code class="docutils literal notranslate"><span class="pre">dml</span></code> and <code class="docutils literal notranslate"><span class="pre">ddl</span></code> into the <code class="docutils literal notranslate"><span class="pre">sql</span></code> script folder.</p>
-<p>2.3) The <em>data store</em> folder follows a convention as well.</p>
+<p>2.3) The <em>data store</em> folder follows a convention as well, <a class="reference external" href="https://joerg-schneider.github.io/airtunnel/data-store.html">refer to the docs</a> on how to structure it.</p>
 </li>
-<li><p>Configure Airtunnel by extending your existing <code class="docutils literal notranslate"><span class="pre">airflow.cfg</span></code></p>
+<li><p>Configure Airtunnel by extending your existing <code class="docutils literal notranslate"><span class="pre">airflow.cfg</span></code> (<a class="reference external" href="https://joerg-schneider.github.io/airtunnel/configuration.html">as documented here</a>):</p>
 <p>3.1) Add the configuration section <code class="docutils literal notranslate"><span class="pre">[airtunnel]</span></code> in which,
 you need to add three configuration keys.</p>
 <p>3.2) add <code class="docutils literal notranslate"><span class="pre">declarations_folder</span></code> which takes the absolute path to the folder you set up in 2.1</p>
