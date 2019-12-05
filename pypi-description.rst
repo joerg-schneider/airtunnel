@@ -49,9 +49,9 @@ Installation
    It should be broken down by subfolders ``py`` for Python scripts and ``sql`` for SQL scripts. Please further add
    subfolders ``dml`` and ``ddl`` into the ``sql`` script folder.
 
-   2.3) The *data store* folder follows a convention as well.
+   2.3) The *data store* folder follows a convention as well, `refer to the docs`_ on how to structure it.
 
-3) Configure Airtunnel by extending your existing ``airflow.cfg``
+3) Configure Airtunnel by extending your existing ``airflow.cfg`` (`as documented here`_):
 
    3.1) Add the configuration section ``[airtunnel]`` in which,
    you need to add three configuration keys.
@@ -81,9 +81,11 @@ Airtunnel's documentation is `on GitHub pages`_.
 
 .. _Apache Airflow: https://github.com/apache/airflow
 .. _on GitHub pages: https://joerg-schneider.github.io/airtunnel/
-.. _Airtunnel introduction article: https://medium.com/@schneider.joerg
+.. _Airtunnel introduction article: https://medium.com/bcggamma/airtunnel-a-blueprint-for-workflow-orchestration-using-airflow-173054b458c3
 .. _Airtunnel tutorial: https://joerg-schneider.github.io/airtunnel/tutorial.html
 .. _demo project: https://github.com/joerg-schneider/airtunnel-demo
+.. _refer to the docs: https://joerg-schneider.github.io/airtunnel/data-store.html
+.. _as documented here: https://joerg-schneider.github.io/airtunnel/configuration.html
 
 .. |Build Status| image:: https://dev.azure.com/joerg4805/Airtunnel/_apis/build/status/joerg-schneider.airtunnel?branchName=master
    :target: https://dev.azure.com/joerg4805/Airtunnel/_build/latest?definitionId=1&branchName=master
